@@ -1,0 +1,38 @@
+default:
+  image: amazoncorretto:11.0.7
+  before_script:
+    - ': before_script'
+    - export
+    - java --version
+    - chmod +x mvnw
+    - export MAVEN_OPTS="-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/"
+
+cache:
+  key: maven-cache
+  paths:
+    - $CI_PROJECT_DIR/.m2/
+
+stages:
+  - test
+  - build
+
+Build package:
+  stage: build
+  script:
+    - ./mvnw clean install -U -DskipTests $MAVEN_OPTS
+  artifacts:
+    paths:
+      - common/target/*.jar
+      - kafka-consumer/target/*.jar
+      - kafka-producer/target/*.jar
+    expire_in: 1 hour
+
+test:
+  stage: test
+  script:
+    - ./mvnw test $MAVEN_OPTS
+
+integration test:
+  stage: test
+  script:
+    - ./mvnw failsafe:verify $MAVEN_OPTS
