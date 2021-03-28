@@ -35,10 +35,14 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 1. Download the Git repository
 2. Install dependencies: `mvn clean install -U`
 3. Run Kafka and Zookeeper - see [KAFKA-SETUP.md](./KAFKA-SETUP.md)
-4. After establishing services, run a producer and a consumer from corresponding project's modules:
+4. After establishing services, run a producer, run a consumer from corresponding project's modules:
    - `kafka-producer`
    - `kafka-consumer`
 5. Follow console output and check the behaviour.
+6. Open the Confluent Platform dashboard: `http://localhost:9021/`
+
+## Troubleshooting
+- If you are using IntelliJ, be sure you set the proper Kotlin version to 1.4.30+
 
 ## Useful links
 - https://kotlinlang.org/docs/maven.html

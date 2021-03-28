@@ -19,6 +19,7 @@ class ExampleKafkaConsumer {
             properties[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaProperties.BOOTSTRAP_SERVERS
             properties[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java.name
             properties[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = StringDeserializer::class.java.name
+            //GROUP_ID_CONFIG: The consumer group id used to identify to which group this consumer belongs.
             properties[ConsumerConfig.GROUP_ID_CONFIG] = "test-group"
             return KafkaConsumer<String, String>(properties);
         }

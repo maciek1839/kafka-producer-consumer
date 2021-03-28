@@ -11,14 +11,15 @@ import java.util.*
 class ExampleKafkaProducer {
 
     companion object {
-        private var logger: Logger = LoggerFactory.getLogger(ExampleKafkaProducer::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(ExampleKafkaProducer::class.java);
 
-        private fun getProperties():Properties{
+        private fun getProperties(): Properties {
             val props = Properties()
             props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaProperties.BOOTSTRAP_SERVERS
             props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = LongSerializer::class.java.name
             props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java.name
-            props[ProducerConfig.CLIENT_ID_CONFIG] = "KafkaExampleProducer"
+            // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
+            props[ProducerConfig.CLIENT_ID_CONFIG] = "ExampleKafkaProducer"
             return props
         }
 

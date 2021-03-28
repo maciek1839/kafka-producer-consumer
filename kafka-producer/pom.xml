@@ -45,9 +45,25 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.avro-kotlin.avro4k</groupId>
+            <artifactId>avro4k-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-serialization</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
