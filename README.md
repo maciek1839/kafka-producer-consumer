@@ -18,6 +18,8 @@ Apache Kafka is an open-source distributed event streaming platform used by thou
 - Producer: Creates a record and publishes it to the broker.
 - Consumer: Consumes records from the broker.
 
+If you are looking for a book about Kafka, let's have a look on ``Kafka: The Definitive Guide`` which you can get here: <https://www.confluent.io/resources/kafka-the-definitive-guide/>
+
 ## Technology
 - Kafka
 - Confluent Platform for Apache Kafka
@@ -40,5 +42,4 @@ Apache Kafka is an open-source distributed event streaming platform used by thou
 - https://kotlinlang.org/docs/maven.html
 - https://github.com/only2dhir/kafkaexample
 - https://github.com/perkss/kotlin-kafka-and-kafka-streams-examples
-- https://www.confluent.io/resources/kafka-the-definitive-guide/
 - https://dzone.com/articles/kafka-producer-and-consumer-example
