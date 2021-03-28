@@ -1,11 +1,8 @@
 # Kafka local setup
-Run Kafka and Zookeeper using Docker Compose/Kubernetes.  
-You can choose between:
-- `docker-compose.yml`
-- `docker-compose-confluent-platform.yml`
+Run Kafka and Zookeeper using Docker Compose/Kubernetes.
+- `docker-compose up -d --remove-orphans`
+  - The default file taken by the command is `docker-compose.yml`
 - `kubernetes.yml`
-    - docker-compose up -d
-    - docker-compose -f docker-compose-cluster.yml up -d
 // todo: add Kubernetes description
 
 ## Confluent Kafka Platform
@@ -30,3 +27,9 @@ If you don't use IDE plugins, here you can find useful Docker commands:
     - `docker-compose up -d --remove-orphans`
 - Show Docker Compose containers
     - `docker-compose ps`
+- Stop all running containers
+  - `docker stop $(docker ps -a -q)`
+- Delete all stopped containers
+  - `docker rm $(docker ps -a -q)`
+
+Reference: <https://www.codenotary.com/blog/extremely-useful-docker-commands/>

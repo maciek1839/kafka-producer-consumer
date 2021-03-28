@@ -28,6 +28,8 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 - AWS Corretto 11
 - Apache Avro
     - schema-based data serialization library
+- Avro Kotlin
+    - https://github.com/avro-kotlin/avro4k
 
 ## Getting started
 1. Download the Git repository
