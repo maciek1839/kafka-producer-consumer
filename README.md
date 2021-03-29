@@ -30,6 +30,7 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
     - schema-based data serialization library
 - Avro Kotlin
     - https://github.com/avro-kotlin/avro4k
+    - Limitations: cannot generate a class from .avsc file (it allows on generating a schema based on a Kotlin class).
 
 ## Getting started
 1. Download the Git repository
