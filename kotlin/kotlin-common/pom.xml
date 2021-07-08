@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.showmeyourcode.kafka.kotlin</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>kotlin-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>

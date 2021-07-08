@@ -1,7 +1,6 @@
 package com.showmeyourcode.kafka.kotlin.kafka_producer
 
 fun main(args: Array<String>) {
-
     if (args.isEmpty()) {
         val numberOfMessages = 5
         ExampleKafkaProducer.runProducer(numberOfMessages)

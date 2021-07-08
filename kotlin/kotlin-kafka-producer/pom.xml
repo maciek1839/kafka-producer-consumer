@@ -10,12 +10,12 @@
     </parent>
 
     <groupId>com.showmeyourcode.kafka.kotlin</groupId>
-    <artifactId>kafka-consumer</artifactId>
+    <artifactId>kotlin-kafka-producer</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.showmeyourcode.kafka.kotlin</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>kotlin-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -49,6 +49,23 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.avro-kotlin.avro4k</groupId>
+            <artifactId>avro4k-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-serialization</artifactId>
         </dependency>
     </dependencies>
 
