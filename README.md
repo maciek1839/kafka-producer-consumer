@@ -45,6 +45,9 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 ## Troubleshooting
 - If you are using IntelliJ, be sure you set the proper Kotlin version to 1.4.30+
 
+## Useful commands
+- mvn clean install -U -DskipTests
+
 ## Useful links
 - https://kotlinlang.org/docs/maven.html
 - https://github.com/only2dhir/kafkaexample

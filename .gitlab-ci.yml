@@ -22,9 +22,9 @@ Build package:
     - ./mvnw clean install -U -DskipTests $MAVEN_OPTS
   artifacts:
     paths:
-      - common/target/*.jar
-      - kafka-consumer/target/*.jar
-      - kafka-producer/target/*.jar
+      - kotlin/common/target/*.jar
+      - kotlin/kafka-consumer/target/*.jar
+      - kotlin/kafka-producer/target/*.jar
     expire_in: 1 hour
 
 test:
