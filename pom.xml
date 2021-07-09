@@ -17,6 +17,21 @@
         An example of usage Kafka with a producer and consumer
     </description>
 
+    <properties>
+        <java.version>11</java.version>
+        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <confluent.version>6.1.1</confluent.version>
+        <avro.version>1.9.2</avro.version>
+        <kotlin.serialization.version>1.1.0</kotlin.serialization.version>
+        <slf4j-api.version>1.7.27</slf4j-api.version>
+        <logback-classic.version>1.2.3</logback-classic.version>
+        <logback-core.version>1.2.3</logback-core.version>
+        <kafka_2.13.version>2.7.0</kafka_2.13.version>
+        <kafka-clients.version>2.7.0</kafka-clients.version>
+        <encoding>UTF-8</encoding>
+    </properties>
+
     <repositories>
         <repository>
             <id>central</id>

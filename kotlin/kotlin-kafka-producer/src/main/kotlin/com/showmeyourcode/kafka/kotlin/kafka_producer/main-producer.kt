@@ -8,6 +8,6 @@ fun main(args: Array<String>) {
     } else {
         val numberOfMessages = Integer.parseInt(args[0])
         ExampleKafkaProducer.runProducer(numberOfMessages)
-        ExampleKafkaProducer.runProducer(numberOfMessages)
+        ExampleKafkaProducerAvro.runProducer(numberOfMessages)
     }
 }

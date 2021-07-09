@@ -25,6 +25,9 @@ Build package:
       - kotlin/kotlin-common/target/*.jar
       - kotlin/kotlin-kafka-consumer/target/*.jar
       - kotlin/kotlin-kafka-producer/target/*.jar
+      - java/java-common/target/*.jar
+      - java/java-kafka-consumer/target/*.jar
+      - java/java-kafka-producer/target/*.jar
     expire_in: 1 hour
 
 test:

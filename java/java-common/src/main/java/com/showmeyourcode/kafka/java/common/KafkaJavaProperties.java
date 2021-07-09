@@ -1,6 +1,6 @@
 package com.showmeyourcode.kafka.java.common;
 
-public class KafkaJavaProperties {
+public final class KafkaJavaProperties {
     public static final String TOPIC = "java-example-topic";
     public static final String BOOTSTRAP_SERVERS = "localhost:9092";
 
@@ -10,4 +10,6 @@ public class KafkaJavaProperties {
 
     public static final String AVRO_SCHEMA_REGISTRY = "http://localhost:8081";
 
+    private KafkaJavaProperties() {
+    }
 }
