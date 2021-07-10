@@ -2,6 +2,7 @@ package com.showmeyourcode.kafka.java.kafka_producer;
 
 import com.showmeyourcode.kafka.java.common.JavaKafkaProperties;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord;
+import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord2;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -12,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public class JavaKafkaProducerAvro {
-    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaProducerAvro.class);
+public class JavaKafkaProducerAvroFile {
+    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaProducerAvroClass.class);
 
     private static Properties getProperties() {
         var props = new Properties();
@@ -30,16 +31,16 @@ public class JavaKafkaProducerAvro {
     }
 
     private static Producer<Long, GenericRecord> createProducer() {
-        logger.info("Creating an Avro Java producer...");
+        logger.info("Creating an Avro Java File producer...");
         return new KafkaProducer<>(getProperties());
     }
 
     public static void runProducer(int sendMessageCount) {
-        logger.info("Starting an Avro Kotlin producer...");
+        logger.info("Starting an Avro Java File producer...");
         Producer<Long, GenericRecord> producer = createProducer();
         long time = System.currentTimeMillis();
         try {
-            var schema = ReflectData.get().getSchema(ExampleUserRecord.class);
+            var schema = ReflectData.get().getSchema(ExampleUserRecord2.class);
             logger.info("Generated schema: {}", schema.toString(true));
             for (long index = 0; index < sendMessageCount; index++) {
                 var dataRecord = new ExampleUserRecord("name", index, "100 100 101");
@@ -49,7 +50,7 @@ public class JavaKafkaProducerAvro {
                 avroRecord.put("phoneNumber", dataRecord.getPhoneNumber());
 
                 ProducerRecord<Long, GenericRecord> producerRecord = new ProducerRecord<>(
-                        JavaKafkaProperties.TOPIC,
+                        JavaKafkaProperties.TOPIC2,
                         index,
                         avroRecord
                 );

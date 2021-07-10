@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "ExampleUserRecord2",
+  "namespace": "com.showmeyourcode.kafka.java.kafka_producer.avro",
+  "fields": [
+    {
+      "name": "age",
+      "type": "long"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string"
+    }]
+}

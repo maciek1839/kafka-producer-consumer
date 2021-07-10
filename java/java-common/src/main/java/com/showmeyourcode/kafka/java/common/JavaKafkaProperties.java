@@ -2,6 +2,8 @@ package com.showmeyourcode.kafka.java.common;
 
 public final class JavaKafkaProperties {
     public static final String TOPIC = "java-example-topic";
+    // If you register a new Schema, you need to use a different topic.
+    public static final String TOPIC2 = "java-example-topic2";
     public static final String BOOTSTRAP_SERVERS = "localhost:9092";
 
     public static final String CONSUMER_GROUP_ID = "java-test-group";
