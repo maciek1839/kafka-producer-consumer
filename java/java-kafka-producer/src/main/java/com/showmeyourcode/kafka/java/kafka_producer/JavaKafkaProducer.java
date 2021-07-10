@@ -1,6 +1,6 @@
 package com.showmeyourcode.kafka.java.kafka_producer;
 
-import com.showmeyourcode.kafka.java.common.KafkaJavaProperties;
+import com.showmeyourcode.kafka.java.common.JavaKafkaProperties;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -9,16 +9,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public final class ExampleJavaKafkaProducer {
-    private static final Logger logger = LoggerFactory.getLogger(ExampleJavaKafkaProducer.class);
+public final class JavaKafkaProducer {
+    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaProducer.class);
 
     private static Properties getProperties() {
         var props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaJavaProperties.BOOTSTRAP_SERVERS);
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, JavaKafkaProperties.BOOTSTRAP_SERVERS);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
-        props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaJavaProperties.PRODUCER_CLIENT_ID);
+        props.put(ProducerConfig.CLIENT_ID_CONFIG, JavaKafkaProperties.PRODUCER_CLIENT_ID);
         return props;
     }
 
@@ -34,7 +34,7 @@ public final class ExampleJavaKafkaProducer {
         try {
             for (long index = 0; index < sendMessageCount; index++) {
                 ProducerRecord<Long, String> producerRecord = new ProducerRecord<>(
-                        KafkaJavaProperties.TOPIC,
+                        JavaKafkaProperties.TOPIC,
                         index,
                         String.format("Hello World %d Java",index)
                 );

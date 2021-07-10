@@ -8,7 +8,7 @@ public class MainProducer {
         } else {
             numberOfMessages = Integer.parseInt(args[0]);
         }
-        ExampleJavaKafkaProducer.runProducer(numberOfMessages);
-        ExampleJavaKafkaProducerAvro.runProducer(numberOfMessages);
+        JavaKafkaProducer.runProducer(numberOfMessages);
+        JavaKafkaProducerAvro.runProducer(numberOfMessages);
     }
 }

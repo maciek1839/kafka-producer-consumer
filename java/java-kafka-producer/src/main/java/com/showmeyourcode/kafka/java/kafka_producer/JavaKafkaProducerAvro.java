@@ -1,6 +1,6 @@
 package com.showmeyourcode.kafka.java.kafka_producer;
 
-import com.showmeyourcode.kafka.java.common.KafkaJavaProperties;
+import com.showmeyourcode.kafka.java.common.JavaKafkaProperties;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.avro.generic.GenericData;
@@ -12,19 +12,19 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public class ExampleJavaKafkaProducerAvro {
-    private static final Logger logger = LoggerFactory.getLogger(ExampleJavaKafkaProducerAvro.class);
+public class JavaKafkaProducerAvro {
+    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaProducerAvro.class);
 
     private static Properties getProperties() {
         var props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaJavaProperties.BOOTSTRAP_SERVERS);
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, JavaKafkaProperties.BOOTSTRAP_SERVERS);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
-        props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaJavaProperties.PRODUCER_AVRO_CLIENT_ID);
+        props.put(ProducerConfig.CLIENT_ID_CONFIG, JavaKafkaProperties.PRODUCER_AVRO_CLIENT_ID);
 
         // Avro serializer property - the address of Schema Registry
-        props.put("schema.registry.url", KafkaJavaProperties.AVRO_SCHEMA_REGISTRY);
+        props.put("schema.registry.url", JavaKafkaProperties.AVRO_SCHEMA_REGISTRY);
 
         return props;
     }
@@ -49,7 +49,7 @@ public class ExampleJavaKafkaProducerAvro {
                 avroRecord.put("phoneNumber", dataRecord.getPhoneNumber());
 
                 ProducerRecord<Long, GenericRecord> producerRecord = new ProducerRecord<>(
-                        KafkaJavaProperties.TOPIC,
+                        JavaKafkaProperties.TOPIC,
                         index,
                         avroRecord
                 );
