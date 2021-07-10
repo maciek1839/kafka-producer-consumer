@@ -8,16 +8,16 @@
         <groupId>com.showmeyourcode.kafka</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
     <packaging>pom</packaging>
+    <groupId>com.showmeyourcode.kafka.kotlin</groupId>
     <artifactId>kotlin</artifactId>
 
     <modules>
         <module>kotlin-kafka-consumer</module>
         <module>kotlin-kafka-producer</module>
         <module>kotlin-common</module>
+        <module>kotlin-starter</module>
     </modules>
-
 
     <properties>
         <maven.compiler.source>${java.version}</maven.compiler.source>
