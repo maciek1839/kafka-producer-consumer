@@ -1,6 +1,6 @@
 package com.showmeyourcode.kafka.kotlin.common
 
-class KafkaKotlinProperties {
+class KotlinKafkaProperties {
     companion object {
         const val TOPIC = "kotlin-example-topic"
 

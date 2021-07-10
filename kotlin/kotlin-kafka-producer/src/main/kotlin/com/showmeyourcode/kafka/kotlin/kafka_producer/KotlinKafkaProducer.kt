@@ -1,6 +1,6 @@
 package com.showmeyourcode.kafka.kotlin.kafka_producer
 
-import com.showmeyourcode.kafka.kotlin.common.KafkaKotlinProperties
+import com.showmeyourcode.kafka.kotlin.common.KotlinKafkaProperties
 import org.apache.kafka.clients.producer.*
 import org.apache.kafka.common.serialization.LongSerializer
 import org.apache.kafka.common.serialization.StringSerializer
@@ -8,18 +8,18 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class ExampleKafkaProducer {
+class KotlinKafkaProducer {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(ExampleKafkaProducer::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaProducer::class.java);
 
         private fun getProperties(): Properties {
             val props = Properties()
-            props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaKotlinProperties.BOOTSTRAP_SERVERS
+            props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KotlinKafkaProperties.BOOTSTRAP_SERVERS
             props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = LongSerializer::class.java.name
             props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java.name
             // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
-            props[ProducerConfig.CLIENT_ID_CONFIG] = KafkaKotlinProperties.PRODUCER_CLIENT_ID
+            props[ProducerConfig.CLIENT_ID_CONFIG] = KotlinKafkaProperties.PRODUCER_CLIENT_ID
             return props
         }
 
@@ -35,7 +35,7 @@ class ExampleKafkaProducer {
             try {
                 for (index in time until time + sendMessageCount) {
                     val record: ProducerRecord<Long, String> = ProducerRecord(
-                        KafkaKotlinProperties.TOPIC,
+                        KotlinKafkaProperties.TOPIC,
                         index,
                         "Hello World $index Kotlin"
                     )

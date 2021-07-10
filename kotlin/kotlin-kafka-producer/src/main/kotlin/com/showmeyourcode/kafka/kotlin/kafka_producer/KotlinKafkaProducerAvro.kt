@@ -1,7 +1,7 @@
 package com.showmeyourcode.kafka.kotlin.kafka_producer
 
 import com.github.avrokotlin.avro4k.Avro
-import com.showmeyourcode.kafka.kotlin.common.KafkaKotlinProperties
+import com.showmeyourcode.kafka.kotlin.common.KotlinKafkaProperties
 import com.showmeyourcode.kafka.kotlin.kafka_producer.avro.ExampleUserRecord
 import io.confluent.kafka.serializers.KafkaAvroSerializer
 import org.apache.avro.Schema
@@ -12,21 +12,21 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class ExampleKafkaProducerAvro {
+class KotlinKafkaProducerAvro {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(ExampleKafkaProducerAvro::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaProducerAvro::class.java);
 
         private fun getProperties(): Properties {
             val props = Properties()
-            props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaKotlinProperties.BOOTSTRAP_SERVERS
+            props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KotlinKafkaProperties.BOOTSTRAP_SERVERS
             props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java.name
             props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java.name
             // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
-            props[ProducerConfig.CLIENT_ID_CONFIG] = KafkaKotlinProperties.PRODUCER_AVRO_CLIENT_ID
+            props[ProducerConfig.CLIENT_ID_CONFIG] = KotlinKafkaProperties.PRODUCER_AVRO_CLIENT_ID
 
             // Avro serializer property - the address of Schema Registry
-            props["schema.registry.url"] = KafkaKotlinProperties.AVRO_SCHEMA_REGISTRY
+            props["schema.registry.url"] = KotlinKafkaProperties.AVRO_SCHEMA_REGISTRY
 
             return props
         }
@@ -52,7 +52,7 @@ class ExampleKafkaProducerAvro {
                     avroRecord.put("phoneNumber", dataRecord.phoneNumber)
 
                     val record: ProducerRecord<Long, GenericRecord> = ProducerRecord(
-                        KafkaKotlinProperties.TOPIC,
+                        KotlinKafkaProperties.TOPIC,
                         index,
                         avroRecord
                     )
