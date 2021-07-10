@@ -23,7 +23,7 @@ public class JavaKafkaConsumer {
         return new KafkaConsumer<>(props);
     }
 
-    static void runConsumer() {
+    public static void runConsumer() {
         logger.info("Starting a Java consumer...");
         ArrayList<String> topics = new ArrayList<>();
         topics.add(JavaKafkaProperties.TOPIC);
@@ -42,9 +42,5 @@ public class JavaKafkaConsumer {
         } finally {
             kafkaConsumer.close();
         }
-    }
-
-    public static void main(String... args) {
-        runConsumer();
     }
 }

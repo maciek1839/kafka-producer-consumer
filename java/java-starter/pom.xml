@@ -8,7 +8,7 @@
         <groupId>com.showmeyourcode.kafka.java</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>java-kafka-consumer</artifactId>
+    <artifactId>java-starter</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -18,31 +18,19 @@
     <dependencies>
         <dependency>
             <groupId>com.showmeyourcode.kafka.java</groupId>
-            <artifactId>java-common</artifactId>
+            <artifactId>java-kafka-producer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.showmeyourcode.kafka.java</groupId>
+            <artifactId>java-kafka-consumer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.13</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
         </dependency>
     </dependencies>
-
 </project>

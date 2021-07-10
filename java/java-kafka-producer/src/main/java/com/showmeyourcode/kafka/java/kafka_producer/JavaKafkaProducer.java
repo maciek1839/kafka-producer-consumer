@@ -27,7 +27,7 @@ public final class JavaKafkaProducer {
         return new KafkaProducer<>(getProperties());
     }
 
-    static void runProducer(int sendMessageCount) {
+    public static void runProducer(int sendMessageCount) {
         logger.info("Starting a Java producer...");
         Producer<Long, String> producer = createProducer();
         long time = System.currentTimeMillis();

@@ -28,6 +28,7 @@ Build package:
       - java/java-common/target/*.jar
       - java/java-kafka-consumer/target/*.jar
       - java/java-kafka-producer/target/*.jar
+      - java/java-starter/target/*.jar
     expire_in: 1 hour
 
 test:

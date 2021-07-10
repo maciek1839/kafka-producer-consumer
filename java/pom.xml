@@ -8,14 +8,15 @@
         <groupId>com.showmeyourcode.kafka</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
     <packaging>pom</packaging>
+    <groupId>com.showmeyourcode.kafka.java</groupId>
     <artifactId>java</artifactId>
 
     <modules>
         <module>java-common</module>
         <module>java-kafka-consumer</module>
         <module>java-kafka-producer</module>
+        <module>java-starter</module>
     </modules>
 
     <properties>
