@@ -22,9 +22,9 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 
 ## Technology
 - Kafka
-- Confluent Platform for Apache Kafka
+- Confluent Platform for Apache Kafka (6.1.1)
 - Maven
-- Kotlin
+- Kotlin 1.4.30
 - Java
 - AWS Corretto 11
 - Apache Avro
@@ -47,8 +47,8 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 6. Open the Confluent Platform dashboard: `http://localhost:9021/`
     ![Control Center](./docs/control-center.PNG)
 
-## Troubleshooting
-- If you are using IntelliJ, be sure you set the proper Kotlin version to 1.4.30+
+## Generate SSL certificate
+See the [instruction](./ssl/README-SSL.md)
 
 ## Useful commands
 - mvn clean install -U -DskipTests
