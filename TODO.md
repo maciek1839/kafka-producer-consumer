@@ -1,5 +1,5 @@
 # Todos
-- ssl for Kafka cluster: https://github.com/perkss/kotlin-kafka-and-kafka-streams-examples/tree/master/kafka-reactive-secure-producer-consumer
+- Implementation for SSL/TLS Kafka
 - kubernetes
 - use org.testcontainers
 - offset examples

@@ -1,0 +1,58 @@
+#
+# https://github.com/perkss/kotlin-kafka-and-kafka-streams-examples/tree/master/kafka-reactive-secure-producer-consumer
+#
+
+---
+version: '2'
+services:
+  zookeeper1:
+    image: confluentinc/cp-zookeeper:6.1.1
+    hostname: zookeeper1
+    container_name: zookeeper-ssl
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      KAFKA_JMX_PORT: 39999
+      KAFKA_OPTS: -Djava.security.auth.login.config=/etc/kafka/secrets/zookeeper_jaas.conf
+        -Dzookeeper.authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+      ZOOKEEPER_SERVERS: zookeeper1:22888:23888
+    volumes:
+      - ./secrets:/etc/kafka/secrets
+
+  kafka1-ssl:
+    image: confluentinc/cp-kafka:6.1.1
+    hostname: kafka1-ssl
+    container_name: kafka1-ssl
+    ports:
+      - "29093:29093"
+      - "29094:29094"
+      - "9093:9093"
+      - "9094:9094"
+    depends_on:
+      - zookeeper1
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_HEAP_OPTS: "-Xmx1G -Xms1G"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL,SSL_HOST:SSL,SASL_SSL:SASL_SSL,SASL_SSL_HOST:SASL_SSL
+      KAFKA_ADVERTISED_LISTENERS: SSL://kafka1-ssl:29093,SSL_HOST://localhost:9093,SASL_SSL://kafka1-ssl:29094,SASL_SSL_HOST://localhost:9094
+      KAFKA_SSL_KEYSTORE_FILENAME: kafka.broker.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: broker_keystore_creds
+      KAFKA_SSL_KEY_CREDENTIALS: broker_sslkey_creds
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.broker.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: broker_truststore_creds
+      KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: " "
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+      KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+      KAFKA_OPTS: -Djava.security.auth.login.config=/etc/kafka/secrets/server_jaas.conf
+      KAFKA_ZOOKEEPER_SET_ACL: "true"
+      KAFKA_JMX_PORT: 49999
+    volumes:
+      - ./secrets:/etc/kafka/secrets

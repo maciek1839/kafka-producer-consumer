@@ -47,8 +47,10 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 6. Open the Confluent Platform dashboard: `http://localhost:9021/`
     ![Control Center](./docs/control-center.PNG)
 
-## Generate SSL certificate
-See the [instruction](./ssl/README-SSL.md)
+## SSL/TLS Kafka configuration
+Generate certificates using Confluent script -  [instruction](ssl-tls-example/README-SSL-TLS.md).
+
+Complete TLS/SSL Kafka configuration - [instruction](./secrets/README-SECRETS.md)
 
 ## Useful commands
 - mvn clean install -U -DskipTests
@@ -56,5 +58,4 @@ See the [instruction](./ssl/README-SSL.md)
 ## Useful links
 - https://kotlinlang.org/docs/maven.html
 - https://github.com/only2dhir/kafkaexample
-- https://github.com/perkss/kotlin-kafka-and-kafka-streams-examples
 - https://dzone.com/articles/kafka-producer-and-consumer-example
