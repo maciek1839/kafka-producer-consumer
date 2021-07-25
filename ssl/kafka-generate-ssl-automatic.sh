@@ -7,15 +7,17 @@ VALIDITY_IN_DAYS=3650
 DEFAULT_TRUSTSTORE_FILENAME="kafka.truststore.jks"
 TRUSTSTORE_WORKING_DIRECTORY="truststore"
 KEYSTORE_WORKING_DIRECTORY="keystore"
-CA_CERT_FILE="ca-cert"
+CA_CERT_FILE="ca-cert.cer"
 KEYSTORE_SIGN_REQUEST="cert-file"
 KEYSTORE_SIGN_REQUEST_SRL="ca-cert.srl"
-KEYSTORE_SIGNED_CERT="cert-signed"
+KEYSTORE_SIGNED_CERT="cert-signed.cer"
 
 COUNTRY=$COUNTRY
 STATE=$STATE
 OU=$ORGANIZATION_UNIT
-CN=`hostname -f`
+CN=$COMMON_NAME
+# For non-localhost environment use hostname as CN
+#CN=`hostname -f`
 LOCATION=$CITY
 PASS=$PASSWORD
 
@@ -62,7 +64,7 @@ trust_store_private_key_file=""
   echo
 
   openssl req -new -x509 -keyout $TRUSTSTORE_WORKING_DIRECTORY/ca-key \
-    -out $TRUSTSTORE_WORKING_DIRECTORY/ca-cert -days $VALIDITY_IN_DAYS -nodes \
+    -out $TRUSTSTORE_WORKING_DIRECTORY/$CA_CERT_FILE -days $VALIDITY_IN_DAYS -nodes \
     -subj "/C=$COUNTRY/ST=$STATE/L=$LOCATION/O=$OU/CN=$CN"
 
   trust_store_private_key_file="$TRUSTSTORE_WORKING_DIRECTORY/ca-key"
@@ -71,10 +73,9 @@ trust_store_private_key_file=""
   echo "Two files were created:"
   echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-key -- the private key used later to"
   echo "   sign certificates"
-  echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-cert -- the certificate that will be"
+  echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-cert.cert -- the certificate that will be"
   echo "   stored in the trust store in a moment and serve as the certificate"
-  echo "   authority (CA). Once this certificate has been stored in the trust"
-  echo "   store, it will be deleted. It can be retrieved from the trust store via:"
+  echo "   authority (CA). The certificate can be retrieved from the trust store via:"
   echo "   $ keytool -keystore <trust-store-file> -export -alias CARoot -rfc"
 
   echo
@@ -82,7 +83,7 @@ trust_store_private_key_file=""
   echo
 
   keytool -keystore $TRUSTSTORE_WORKING_DIRECTORY/$DEFAULT_TRUSTSTORE_FILENAME \
-    -alias CARoot -import -file $TRUSTSTORE_WORKING_DIRECTORY/ca-cert \
+    -alias CARoot -import -file $TRUSTSTORE_WORKING_DIRECTORY/$CA_CERT_FILE \
     -noprompt -dname "C=$COUNTRY, ST=$STATE, L=$LOCATION, O=$OU, CN=$CN" -keypass $PASS -storepass $PASS
 
   trust_store_file="$TRUSTSTORE_WORKING_DIRECTORY/$DEFAULT_TRUSTSTORE_FILENAME"
@@ -91,7 +92,7 @@ trust_store_private_key_file=""
   echo "$TRUSTSTORE_WORKING_DIRECTORY/$DEFAULT_TRUSTSTORE_FILENAME was created."
 
   # don't need the cert because it's in the trust store.
-  rm $TRUSTSTORE_WORKING_DIRECTORY/$CA_CERT_FILE
+#  rm $TRUSTSTORE_WORKING_DIRECTORY/$CA_CERT_FILE
 
 echo
 echo "Continuing with:"
@@ -146,7 +147,7 @@ echo "Now the CA will be imported into the keystore."
 echo
 keytool -keystore $KEYSTORE_WORKING_DIRECTORY/$KEYSTORE_FILENAME -alias CARoot \
   -import -file $CA_CERT_FILE -keypass $PASS -storepass $PASS -noprompt
-rm $CA_CERT_FILE # delete the trust store cert because it's stored in the trust store.
+#rm $CA_CERT_FILE # delete the trust store cert because it's stored in the trust store.
 
 echo
 echo "Now the keystore's signed certificate will be imported back into the keystore."
@@ -157,13 +158,13 @@ keytool -keystore $KEYSTORE_WORKING_DIRECTORY/$KEYSTORE_FILENAME -alias localhos
 echo
 echo "All done!"
 echo
-echo "Deleting intermediate files. They are:"
-echo " - '$KEYSTORE_SIGN_REQUEST_SRL': CA serial number"
-echo " - '$KEYSTORE_SIGN_REQUEST': the keystore's certificate signing request"
-echo "   (that was fulfilled)"
-echo " - '$KEYSTORE_SIGNED_CERT': the keystore's certificate, signed by the CA, and stored back"
-echo "    into the keystore"
-
-  rm $KEYSTORE_SIGN_REQUEST_SRL
-  rm $KEYSTORE_SIGN_REQUEST
-  rm $KEYSTORE_SIGNED_CERT
+#echo "Deleting intermediate files. They are:"
+#echo " - '$KEYSTORE_SIGN_REQUEST_SRL': CA serial number"
+#echo " - '$KEYSTORE_SIGN_REQUEST': the keystore's certificate signing request"
+#echo "   (that was fulfilled)"
+#echo " - '$KEYSTORE_SIGNED_CERT': the keystore's certificate, signed by the CA, and stored back"
+#echo "    into the keystore"
+#
+#  rm $KEYSTORE_SIGN_REQUEST_SRL
+#  rm $KEYSTORE_SIGN_REQUEST
+#  rm $KEYSTORE_SIGNED_CERT
