@@ -7,15 +7,16 @@ VALIDITY_IN_DAYS=3650
 DEFAULT_TRUSTSTORE_FILENAME="kafka.truststore.jks"
 TRUSTSTORE_WORKING_DIRECTORY="truststore"
 KEYSTORE_WORKING_DIRECTORY="keystore"
-CA_CERT_FILE="ca-cert.cer"
-KEYSTORE_SIGN_REQUEST="cert-file"
+CA_CERT_FILE="ca-cert.crt"
+KEYSTORE_SIGN_REQUEST="cert-file.csr"
 KEYSTORE_SIGN_REQUEST_SRL="ca-cert.srl"
-KEYSTORE_SIGNED_CERT="cert-signed.cer"
+KEYSTORE_SIGNED_CERT="cert-signed.crt"
 
 COUNTRY=$COUNTRY
 STATE=$STATE
 OU=$ORGANIZATION_UNIT
 CN=$COMMON_NAME
+CN_CA=$COMMON_NAME-ca
 # For non-localhost environment use hostname as CN
 #CN=`hostname -f`
 LOCATION=$CITY
@@ -63,17 +64,17 @@ trust_store_private_key_file=""
   echo "First, the private key."
   echo
 
-  openssl req -new -x509 -keyout $TRUSTSTORE_WORKING_DIRECTORY/ca-key \
+  openssl req -new -x509 -keyout $TRUSTSTORE_WORKING_DIRECTORY/ca-key.key \
     -out $TRUSTSTORE_WORKING_DIRECTORY/$CA_CERT_FILE -days $VALIDITY_IN_DAYS -nodes \
-    -subj "/C=$COUNTRY/ST=$STATE/L=$LOCATION/O=$OU/CN=$CN"
+    -subj "/C=$COUNTRY/ST=$STATE/L=$LOCATION/O=$OU/CN=$CN_CA"
 
-  trust_store_private_key_file="$TRUSTSTORE_WORKING_DIRECTORY/ca-key"
+  trust_store_private_key_file="$TRUSTSTORE_WORKING_DIRECTORY/ca-key.key"
 
   echo
   echo "Two files were created:"
-  echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-key -- the private key used later to"
+  echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-key.key -- the private key used later to"
   echo "   sign certificates"
-  echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-cert.cert -- the certificate that will be"
+  echo " - $TRUSTSTORE_WORKING_DIRECTORY/ca-cert.crt -- the certificate that will be"
   echo "   stored in the trust store in a moment and serve as the certificate"
   echo "   authority (CA). The certificate can be retrieved from the trust store via:"
   echo "   $ keytool -keystore <trust-store-file> -export -alias CARoot -rfc"
@@ -168,3 +169,4 @@ echo
 #  rm $KEYSTORE_SIGN_REQUEST_SRL
 #  rm $KEYSTORE_SIGN_REQUEST
 #  rm $KEYSTORE_SIGNED_CERT
+
