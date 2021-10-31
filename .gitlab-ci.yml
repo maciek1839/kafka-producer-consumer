@@ -1,0 +1,20 @@
+default:
+  image: amazoncorretto:11.0.7
+  before_script:
+    - ': before_script'
+    - java --version
+    - chmod +x mvnw
+    - export MAVEN_OPTS="-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/"
+
+cache:
+  key: maven-cache
+  paths:
+    - $CI_PROJECT_DIR/.m2/
+
+stages:
+  - build
+
+Build package:
+  stage: build
+  script:
+    - ./mvnw clean install
