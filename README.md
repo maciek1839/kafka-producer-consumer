@@ -57,6 +57,48 @@ Instead of keeping only current state of the system by altering previous state, 
 
 ![event sourcing](./docs/altkom/5_event_sourcing.png)
 
+## Reactive stack
+
+![Reactive stack](./docs/reactive/reactive-stack.png)
+
+![Reactive stack](./docs/reactive/reactive-stack2.png)
+
+![Reactive stack](./docs/reactive/Spring-Web-Stack.jpg)
+
+Spring WebFlux is supported on Tomcat, Jetty, Servlet 3.1+ containers, as well as on non-Servlet runtimes such as Netty and Undertow.
+
+Netty is a NIO client server framework which enables quick and easy development of network applications. Netty has implemented an event loop mechanizm that alows for efficient handoff of incomming connections. Tomcat still uses model one thread per request.
+
+A Netty EventLoop is a loop that keeps looking for new events, e.g. incoming data from network sockets (from SocketChannel) instances).
+
+**Servlet stack**  
+![Servlet stack](./docs/reactive/Thread-per-Request-Model.png)
+
+This model of concurrency is known as the thread-per-request model:
+
+**Reactive stack**  
+![Reactive stack](./docs/reactive/Reactive-Model.png)
+
+Is reactive programming a complete departure from thread-based concurrency? Reactive programming certainly has a very different approach to the usage of threads to achieve concurrency. The program flow transforms from a sequence of synchronous operations, into an asynchronous stream of events.
+
+For instance, under the reactive model, a read call to the database does not block the calling thread while data is fetched. The call immediately returns a publisher that others can subscribe to. The subscriber can process the event after it occurs and may even further generate events itself:
+
+### Event loop
+There are several programming models that describe a reactive approach to concurrency. One of such reactive asynchronous programming model for servers is the event loop model.
+
+![Event loop](./docs/reactive/Event-Loop.jpg)
+
+Above, is an abstract design of an event loop that presents the ideas of reactive asynchronous programming:
+- The event loop runs continuously in a single thread, although we can have as many event loops as the number of available cores
+- The event loop process the events from an event queue sequentially and returns immediately after registering the callback with the platform
+- The platform can trigger the completion of an operation like a database call or an external service invocation
+- The event loop can trigger the callback on the operation completion notification and send back the result to the original caller
+
+References:
+- https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html
+- https://www.infoq.com/news/2017/12/servlet-reactive-stack/
+- https://www.baeldung.com/spring-webflux-concurrency
+
 ## References
 - https://altkomsoftware.pl/en/blog/cqrs-event-sourcing/
     - https://github.com/asc-lab/java-cqrs-intro
