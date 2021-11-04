@@ -52,6 +52,18 @@ Generate certificates using Confluent script -  [instruction](ssl-tls-example/RE
 
 Complete TLS/SSL Kafka configuration - [instruction](./secrets/README-SECRETS.md)
 
+## Message Queue vs Streaming (Kafka)
+
+A message queue, sometimes called a point-to-point communication, is fairly straightforward. A message queue can have one or more consumers and/or producers. In a message queue with multiple consumers, the queue will attempt to distribute the messages evenly across them, with the guarantee being that every message will only be delivered once.
+
+A streaming broker is different from a message queue for many reasons. For starters, messages are organized into log files or topics. One or more consumers can subscribe to a log file or topic to receive all messages that come through that stream. With proper setup, a streaming broker will deliver the same message to every subscriber, in a specific order. This is often described as a publish-subscribe pattern.
+
+While many consumers may be active, queues only deliver messages to a single consumer (typically whichever consumer is available to receive it first) before removing that message from the queue. Meanwhile, streaming brokers send the same message to every subscriber of that log file.
+
+In a queue, once a message is delivered, it's gone forever. To reprocess a message, you have to have a backup, like a batch layer, so that you can put it back into the queue. In comparison, a streaming broker uses a distributed log file, so consumers can move backward and forward within that file to re-process messages they've already received on command.
+
+https://blog.iron.io/message-queue-vs-streaming/
+
 ## Useful commands
 - mvn clean install -U -DskipTests
 
