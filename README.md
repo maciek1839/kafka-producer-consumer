@@ -1,11 +1,14 @@
 # CQRS and Event Sourcing
 
-Make it reactive
+The example is based on a stores and products.
+- The product can be added to the store.
+- Number of available products can be changed.
+- The list of available products can be retrieved.
 
 ## Technology
 - Kotlin
 - Spring Boot Reactive stack
-- JDK 11 (AWS Coretto)
+- JDK 11 (AWS Corretto)
 
 ## CQS & CQRS & Event sourcing introduction
 

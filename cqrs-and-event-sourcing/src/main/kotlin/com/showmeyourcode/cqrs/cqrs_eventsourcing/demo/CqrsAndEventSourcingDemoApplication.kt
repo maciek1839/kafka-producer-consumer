@@ -1,11 +1,11 @@
-package com.showmeyourcode.cqrs.demo
+package com.showmeyourcode.cqrs_eventsourcing.demo
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class CqrsDemoApplication
+class CqrsAndEventSourcingDemoApplication
 
 fun main(args: Array<String>) {
-	runApplication<CqrsDemoApplication>(*args)
+	runApplication<CqrsAndEventSourcingDemoApplication>(*args)
 }

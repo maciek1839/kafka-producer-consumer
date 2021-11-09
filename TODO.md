@@ -1,0 +1,2 @@
+- Check latest Spring libraries.
+- Check tests
