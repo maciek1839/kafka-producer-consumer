@@ -1,2 +1,3 @@
 - Check latest Spring libraries.
 - Check tests
+- CQRS (do with Spring Bus)

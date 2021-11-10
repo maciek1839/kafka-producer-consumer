@@ -102,6 +102,17 @@ References:
 - https://www.infoq.com/news/2017/12/servlet-reactive-stack/
 - https://www.baeldung.com/spring-webflux-concurrency
 
+## Example implementations
+- https://faun.pub/implementing-cqrs-using-axon-spring-boot-kotlin-java-11-and-docker-77b44f14b7ab
+- https://github.com/andreschaffer/event-sourcing-cqrs-examples
+- https://github.com/fuinorg/ddd-cqrs-4-java-example
+- https://github.com/asc-lab/java-cqrs-intro
+- https://github.com/rajat965ng/cqrs-tram
+
+### Alternatives
+- Axon Framework
+  - https://axoniq.io/
+
 ## References
 - https://altkomsoftware.pl/en/blog/cqrs-event-sourcing/
     - https://github.com/asc-lab/java-cqrs-intro
