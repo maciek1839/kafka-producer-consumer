@@ -10,6 +10,15 @@ The example is based on a stores and products.
 - Spring Boot Reactive stack
 - JDK 11 (AWS Corretto)
 
+## How to start?
+
+1. Run one of the Maven modules, for example: `cqrs`
+1. Run Spring Boot app.
+1. Check H2 console - `localhost:8082`
+1. Set up a connection to MongoDB
+  ![img](./docs/setup-db/mongo-gui.PNG)
+1. Load the Postman collection to send requests.
+
 ## CQS & CQRS & Event sourcing introduction
 
 ### Standard architecture (layered)
