@@ -1,4 +1,4 @@
-package com.showmeyourcode.cqrs_eventsourcing.demo
+package com.showmeyourcode.cqrs.cqrs_eventsourcing.demo
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

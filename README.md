@@ -69,6 +69,9 @@ Instead of keeping only current state of the system by altering previous state, 
 
 ![event sourcing](./docs/altkom/5_event_sourcing.png)
 
+![event_sourcing](./docs/kotlin-event-sourcing-example/diagram.png)  
+Reference: https://github.com/nicusX/kotlin-event-sourcing-example
+
 ## Reactive stack
 
 ![Reactive stack](./docs/reactive/reactive-stack.png)
@@ -117,6 +120,7 @@ References:
 - https://github.com/fuinorg/ddd-cqrs-4-java-example
 - https://github.com/asc-lab/java-cqrs-intro
 - https://github.com/rajat965ng/cqrs-tram
+- https://github.com/nicusX/kotlin-event-sourcing-example
 
 ### Alternatives
 - Axon Framework

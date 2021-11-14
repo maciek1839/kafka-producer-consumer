@@ -1,3 +1,2 @@
 - Check latest Spring libraries.
-- Check tests
-- CQRS (do with Spring Bus)
+- Implement CQRS + Event sourcing based on https://github.com/nicusX/kotlin-event-sourcing-example
