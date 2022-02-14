@@ -2,7 +2,6 @@ default:
   image: amazoncorretto:11.0.7
   before_script:
     - ': before_script'
-    - export
     - java --version
     - chmod +x mvnw
     - export MAVEN_OPTS="-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/"
