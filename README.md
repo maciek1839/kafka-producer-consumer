@@ -54,15 +54,46 @@ Complete TLS/SSL Kafka configuration - [instruction](./secrets/README-SECRETS.md
 
 ## Message Queue vs Streaming (Kafka)
 
-A message queue, sometimes called a point-to-point communication, is fairly straightforward. A message queue can have one or more consumers and/or producers. In a message queue with multiple consumers, the queue will attempt to distribute the messages evenly across them, with the guarantee being that every message will only be delivered once.
+`A message queue`, sometimes called a point-to-point communication, is fairly straightforward. A message queue can have one or more consumers and/or producers. In a message queue with multiple consumers, the queue will attempt to distribute the messages evenly across them, with the guarantee being that every message will only be delivered once.
 
-A streaming broker is different from a message queue for many reasons. For starters, messages are organized into log files or topics. One or more consumers can subscribe to a log file or topic to receive all messages that come through that stream. With proper setup, a streaming broker will deliver the same message to every subscriber, in a specific order. This is often described as a publish-subscribe pattern.
+![Queue](./docs/kafka-consumer-api.webp)
+
+`A streaming broker` is different from a message queue for many reasons. For starters, messages are organized into log files or topics. One or more consumers can subscribe to a log file or topic to receive all messages that come through that stream. With proper setup, a streaming broker will deliver the same message to every subscriber, in a specific order. This is often described as a publish-subscribe pattern.
 
 While many consumers may be active, queues only deliver messages to a single consumer (typically whichever consumer is available to receive it first) before removing that message from the queue. Meanwhile, streaming brokers send the same message to every subscriber of that log file.
 
 In a queue, once a message is delivered, it's gone forever. To reprocess a message, you have to have a backup, like a batch layer, so that you can put it back into the queue. In comparison, a streaming broker uses a distributed log file, so consumers can move backward and forward within that file to re-process messages they've already received on command.
 
-https://blog.iron.io/message-queue-vs-streaming/
+![Queue](./docs/kafka-streams-api.webp)
+
+- https://blog.iron.io/message-queue-vs-streaming/
+- https://www.baeldung.com/java-kafka-streams-vs-kafka-consumer
+
+## Event-driven architecture
+
+```
+Event-driven architecture is a software architecture and model for application design. 
+With an event-driven system, the capture, communication, processing, and persistence of events are the core structure of the solution. 
+This differs from a traditional request-driven model.
+```
+
+Event-driven architecture is made up of event producers and event consumers. 
+An event producer detects or senses an event and represents the event as a message. 
+It does not know the consumer of the event, or the outcome of an event.
+
+### Event-driven architecture models
+An event driven architecture may be based on either a pub/sub model or an event stream model.
+
+- `Pub/sub model`
+  - This is a messaging infrastructure based on subscriptions to an event stream. With this model, after an event occurs, or is published, it is sent to subscribers that need to be informed.
+- `Event streaming model`
+  - With an event streaming model, events are written to a log. Event consumers don’t subscribe to an event stream. Instead, they can read from any part of the stream and can join the stream at any time.
+
+References:
+- https://blog.ippon.tech/event-driven-architecture-getting-started-with-kafka-part-1/
+- https://hevodata.com/learn/kafka-event-driven-architecture/
+- https://www.redhat.com/en/topics/integration/what-is-event-driven-architecture
+- (recommended) **https://microservices.io/patterns/data/event-driven-architecture.html**
 
 ## Useful commands
 - mvn clean install -U -DskipTests
