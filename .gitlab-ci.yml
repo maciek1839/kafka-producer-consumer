@@ -13,8 +13,35 @@ cache:
 
 stages:
   - build
+  - test
+  - deploy
 
 Build package:
   stage: build
   script:
-    - ./mvnw clean install
+    - ./mvnw clean install -DskipTests $MAVEN_OPTS
+
+Run tests:
+  stage: test
+  script:
+    - ./mvnw verify $MAVEN_OPTS
+    - echo 'Printing code coverage for Gitlab statistics'
+    - cat coverage-report/target/site/jacoco-aggregate/index.html | grep -o '<tfoot>.*</tfoot>'
+  artifacts:
+    paths:
+      - coverage-report/target/site/jacoco-aggregate/*
+    expire_in: 1 hour
+
+pages:
+  stage: deploy
+  script:
+    - echo 'Cleaning old pages'
+    - rm -rf public
+    - ls -la
+    - mkdir -p public && cp -r coverage-report/target/site/jacoco-aggregate/* public
+    - echo 'Public directory content after copying files'
+    - ls -la ./public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 hour

@@ -1,5 +1,7 @@
 # CQRS and Event Sourcing
 
+- Coverage report: https://showmeyourcodeyoutube.gitlab.io/cqrs-and-event-sourcing/
+
 The example is based on stores and products.
 - A product can be added to a store.
 - Number of available products can be changed.

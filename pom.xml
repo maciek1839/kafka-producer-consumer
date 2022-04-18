@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>coverage-report</module>
         <module>cqs</module>
         <module>cqrs</module>
         <module>cqrs-and-event-sourcing</module>
@@ -25,6 +26,7 @@
         <java.version>11</java.version>
         <kotlin.version>1.5.31</kotlin.version>
         <spring-cloud.version>2020.0.4</spring-cloud.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -83,70 +85,83 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-        <pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<excludes>
-							<exclude>
-								<groupId>org.projectlombok</groupId>
-								<artifactId>lombok</artifactId>
-							</exclude>
-						</excludes>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.jetbrains.kotlin</groupId>
-					<artifactId>kotlin-maven-plugin</artifactId>
-					<configuration>
-						<args>
-							<arg>-Xjsr305=strict</arg>
-						</args>
-						<compilerPlugins>
-							<plugin>spring</plugin>
-                            <plugin>jpa</plugin>
-						</compilerPlugins>
-					</configuration>
+      <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+      <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+      <pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                </exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-plugin</artifactId>
+            <configuration>
+              <args>
+                <arg>-Xjsr305=strict</arg>
+              </args>
+              <compilerPlugins>
+                <plugin>spring</plugin>
+                              <plugin>jpa</plugin>
+              </compilerPlugins>
+            </configuration>
 
-					<dependencies>
-						<dependency>
-							<groupId>org.jetbrains.kotlin</groupId>
-							<artifactId>kotlin-maven-allopen</artifactId>
-							<version>${kotlin.version}</version>
-						</dependency>
-                        <dependency>
-                            <groupId>org.jetbrains.kotlin</groupId>
-                            <artifactId>kotlin-maven-noarg</artifactId>
-                            <version>${kotlin.version}</version>
-                        </dependency>
-					</dependencies>
+            <dependencies>
+              <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-allopen</artifactId>
+                <version>${kotlin.version}</version>
+              </dependency>
+                          <dependency>
+                              <groupId>org.jetbrains.kotlin</groupId>
+                              <artifactId>kotlin-maven-noarg</artifactId>
+                              <version>${kotlin.version}</version>
+                          </dependency>
+            </dependencies>
 
-                    <executions>
-                        <execution>
-                            <id>compile</id>
-                            <goals>
-                                <goal>compile</goal>
-                            </goals>
-                        </execution>
+                      <executions>
+                          <execution>
+                              <id>compile</id>
+                              <goals>
+                                  <goal>compile</goal>
+                              </goals>
+                          </execution>
 
-                        <execution>
-                            <id>test-compile</id>
-                            <goals>
-                                <goal>test-compile</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-				</plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
-                </plugin>
-			</plugins>
-		</pluginManagement>
+                          <execution>
+                              <id>test-compile</id>
+                              <goals>
+                                  <goal>test-compile</goal>
+                              </goals>
+                          </execution>
+                      </executions>
+          </plugin>
+          <plugin>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.22.2</version>
+          </plugin>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${jacoco-maven-plugin.version}</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+                <id>prepare-agent</id>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+		  </pluginManagement>
     </build>
 
 </project>
