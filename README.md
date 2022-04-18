@@ -1,11 +1,12 @@
 # CQRS and Event Sourcing
 
-The example is based on a stores and products.
-- The product can be added to the store.
+The example is based on stores and products.
+- A product can be added to a store.
 - Number of available products can be changed.
-- The list of available products can be retrieved.
+- A list of available products can be retrieved.
 
 ## Technology
+
 - Kotlin
 - Spring Boot Reactive stack
 - JDK 11 (AWS Corretto)
@@ -74,11 +75,7 @@ Reference: https://github.com/nicusX/kotlin-event-sourcing-example
 
 ## Reactive stack
 
-![Reactive stack](./docs/reactive/reactive-stack.png)
-
 ![Reactive stack](./docs/reactive/reactive-stack2.png)
-
-![Reactive stack](./docs/reactive/Spring-Web-Stack.jpg)
 
 Spring WebFlux is supported on Tomcat, Jetty, Servlet 3.1+ containers, as well as on non-Servlet runtimes such as Netty and Undertow.
 
