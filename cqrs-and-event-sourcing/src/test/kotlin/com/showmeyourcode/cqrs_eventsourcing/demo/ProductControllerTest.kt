@@ -1,13 +1,14 @@
-package com.showmeyourcode.cqrs.demo
+package com.showmeyourcode.cqrs_eventsourcing.demo
 
-import com.showmeyourcode.cqrs.demo.command.addproduct.AddProductCommand
-import com.showmeyourcode.cqrs.demo.command.changeavailability.ChangeProductAvailabilityCommand
-import com.showmeyourcode.cqrs.demo.query.getproductavailability.GetProductAvailabilityQuery
-import com.showmeyourcode.cqrs.demo.query.getproducts.GetProductsQuery
+import com.showmeyourcode.cqrs_eventsourcing.demo.command.addproduct.AddProductCommand
+import com.showmeyourcode.cqrs_eventsourcing.demo.command.changeavailability.ChangeProductAvailabilityCommand
+import com.showmeyourcode.cqrs_eventsourcing.demo.domain.query.ProductQ
+import com.showmeyourcode.cqrs_eventsourcing.demo.query.getproductavailability.GetProductAvailabilityQuery
+import com.showmeyourcode.cqrs_eventsourcing.demo.query.getproducts.GetProductsQuery
+import com.showmeyourcode.cqrs_eventsourcing.demo.repository.query.ProductQueryRepository
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.context.annotation.ComponentScan
@@ -20,10 +21,12 @@ import java.util.*
 
 @ExtendWith(SpringExtension::class)
 @WebFluxTest
-@AutoConfigureDataMongo
 @AutoConfigureDataJpa
-@ComponentScan(basePackages = ["com.showmeyourcode.cqrs.demo"])
-class ProductControllerTest(@Autowired private var webClient: WebTestClient) {
+@ComponentScan(basePackages = ["com.showmeyourcode.cqrs_eventsourcing.demo"])
+class ProductControllerTest(
+    @Autowired private var webClient: WebTestClient,
+    @Autowired private val queryRepository: ProductQueryRepository
+) {
 
     @Test
     fun shouldPerformAddProductCommand() {
@@ -38,7 +41,10 @@ class ProductControllerTest(@Autowired private var webClient: WebTestClient) {
 
     @Test
     fun shouldPerformChangeProductAvailabilityCommand() {
-        val changeAvailability = ChangeProductAvailabilityCommand(UUID.fromString("d76e796b-d809-4adf-abbe-34734eecf8d4"), 100)
+        val changeAvailability = ChangeProductAvailabilityCommand(
+            UUID.fromString("d76e796b-d809-4adf-abbe-34734eecf8d4"),
+            100
+        )
         webClient.post()
             .uri("/changeProductAvailability")
             .contentType(MediaType.APPLICATION_JSON)
@@ -49,7 +55,11 @@ class ProductControllerTest(@Autowired private var webClient: WebTestClient) {
 
     @Test
     fun shouldPerformGetProductAvailabilityQuery() {
-        val getAvailability = GetProductAvailabilityQuery(UUID.fromString("11b0673f-e1d6-4dea-8525-ce2e45946fab"))
+        val productId = UUID.fromString("11b0673f-e1d6-4dea-8525-ce2e45946fab")
+        queryRepository.save(ProductQ(productId,"Example Name",100))
+
+        val getAvailability =
+            GetProductAvailabilityQuery(productId)
         webClient.post()
             .uri("/getProductAvailability")
             .contentType(MediaType.APPLICATION_JSON)

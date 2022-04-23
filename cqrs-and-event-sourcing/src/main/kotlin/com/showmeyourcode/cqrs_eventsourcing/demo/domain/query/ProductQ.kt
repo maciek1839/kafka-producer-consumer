@@ -1,4 +1,4 @@
-package com.showmeyourcode.cqrs.demo.domain.query
+package com.showmeyourcode.cqrs_eventsourcing.demo.domain.query
 
 import java.util.*
 import javax.persistence.Entity

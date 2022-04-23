@@ -1,4 +1,4 @@
-package com.showmeyourcode.cqrs.demo.command.addproduct
+package com.showmeyourcode.cqrs_eventsourcing.demo.command.addproduct
 
 import lombok.Getter
 import lombok.Setter

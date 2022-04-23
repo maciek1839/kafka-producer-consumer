@@ -1,3 +1,4 @@
-- Check latest Spring libraries.
-- Implement CQRS + Event sourcing based on https://github.com/nicusX/kotlin-event-sourcing-example
-- https://www.baeldung.com/cqrs-event-sourcing-java
+# TODOs
+
+- [x] Check latest Spring libraries.
+- [x] Implement CQRS + Event sourcing

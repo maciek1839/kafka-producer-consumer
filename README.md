@@ -68,12 +68,16 @@ Architecture of this version is very similar to above (when we use separate stor
 
 The key difference is the  command model. Instead of RDBMS and ORM, we use Event Store as a persistent storage. Instead of saving only actual state of object, we save stream of events. This pattern for managing state is named Event Sourcing.
 
-Instead of keeping only current state of the system by altering previous state, we append events (changes) to sequential list of past events (changes). Thanks to this we not only know the current state of the system but we can easily track how did we reach this state.
+Instead of keeping only current state of the system by altering previous state, we append events (changes) to sequential list of past events (changes). Thanks to this we not only know the current state of the system, but we can easily track how did we reach this state.
 
 ![event sourcing](./docs/altkom/5_event_sourcing.png)
 
 ![event_sourcing](./docs/kotlin-event-sourcing-example/diagram.png)  
-Reference: https://github.com/nicusX/kotlin-event-sourcing-example
+
+
+References:
+- https://www.baeldung.com/cqrs-event-sourcing-java
+- https://github.com/bringmeister/event-sourcing-with-kotlin (implementation based on DDD)
 
 ## Reactive stack
 
