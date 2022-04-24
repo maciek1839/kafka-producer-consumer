@@ -25,8 +25,9 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 - Confluent Platform for Apache Kafka (6.1.1)
 - Maven
 - Kotlin 1.4.30
-- Java
-- AWS Corretto 11
+- Java 11
+- AWS Corretto 11.0.7
+- Spring Boot 2.x (module `java-spring`) and standalone Kafka libraries (modules `kotlin` and `java`)
 - Apache Avro
     - schema-based data serialization library
 - Avro Kotlin
@@ -38,13 +39,17 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 2. Install dependencies: `mvn clean install -U`
 3. If your IDE doesn't see generated Avro classes, mark `target/generated-source` as `generated sources`.
    ![IDE generated sources](./docs/avro-generated-classes.png)
-3. Run Kafka and Zookeeper - see [KAFKA-SETUP.md](./KAFKA-SETUP.md)
-4. After establishing services, run a producer, run a consumer from corresponding project's modules:
-    - `**-kafka-producer`
-    - `**-kafka-consumer`
-    - You can also run all at once using `starter` modules for Kotlin/Java.
-5. Follow console output and check the behaviour.
-6. Open the Confluent Platform dashboard: `http://localhost:9021/`
+4. Run Kafka and Zookeeper - see [KAFKA-SETUP.md](./KAFKA-SETUP.md)
+5. After establishing services, run a producer, run a consumer from:
+   1. Standalone Kafka libraries:
+       - `java|kotlin/**-kafka-producer`
+       - `java|kotlin/**-kafka-consumer`
+       - You can also run all at once using `java|kotlin/**-starter` modules for Java/Kotlin.
+   2. Spring Boot application:
+      - `java-spring/java-spring-starter`
+      - You can run the module many times and changing the default port.
+6. Follow console output and check the behaviour.
+7. Open the Confluent Platform dashboard: `http://localhost:9021/`
     ![Control Center](./docs/control-center.PNG)
 
 ## SSL/TLS Kafka configuration

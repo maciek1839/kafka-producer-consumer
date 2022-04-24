@@ -10,6 +10,7 @@
     <modules>
         <module>kotlin</module>
         <module>java</module>
+        <module>java-spring</module>
     </modules>
 
     <name>Kafka Publisher and Subscriber</name>
@@ -31,6 +32,8 @@
         <kafka-clients.version>2.7.0</kafka-clients.version>
         <encoding>UTF-8</encoding>
         <avro-maven-plugin.version>1.10.2</avro-maven-plugin.version>
+
+        <spring-boot.version>2.6.7</spring-boot.version>
     </properties>
 
     <repositories>
