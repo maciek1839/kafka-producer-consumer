@@ -6,17 +6,45 @@ Apache Kafka is a framework implementation of a software bus using stream-proces
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.  
 <https://kafka.apache.org/>
 
-![Kafka architecture](./docs/800px-Overview_of_Apache_Kafka.jpg)
+![Kafka architecture](./docs/800px-Overview_of_Apache_Kafka.jpg)  
 [Reference link](https://en.wikipedia.org/wiki/Apache_Kafka)
+  
+![Partitions](./docs/KafkaPartitions.png)  
+[Reference link](https://jack-vanlightly.com/blog/2018/9/2/rabbitmq-vs-kafka-part-6-fault-tolerance-and-high-availability-with-kafka)
+
+![Replication factor](./docs/kafka-replication-factor-2.png)  
+Kafka Replication Factor refers to the multiple copies of data stored across several Kafka brokers. In the above diagram consisting of three brokers, the replication factor is 2.  
+[Reference link](https://blog.clairvoyantsoft.com/steps-to-increase-the-replication-factor-of-a-kafka-topic-a516aefd7e7e)
+
+![Multiple consumer groups](./docs/multiple-consumer-groups.png)  
+[Reference link](https://medium.com/@jhansireddy007/how-to-parallelise-kafka-consumers-59c8b0bbc37a)
 
 ![Kafka guide](./docs/producer.png)
 [Reference link](https://stackoverflow.com/questions/38024514/understanding-kafka-topics-and-partitions)
+
+![Consumer offset](./docs/consumer-offset.png)  
+[Reference link](https://kafka.apache.org/documentation/#intro_topics)
+
+![img](./docs/log_anatomy.png)  
+[Reference link](https://kafka.apache.org/081/documentation.html)
+
+![img](./docs/apache-kafka-partitions-topics.png)  
+[Reference link](https://www.cloudkarafka.com/blog/part1-kafka-for-beginners-what-is-apache-kafka.html)
+
+![img](./docs/partitionsKafka.png)  
+[Reference link](https://docs.datastax.com/en/kafka/doc/kafka/kafkaHowMessages.html)
+
 - Record: Producer sends messages to Kafka in the form of records. A record is a key-value pair. It contains the topic name and partition number to be sent. Kafka broker keeps records inside topic partitions. Records sequence is maintained at the partition level. You can define the logic on which basis partition will be determined.
 - Topic: Producer writes a record on a topic and the consumer listens to it. A topic can have many partitions but must have at least one.
 - Partition: A topic partition is a unit of parallelism in Kafka, i.e. two consumers cannot consume messages from the same partition at the same time. A consumer can consume from multiple partitions at the same time.
 - Offset: A record in a partition has an offset associated with it. Think of it like this: partition is like an array; offsets are like indexs.
 - Producer: Creates a record and publishes it to the broker.
 - Consumer: Consumes records from the broker.
+  - Consumers can:
+    - Specify Topic(s) to read data, - Subscribe/Assign
+    - Read data (sequentially), - Poll
+    - Optional reposition, - Seek
+    - Save position (ack processed), - Commit
 
 If you are looking for a book about Kafka, let's have a look on ``Kafka: The Definitive Guide`` which you can get here: <https://www.confluent.io/resources/kafka-the-definitive-guide/>
 
@@ -99,6 +127,106 @@ References:
 - https://hevodata.com/learn/kafka-event-driven-architecture/
 - https://www.redhat.com/en/topics/integration/what-is-event-driven-architecture
 - (recommended) **https://microservices.io/patterns/data/event-driven-architecture.html**
+
+## Fault tolerance and Resiliency
+
+```
+Fault tolerance is the property that enables a system to continue
+operating properly in the event of the failure of one or more faults
+within some of its components.
+```
+
+```
+IT resilience is the ability of an organization to maintain 
+acceptable service levels when there is a disruption of business operations, 
+critical processes, or your IT ecosystem.
+```
+
+- Kafka is sending ACK when a message is completely replicated to all brokers accordingly to settings. The min. insync. replicas is a config on the broker that denotes the minimum number of in-sync replicas required to exist for a broker to allow acks=all requests. If not enough brokers are available, a message cannot be accepted by Kafka.
+- The message will be in a buffer for limited time. If it's not published during this time, TimeoutException is thrown.
+- An in-sync replica (ISR) is a broker that has the latest data for a given partition. A leader is always an in-sync replica.
+
+```java
+void sendSync() throws InterruptedException {
+    try {
+        Future<RecordMetadata> send = kafkaProducer.send(record);
+        log.info("Record metadata: {}",send.get().toString());
+    } catch(Exception e){
+        if (e.getCause() instanceof TopicAuthorizationException){
+            log.error("Not allowed to publish to topic!");
+            throw new RuntimeException(e);
+        }
+        if (e.getCause() instanceof TimeoutException){
+            log.error("TimeoutException: "+ e.getMessage());
+            if (retries > MAX_RETRIES){
+                backoffTime = MAX_TIME;
+                log.info("TImeout has been increased to {}", MAX_TIME);
+            } else {
+                  retries++;
+                  log.info("REtries currently at {}", retires);
+            }
+            Thread.sleep(backoffTime);
+            sendSync(record);
+        }
+    }
+}
+```
+
+Example error:
+```
+(...) retrying (2147483630 attempts left). Error: NOT_ENOUGH_REPLICAS
+```
+
+## What happens when a new consumer joins the group in Kafka? (rebalancing)
+
+
+Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
+
+![Rebalancing](./docs/rebalancing.png)
+
+## To consideration
+
+- Async and Sync usage and implications.
+- Sending batches vs single record.
+- How to ensure message order? Sending one by one and blocking the request (GET on Future) instead of async batches which do not guarantee order.
+- Closing the producer.
+- Important parameters and implications
+  - Ordering
+  - Timeout and what does that mean?
+  - How/When to retry?
+- Threading
+  - No thread safe, all I/O happen on caller thread, need synchronization if called from the different thread.
+- Polling
+  - Keep polling to maintain membership
+  - max.poll.interval.ms (default 300s)
+  - max.poll.records (default 500)
+  - Server side configuration that prevents max.poll.interval.ms
+  - "Backpressure can cause consumer to be kicked out"
+- Consumer Rebalancing "Rebalancing is the process where a group of consumer instances (belonging to the same group) co-ordinate to own a mutually exclusive set of partitions of topics that the group is subscribed to.
+  - Consumer with no heartbeat or not polling within the interval specified.
+  - Group coordinator (Broker) not available.
+  - Assignment strategy can be configured on client side.
+- Offset and Commit
+  - Commit can fail - especially if you don't own the partition any more.
+  - Offset might not be continuous (example compact strategy is used for topic, or when producer uses transactions).
+  - Commit expires after 2 weeks.
+  - Default has enable.auto.commit=true
+- Subscribe vs Assign
+  - Subscribe use group coordination.
+  - Commit has additional cost using Subscribe (need to check group ownership).
+  - Use Assign lose coordination behaviour but much faster and resilient to lead re-election/coordination failure.
+- Clean-up and close
+  - Can wake up consumer in Polling (thread safe).
+- Important settings
+  - ClientId
+  - IsolationLevel e.g. read_uncommitted
+  - GroupId
+  - AutoOffsetResetConfig e.g. earliest
+  - EnableAutoCommitConfig
+  - MaxPollRecordConfig e.g. 10
+  - MaxPollIntervalMsConfig e.g. 15000
+  - PartitionAssignmentStrategyConfig e.g. RangeAssignor
+
 
 ## Useful commands
 - mvn clean install -U -DskipTests

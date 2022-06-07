@@ -1,11 +1,11 @@
 # Kafka local setup
+
 Run Kafka and Zookeeper using Docker Compose/Kubernetes.
 - `docker-compose up -d --remove-orphans`
   - The default file taken by the command is `docker-compose.yml`
-- `kubernetes.yml`
-// todo: add Kubernetes description
 
 ## Confluent Kafka Platform
+
 The Confluent setup provides web UI for the whole Kafka platform.  
 More information you can find in this guideline: <https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html>
 
@@ -16,6 +16,7 @@ More information you can find in this guideline: <https://docs.confluent.io/plat
 - **ksqlDB** is the streaming SQL engine for Kafka. It provides an easy-to-use yet powerful interactive SQL interface for stream processing on Kafka, without the need to write code in a programming language such as Java or Python.
 
 ## Docker and Docker Compose commands
+
 If you don't use IDE plugins, here you can find useful Docker commands:
 - Show all containers
     - `docker container list`
