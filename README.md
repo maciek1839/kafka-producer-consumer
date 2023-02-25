@@ -18,21 +18,27 @@ The example is based on stores and products.
 1. Run one of the Maven modules, for example: `cqrs`
 1. Run Spring Boot app.
 1. Check H2 console - `localhost:8082`
-1. Set up a connection to MongoDB
+1. Set up a connection to MongoDB  
   ![img](./docs/setup-db/mongo-gui.PNG)
 1. Load the Postman collection to send requests.
 
 ## CQS & CQRS & Event sourcing introduction
 
 ### Standard architecture (layered)
+
 ![No CQRS](./docs/altkom/1_no_cqrs.png)
 
 ### CQS (Separate commands and queries)
+
 Command-Query Separation (CQS) is a principle or guideline, used in a software architecture, that states that every method should either be a command that performs an action, or a query that returns data to the caller, but not both. Methods should return a value only if they create no side effects.
+
+**Command - how about returning the ID of a created entity?**     
+Put simply, if a CQRS command is capable of returning a success/failure indicating completion status, then a return value makes sense. This includes returning a new DB row identity, or any result that does not read or return domain model (business) content.  
+Ref: https://stackoverflow.com/questions/43433318/cqrs-command-return-values
 
 CQS is about Command and Queries. It doesn't care about the model. You have somehow separated services for reading data, and others for writing data.
 
-CQS architecture reads and writes from the same data store/tables.
+CQS architecture reads and writes from the same data store/tables.  
 ![CQS](./docs/altkom/2_separe_commands_queries.png)
 
 ![CQS](./docs/thecodereaper/theCodeReaper_cqs.png)
@@ -52,6 +58,7 @@ A query is only created when data is to be retrieved from the data store. Simila
 - A query validator class to handle validation for a query. The validator is to be called before the query handler is executed since the query handler always assumes that the query is valid. GetObjectByIdQueryValidator is an example of a validator for a GetObjectByIdQuery. Note that the query validator class is optional since not all queries will contain properties.
 
 ### CQRS
+
 Command Query Responsibility Segregation (CQRS) is a principle/popular architecture pattern that applies CQS however it is a much more complex principle since CQRS allows for separate data stores and separate models for commands and queries. The data between data stores is usually synchronized using a service bus. With CQS, the same data store is used for both commands and queries and models may be shared between commands and queries.
 
 In a nutshell it says that your write model is not the same as your read model because of different representation logic behind it: for your web pages you could have views specifically adapted for representation logic of the UI elements on it. And write model contains all data in format which best fits type of the data. If you familiar with SQL, read model is something similar to SQL Views (which is just projection of data in convenient form). This gives you not only flexibility in separation of representational logic, but also in choosing underlying storage technologies. Write model storage could be in good old SQL and read model could be in MongoDB or any other NoSQL DBMS. In essence it is SRP (single responsibility principle) at application level.
@@ -63,6 +70,7 @@ In a nutshell it says that your write model is not the same as your read model b
 ![separate storages](./docs/altkom/4_separate_storage_engines.png)
 
 ### Event sourcing
+
 In order to adjust CQRS the command side should use Event Sourcing. 
 Architecture of this version is very similar to above (when we use separate storage engines).
 
@@ -77,7 +85,12 @@ Instead of keeping only current state of the system by altering previous state, 
 
 References:
 - https://www.baeldung.com/cqrs-event-sourcing-java
+- https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
 - https://github.com/bringmeister/event-sourcing-with-kotlin (implementation based on DDD)
+- https://altkomsoftware.pl/en/blog/cqrs-event-sourcing/
+  - https://github.com/asc-lab/java-cqrs-intro
+- https://thecodereaper.com/2020/05/23/command-query-separation-cqs
+- https://stackoverflow.com/questions/34255490/difference-between-cqrs-and-cqs/55719178#55719178
 
 ## Reactive stack
 
@@ -102,6 +115,7 @@ Is reactive programming a complete departure from thread-based concurrency? Reac
 For instance, under the reactive model, a read call to the database does not block the calling thread while data is fetched. The call immediately returns a publisher that others can subscribe to. The subscriber can process the event after it occurs and may even further generate events itself:
 
 ### Event loop
+
 There are several programming models that describe a reactive approach to concurrency. One of such reactive asynchronous programming model for servers is the event loop model.
 
 ![Event loop](./docs/reactive/Event-Loop.jpg)
@@ -118,6 +132,7 @@ References:
 - https://www.baeldung.com/spring-webflux-concurrency
 
 ## Example implementations
+
 - https://faun.pub/implementing-cqrs-using-axon-spring-boot-kotlin-java-11-and-docker-77b44f14b7ab
 - https://github.com/andreschaffer/event-sourcing-cqrs-examples
 - https://github.com/fuinorg/ddd-cqrs-4-java-example
@@ -126,14 +141,6 @@ References:
 - https://github.com/nicusX/kotlin-event-sourcing-example
 
 ### Alternatives
+
 - Axon Framework
   - https://axoniq.io/
-
-## References
-- https://altkomsoftware.pl/en/blog/cqrs-event-sourcing/
-    - https://github.com/asc-lab/java-cqrs-intro
-- https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs
-- https://docs.microsoft.com/pl-pl/azure/architecture/patterns/cqrs
-- https://danylomeister.blog/2020/06/25/cqs-cqrs-event-sourcing-whats-the-difference/
-- https://thecodereaper.com/2020/05/23/command-query-separation-cqs
-- https://stackoverflow.com/questions/34255490/difference-between-cqrs-and-cqs/55719178#55719178
