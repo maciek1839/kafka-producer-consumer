@@ -1,37 +1,63 @@
 # Kafka - Producer and Consumer
 
+- [Introduction](#introduction)
+- [Technology](#technology)
+- [Getting started](#getting-started)
+- [SSL/TLS Kafka configuration](#ssltls-kafka-configuration)
+- [Message Queue vs Streaming (Kafka)](#message-queue-vs-streaming-kafka)
+- [Event-driven architecture](#event-driven-architecture)
+- [Fault tolerance and Resiliency](#fault-tolerance-and-resiliency)
+- [What happens when a new consumer joins the group in Kafka? (rebalancing)](#what-happens-when-a-new-consumer-joins-the-group-in-kafka-rebalancing)
+- [To consideration](#to-consideration)
+- [Kafka best practises](#kafka-best-practises)
+- [Useful commands](#useful-commands)
+- [Useful links](#useful-links)
+
+---
+
+## Introduction
+
 Apache Kafka is a framework implementation of a software bus using stream-processing. It is an open-source software platform developed by the Apache Software Foundation written in Scala and Java. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.  
 <https://en.wikipedia.org/wiki/Apache_Kafka>
 
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.  
 <https://kafka.apache.org/>
 
-![Kafka architecture](./docs/800px-Overview_of_Apache_Kafka.jpg)  
-[Reference link](https://en.wikipedia.org/wiki/Apache_Kafka)
-  
-![Partitions](./docs/KafkaPartitions.png)  
+<img src="docs/kafka-clusters-kafka-clusters-architecture-diagram.png"  width="700" height="500">
+
+[Reference link](https://hevodata.com/learn/kafka-clusters/)
+
+<img src="docs/kafka-partitions.png"  width="700" height="400">
+
 [Reference link](https://jack-vanlightly.com/blog/2018/9/2/rabbitmq-vs-kafka-part-6-fault-tolerance-and-high-availability-with-kafka)
 
-![Replication factor](./docs/kafka-replication-factor-2.png)  
+<img src="docs/kafka-replication-factor-2.png"  width="700" height="300">
+
 Kafka Replication Factor refers to the multiple copies of data stored across several Kafka brokers. In the above diagram consisting of three brokers, the replication factor is 2.  
 [Reference link](https://blog.clairvoyantsoft.com/steps-to-increase-the-replication-factor-of-a-kafka-topic-a516aefd7e7e)
 
-![Multiple consumer groups](./docs/multiple-consumer-groups.png)  
+<img src="docs/multiple-consumer-groups.png"  width="800" height="400">
+
 [Reference link](https://medium.com/@jhansireddy007/how-to-parallelise-kafka-consumers-59c8b0bbc37a)
 
-![Kafka guide](./docs/producer.png)
+<img src="docs/producer.png"  width="800" height="600">
+
 [Reference link](https://stackoverflow.com/questions/38024514/understanding-kafka-topics-and-partitions)
 
-![Consumer offset](./docs/consumer-offset.png)  
+<img src="docs/consumer-offset.png"  width="600" height="300">
+
 [Reference link](https://kafka.apache.org/documentation/#intro_topics)
 
-![img](./docs/log_anatomy.png)  
+<img src="docs/log_anatomy.png" width="600" height="300">
+
 [Reference link](https://kafka.apache.org/081/documentation.html)
 
-![img](./docs/apache-kafka-partitions-topics.png)  
+<img src="docs/apache-kafka-partitions-topics.png"  width="800" height="400">
+
 [Reference link](https://www.cloudkarafka.com/blog/part1-kafka-for-beginners-what-is-apache-kafka.html)
 
-![img](./docs/partitionsKafka.png)  
+<img src="docs/partitions-kafka.png"  width="600" height="300">  
+
 [Reference link](https://docs.datastax.com/en/kafka/doc/kafka/kafkaHowMessages.html)
 
 - Record: Producer sends messages to Kafka in the form of records. A record is a key-value pair. It contains the topic name and partition number to be sent. Kafka broker keeps records inside topic partitions. Records sequence is maintained at the partition level. You can define the logic on which basis partition will be determined.
@@ -49,6 +75,7 @@ Kafka Replication Factor refers to the multiple copies of data stored across sev
 If you are looking for a book about Kafka, let's have a look on ``Kafka: The Definitive Guide`` which you can get here: <https://www.confluent.io/resources/kafka-the-definitive-guide/>
 
 ## Technology
+
 - Kafka
 - Confluent Platform for Apache Kafka (6.1.1)
 - Maven
@@ -63,10 +90,11 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
     - Limitations: cannot generate a class from .avsc file (it allows on generating a schema based on a Kotlin class).
 
 ## Getting started
+
 1. Download the Git repository
 2. Install dependencies: `mvn clean install -U`
-3. If your IDE doesn't see generated Avro classes, mark `target/generated-source` as `generated sources`.
-   ![IDE generated sources](./docs/avro-generated-classes.png)
+3. If your IDE doesn't see generated Avro classes, mark `java/java-kafka-producer/target/generated-sources` as `Generated Sources Root`.  
+   <img src="docs/avro-generated-classes.png" width="400" height="200">  
 4. Run Kafka and Zookeeper - see [KAFKA-SETUP.md](./KAFKA-SETUP.md)
 5. After establishing services, run a producer, run a consumer from:
    1. Standalone Kafka libraries:
@@ -77,10 +105,11 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
       - `java-spring/java-spring-starter`
       - You can run the module many times and changing the default port.
 6. Follow console output and check the behaviour.
-7. Open the Confluent Platform dashboard: `http://localhost:9021/`
-    ![Control Center](./docs/control-center.PNG)
+7. Open the Confluent Platform dashboard: `http://localhost:9021/`  
+   <img src="docs/control-center.png" width="800" height="500"> 
 
 ## SSL/TLS Kafka configuration
+
 Generate certificates using Confluent script -  [instruction](ssl-tls-example/README-SSL-TLS.md).
 
 Complete TLS/SSL Kafka configuration - [instruction](./secrets/README-SECRETS.md)
@@ -89,7 +118,7 @@ Complete TLS/SSL Kafka configuration - [instruction](./secrets/README-SECRETS.md
 
 `A message queue`, sometimes called a point-to-point communication, is fairly straightforward. A message queue can have one or more consumers and/or producers. In a message queue with multiple consumers, the queue will attempt to distribute the messages evenly across them, with the guarantee being that every message will only be delivered once.
 
-![Queue](./docs/kafka-consumer-api.webp)
+<img src="docs/kafka-consumer-api.png" width="900" height="200">
 
 `A streaming broker` is different from a message queue for many reasons. For starters, messages are organized into log files or topics. One or more consumers can subscribe to a log file or topic to receive all messages that come through that stream. With proper setup, a streaming broker will deliver the same message to every subscriber, in a specific order. This is often described as a publish-subscribe pattern.
 
@@ -97,14 +126,14 @@ While many consumers may be active, queues only deliver messages to a single con
 
 In a queue, once a message is delivered, it's gone forever. To reprocess a message, you have to have a backup, like a batch layer, so that you can put it back into the queue. In comparison, a streaming broker uses a distributed log file, so consumers can move backward and forward within that file to re-process messages they've already received on command.
 
-![Queue](./docs/kafka-streams-api.webp)
+<img src="docs/kafka-streams-api.png" width="900" height="200">
 
 - https://blog.iron.io/message-queue-vs-streaming/
 - https://www.baeldung.com/java-kafka-streams-vs-kafka-consumer
 
 ## Event-driven architecture
 
-```
+```text
 Event-driven architecture is a software architecture and model for application design. 
 With an event-driven system, the capture, communication, processing, and persistence of events are the core structure of the solution. 
 This differs from a traditional request-driven model.
@@ -115,6 +144,7 @@ An event producer detects or senses an event and represents the event as a messa
 It does not know the consumer of the event, or the outcome of an event.
 
 ### Event-driven architecture models
+
 An event driven architecture may be based on either a pub/sub model or an event stream model.
 
 - `Pub/sub model`
@@ -130,13 +160,13 @@ References:
 
 ## Fault tolerance and Resiliency
 
-```
+```text
 Fault tolerance is the property that enables a system to continue
 operating properly in the event of the failure of one or more faults
 within some of its components.
 ```
 
-```
+```text
 IT resilience is the ability of an organization to maintain 
 acceptable service levels when there is a disruption of business operations, 
 critical processes, or your IT ecosystem.
@@ -146,7 +176,7 @@ critical processes, or your IT ecosystem.
 - The message will be in a buffer for limited time. If it's not published during this time, TimeoutException is thrown.
 - An in-sync replica (ISR) is a broker that has the latest data for a given partition. A leader is always an in-sync replica.
 
-```java
+```text
 void sendSync() throws InterruptedException {
     try {
         Future<RecordMetadata> send = kafkaProducer.send(record);
@@ -160,10 +190,10 @@ void sendSync() throws InterruptedException {
             log.error("TimeoutException: "+ e.getMessage());
             if (retries > MAX_RETRIES){
                 backoffTime = MAX_TIME;
-                log.info("TImeout has been increased to {}", MAX_TIME);
+                log.info("Timeout has been increased to {}", MAX_TIME);
             } else {
                   retries++;
-                  log.info("REtries currently at {}", retires);
+                  log.info("Retries currently at {}", retires);
             }
             Thread.sleep(backoffTime);
             sendSync(record);
@@ -173,16 +203,15 @@ void sendSync() throws InterruptedException {
 ```
 
 Example error:
-```
+```text
 (...) retrying (2147483630 attempts left). Error: NOT_ENOUGH_REPLICAS
 ```
 
 ## What happens when a new consumer joins the group in Kafka? (rebalancing)
 
+![Rebalancing](./docs/rebalancing.png)  
 
 Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
-
-![Rebalancing](./docs/rebalancing.png)
 
 ## To consideration
 
@@ -227,11 +256,21 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
   - MaxPollIntervalMsConfig e.g. 15000
   - PartitionAssignmentStrategyConfig e.g. RangeAssignor
 
+## Kafka best practises
+
+- Amazon Managed Streaming for Apache Kafka
+  - https://docs.aws.amazon.com/msk/latest/developerguide/bestpractices.html
+- Kafka Best Practices-Topic, Partitions, Consumers, Producers and Brokers
+  - https://cloudinfrastructureservices.co.uk/kafka-best-practices-topic-partitions-consumers-producers-and-brokers/
+- Apache Kafka: Ten Best Practices to Optimize Your Deployment
+  - https://www.infoq.com/articles/apache-kafka-best-practices-to-optimize-your-deployment/
 
 ## Useful commands
-- mvn clean install -U -DskipTests
+
+- mvn clean install -DskipTests
 
 ## Useful links
+
 - https://kotlinlang.org/docs/maven.html
 - https://github.com/only2dhir/kafkaexample
 - https://dzone.com/articles/kafka-producer-and-consumer-example

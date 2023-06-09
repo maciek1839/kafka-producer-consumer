@@ -18,6 +18,9 @@ stages:
 Build package:
   stage: build
   script:
+    # -U, --update-snapshots
+    # Forces a check for updated releases and snapshots on remote repositories
+    # Ref: https://books.sonatype.com/mvnref-book/reference/running-sect-options.html
     - ./mvnw clean install -U -DskipTests $MAVEN_OPTS
   artifacts:
     paths:
