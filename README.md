@@ -10,7 +10,7 @@
 - [What happens when a new consumer joins the group in Kafka? (rebalancing)](#what-happens-when-a-new-consumer-joins-the-group-in-kafka-rebalancing)
 - [To consideration](#to-consideration)
 - [Kafka best practises](#kafka-best-practises)
-- [Useful commands](#useful-commands)
+- [Maven commands](#maven-commands)
 - [Useful links](#useful-links)
 
 ---
@@ -265,9 +265,22 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
 - Apache Kafka: Ten Best Practices to Optimize Your Deployment
   - https://www.infoq.com/articles/apache-kafka-best-practices-to-optimize-your-deployment/
 
-## Useful commands
+## Maven commands
 
 - mvn clean install -DskipTests
+
+#### Release a new version
+
+Run a Maven command using Maven Release plugin:
+```text
+mvn release:prepare
+```
+
+If you want to only update versions (not recommended), use below command:
+```text
+mvn release:update-versions -DautoVersionSubmodules=true
+```
+
 
 ## Useful links
 
