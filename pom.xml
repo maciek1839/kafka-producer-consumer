@@ -8,9 +8,9 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <modules>
-        <module>kotlin</module>
         <module>java</module>
         <module>java-spring</module>
+        <module>kotlin</module>
     </modules>
 
     <name>Kafka Publisher and Subscriber</name>
@@ -34,6 +34,7 @@
         <avro-maven-plugin.version>1.10.2</avro-maven-plugin.version>
 
         <spring-boot.version>2.6.7</spring-boot.version>
+        <sonar.organization>showmeyourcodeyoutube</sonar.organization>
     </properties>
 
     <repositories>

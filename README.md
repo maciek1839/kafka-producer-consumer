@@ -18,6 +18,12 @@
 
 ---
 
+| Branch |                                                                                               Pipeline                                                                                               |                                                                                            Code coverage                                                                                             |                                           Test report                                           |
+|:------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
+| master | [![pipeline status](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/badges/master/pipeline.svg)](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/-/commits/master) | [![coverage report](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/badges/master/coverage.svg)](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/-/commits/master) | [link](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/test-report/index.html) |
+
+
+
 ## Introduction
 
 Apache Kafka is a framework implementation of a software bus using stream-processing. It is an open-source software platform developed by the Apache Software Foundation written in Scala and Java. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.  
