@@ -3,6 +3,9 @@
 - [Introduction](#introduction)
 - [Technology](#technology)
 - [Getting started](#getting-started)
+  - [Run Kafka locally](#run-kafka-locally)
+  - [Confluent Platform](#confluent-platform)
+  - [Docker and Docker Compose commands](#docker-and-docker-compose-commands)
 - [SSL/TLS Kafka configuration](#ssltls-kafka-configuration)
 - [Message Queue vs Streaming (Kafka)](#message-queue-vs-streaming-kafka)
 - [Event-driven architecture](#event-driven-architecture)
@@ -77,11 +80,11 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 ## Technology
 
 - Kafka
-- Confluent Platform for Apache Kafka (6.1.1)
+- Confluent Platform for Apache Kafka (7.4.0)
 - Maven
-- Kotlin 1.4.30
-- Java 11
-- AWS Corretto 11.0.7
+- Kotlin
+- Java
+- AWS Corretto
 - Spring Boot 2.x (module `java-spring`) and standalone Kafka libraries (modules `kotlin` and `java`)
 - Apache Avro
     - schema-based data serialization library
@@ -95,7 +98,7 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 2. Install dependencies: `mvn clean install -U`
 3. If your IDE doesn't see generated Avro classes, mark `java/java-kafka-producer/target/generated-sources` as `Generated Sources Root`.  
    <img src="docs/avro-generated-classes.png" width="400" height="200">  
-4. Run Kafka and Zookeeper - see [KAFKA-SETUP.md](./KAFKA-SETUP.md)
+4. Run Kafka and Zookeeper - see [Run Kafka locally](#run-kafka-locally)
 5. After establishing services, run a producer, run a consumer from:
    1. Standalone Kafka libraries:
        - `java|kotlin/**-kafka-producer`
@@ -107,6 +110,48 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 6. Follow console output and check the behaviour.
 7. Open the Confluent Platform dashboard: `http://localhost:9021/`  
    <img src="docs/control-center.png" width="800" height="500"> 
+
+### Run Kafka locally
+
+Run Kafka and Zookeeper using Docker Compose.
+- `docker-compose up -d --remove-orphans`
+  - The default file taken by the command is `docker-compose.yml`
+
+### Confluent Platform
+
+The Confluent setup provides web UI for the whole Kafka platform.  
+More information you can find in this guideline: <https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html>
+
+<img src="docs/confluent-platform.png"  width="700" height="500">
+
+[Reference link](https://docs.confluent.io/platform/current/platform.html)
+
+- **Confluent Control Center** is a web-based tool for managing and monitoring Apache Kafka®. Control Center provides a user interface that allows developers and operators to get a quick overview of cluster health, observe and control messages, topics, and Schema Registry, and to develop and run ksqlDB queries. See more: <https://docs.confluent.io/platform/current/control-center/index.html>
+
+<img src="docs/kafka_example_cc.png"  width="700" height="500">
+
+- **Confluent Schema Registry** provides a serving layer for your metadata. It provides a RESTful interface for storing and retrieving your Avro®, JSON Schema, and Protobuf schemas. See more: <https://docs.confluent.io/platform/current/schema-registry/index.html>
+- **ksqlDB** is the streaming SQL engine for Kafka. It provides an easy-to-use yet powerful interactive SQL interface for stream processing on Kafka, without the need to write code in a programming language such as Java or Python.
+
+### Docker and Docker Compose commands
+
+If you don't use IDE plugins, here you can find useful Docker commands:
+- Show all containers
+  - `docker container list`
+- Stop a Docker container
+  - `docker container stop [container_id]`
+- Remove a Docker container
+  - `docker container rm [container_id]`
+- Build Docker Compose with the default file docker-compose.yml and remove previous containers
+  - `docker-compose up -d --remove-orphans`
+- Show Docker Compose containers
+  - `docker-compose ps`
+- Stop all running containers
+  - `docker stop $(docker ps -a -q)`
+- Delete all stopped containers
+  - `docker rm $(docker ps -a -q)`
+
+Reference: <https://www.codenotary.com/blog/extremely-useful-docker-commands/>
 
 ## SSL/TLS Kafka configuration
 

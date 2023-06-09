@@ -17,4 +17,5 @@
 3. (Optional) Print JKS content, run this command in trustore/keystore folder: `keytool -v -list -keystore kafka.keystore.jks`
 
 ## An alternative script for complete TLS/SSL Kafka configuration
+
 See an [instruction](../secrets/README-SECRETS.md)

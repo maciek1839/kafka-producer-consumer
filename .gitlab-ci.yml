@@ -15,7 +15,17 @@ stages:
   - test
   - build
 
-Build package:
+unit_tests:
+  stage: test
+  script:
+    - ./mvnw test $MAVEN_OPTS
+
+integration_tests:
+  stage: test
+  script:
+    - ./mvnw failsafe:verify $MAVEN_OPTS
+
+build_package:
   stage: build
   script:
     # -U, --update-snapshots
@@ -33,13 +43,3 @@ Build package:
       - java/java-kafka-producer/target/*.jar
       - java/java-starter/target/*.jar
     expire_in: 1 hour
-
-test:
-  stage: test
-  script:
-    - ./mvnw test $MAVEN_OPTS
-
-integration test:
-  stage: test
-  script:
-    - ./mvnw failsafe:verify $MAVEN_OPTS
