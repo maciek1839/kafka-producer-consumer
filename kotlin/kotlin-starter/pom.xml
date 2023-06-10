@@ -8,12 +8,8 @@
         <groupId>com.showmeyourcode.kafka.kotlin</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>kotlin-starter</artifactId>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+    <artifactId>kotlin-starter</artifactId>
 
     <dependencies>
         <dependency>

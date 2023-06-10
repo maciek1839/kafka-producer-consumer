@@ -97,24 +97,26 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 - Avro Kotlin
     - https://github.com/avro-kotlin/avro4k
     - Limitations: cannot generate a class from .avsc file (it allows on generating a schema based on a Kotlin class).
+- Junit/Mockito/AssertJ + EmbeddedKafka
 
 ## Getting started
 
 1. Download the Git repository
 2. Install dependencies: `mvn clean install -U`
-3. If your IDE doesn't see generated Avro classes, mark `java/java-kafka-producer/target/generated-sources` as `Generated Sources Root`.  
+3. Enable annotation processing in your IDE (required by Lombok).
+4. If your IDE doesn't see generated Avro classes, mark `java/java-kafka-producer/target/generated-sources` as `Generated Sources Root`.  
    <img src="docs/avro-generated-classes.png" width="400" height="200">  
-4. Run Kafka and Zookeeper - see [Run Kafka locally](#run-kafka-locally)
-5. After establishing services, run a producer, run a consumer from:
+5. Run Kafka and Zookeeper - see [Run Kafka locally](#run-kafka-locally)
+6. After establishing services, run a producer, run a consumer from:
    1. Standalone Kafka libraries:
        - `java|kotlin/**-kafka-producer`
        - `java|kotlin/**-kafka-consumer`
        - You can also run all at once using `java|kotlin/**-starter` modules for Java/Kotlin.
    2. Spring Boot application:
-      - `java-spring/java-spring-starter`
+      - `spring/java-spring`
       - You can run the module many times and changing the default port.
-6. Follow console output and check the behaviour.
-7. Open the Confluent Platform dashboard: `http://localhost:9021/`  
+7. Follow console output and check the behaviour.
+8. Open the Confluent Platform dashboard: `http://localhost:9021/`  
    <img src="docs/control-center.png" width="800" height="500"> 
 
 ### Run Kafka locally

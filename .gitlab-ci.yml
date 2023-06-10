@@ -20,15 +20,10 @@ stages:
   - build
   - analysis
 
-unit_tests:
+run_tests:
   stage: test
   script:
-    - ./mvnw test $MAVEN_OPTS
-
-integration_tests:
-  stage: test
-  script:
-    - ./mvnw failsafe:verify $MAVEN_OPTS
+    - ./mvnw verify $MAVEN_OPTS
 
 build_package:
   stage: build
@@ -49,7 +44,7 @@ build_package:
       - java/java-starter/target/*.jar
     expire_in: 1 hour
 
-sonarcloud-check:
+sonarcloud_check:
   stage: analysis
   cache:
     key: "${CI_JOB_NAME}"

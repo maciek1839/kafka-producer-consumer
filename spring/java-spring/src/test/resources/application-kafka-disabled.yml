@@ -1,0 +1,3 @@
+app:
+  is-producer-enabled: false
+  is-consumer-enabled: false

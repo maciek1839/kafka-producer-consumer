@@ -1,0 +1,4 @@
+app:
+  kafka:
+    scheduler-fixed-rate: 500
+  is-consumer-enabled: false

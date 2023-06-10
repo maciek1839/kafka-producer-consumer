@@ -9,8 +9,8 @@
 
     <modules>
         <module>java</module>
-        <module>java-spring</module>
         <module>kotlin</module>
+        <module>spring</module>
     </modules>
 
     <name>Kafka Publisher and Subscriber</name>
@@ -19,23 +19,116 @@
     </description>
 
     <properties>
-        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <sonar.organization>showmeyourcodeyoutube</sonar.organization>
+
         <kotlin.version>1.4.32</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <confluent.version>6.1.1</confluent.version>
-        <avro.version>1.9.2</avro.version>
         <kotlin.serialization.version>1.1.0</kotlin.serialization.version>
+
         <slf4j-api.version>1.7.27</slf4j-api.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <logback-core.version>1.2.3</logback-core.version>
+
+        <lombok.version>1.18.24</lombok.version>
+
         <kafka_2.13.version>2.7.0</kafka_2.13.version>
         <kafka-clients.version>2.7.0</kafka-clients.version>
-        <encoding>UTF-8</encoding>
+
         <avro-maven-plugin.version>1.10.2</avro-maven-plugin.version>
+        <avro.version>1.9.2</avro.version>
+
+        <confluent.version>6.1.1</confluent.version>
 
         <spring-boot.version>2.6.7</spring-boot.version>
-        <sonar.organization>showmeyourcodeyoutube</sonar.organization>
+
+        <junit.version>5.8.2</junit.version>
+        <mockito.verion>4.0.0</mockito.verion>
+        <assertj.version>3.24.2</assertj.version>
+
+        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.verion}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>Test*</include>
+                        <include>*Test</include>
+                        <include>*TestCase</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT*</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Maven Central Plugin</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <repositories>
         <repository>
@@ -48,19 +141,6 @@
             <url>http://packages.confluent.io/maven/</url>
         </repository>
     </repositories>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <scm>
         <url>https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer</url>
