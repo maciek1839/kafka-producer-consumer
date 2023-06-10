@@ -11,3 +11,4 @@
 - Remove SonarLint warnings
 - Improve tests
 - Use Spring Boot POM to manage dependencies
+- Send code coverage to SonarQube
