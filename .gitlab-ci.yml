@@ -19,11 +19,18 @@ stages:
   - test
   - build
   - analysis
+  - deploy
 
 run_tests:
   stage: test
   script:
     - ./mvnw verify $MAVEN_OPTS
+    - cat coverage-report/target/site/jacoco-aggregate/index.html | grep -o '<tfoot>.*</tfoot>'
+  coverage: '/Total.*?([0-9]{1,3})%/'
+  artifacts:
+    paths:
+      - coverage-report/target/site/jacoco-aggregate
+    expire_in: 1 hour
 
 build_package:
   stage: build
@@ -56,3 +63,21 @@ sonarcloud_check:
     - merge_requests
     - master
     - develop
+
+pages:
+  stage: deploy
+  script:
+    - echo 'Cleaning old pages'
+    - rm -rf public
+    - ls -la
+    - mkdir -p public/test-report && cp -r coverage-report/target/site/jacoco-aggregate/* public/test-report
+    - echo 'Public directory content after copying files'
+    - ls -la ./public
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 hour
+  only:
+    - master
+    - develop
+    - development

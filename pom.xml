@@ -8,6 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <modules>
+        <module>coverage-report</module>
         <module>java</module>
         <module>kotlin</module>
         <module>spring</module>
@@ -51,6 +52,7 @@
 
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+        <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -119,6 +121,19 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <id>prepare-agent</id>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
