@@ -9,8 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
-    <groupId>com.showmeyourcode.kafka.kotlin</groupId>
-    <artifactId>kotlin</artifactId>
+    <artifactId>kotlin-parent</artifactId>
 
     <modules>
         <module>kotlin-kafka-consumer</module>

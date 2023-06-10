@@ -8,8 +8,7 @@
         <artifactId>kafka-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
-    <artifactId>spring</artifactId>
+    <artifactId>spring-parent</artifactId>
     <packaging>pom</packaging>
 
     <modules>

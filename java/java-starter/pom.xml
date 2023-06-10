@@ -4,20 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>java</artifactId>
-        <groupId>com.showmeyourcode.kafka.java</groupId>
+        <artifactId>java-parent</artifactId>
+        <groupId>com.showmeyourcode.kafka</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>java-starter</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.showmeyourcode.kafka.java</groupId>
+            <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>java-kafka-producer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.showmeyourcode.kafka.java</groupId>
+            <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>java-kafka-consumer</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

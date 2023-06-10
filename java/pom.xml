@@ -9,8 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
-    <groupId>com.showmeyourcode.kafka.java</groupId>
-    <artifactId>java</artifactId>
+    <artifactId>java-parent</artifactId>
 
     <modules>
         <module>java-common</module>
