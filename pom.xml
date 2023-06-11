@@ -20,8 +20,8 @@
     <groupId>com.showmeyourcode.cqrs</groupId>
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>CQRS Demo</name>
-    <description>Demo project for CQRS pattern</description>
+    <name>CQRS and Event Sourcing in Kotlin</name>
+    <description>A demo project for CQRS and Event Sourcing patterns</description>
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.5.31</kotlin.version>
