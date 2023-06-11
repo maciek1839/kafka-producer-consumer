@@ -4,6 +4,8 @@ import com.showmeyourcode.kafka.java.common.KafkaProperties;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord2;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -18,17 +20,20 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 import java.util.function.Function;
 
-public class KafkaProducerAvro {
-    private static final Logger logger = LoggerFactory.getLogger(KafkaProducerAvro.class);
+@Getter
+public class JavaKafkaAvroProducer {
+    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaAvroProducer.class);
+
+    @Getter(AccessLevel.NONE)
     private final Producer<Long, GenericRecord> producer;
     private final long numberOfMessagesToProduce;
     private final String producerName;
     private final Function<Void, Schema> getSchema;
 
-    KafkaProducerAvro(Producer<Long, GenericRecord> producer,
-                      long numberOfMessagesToProduce,
-                      String producerName,
-                      Function<Void, Schema> getSchema) {
+    JavaKafkaAvroProducer(Producer<Long, GenericRecord> producer,
+                          long numberOfMessagesToProduce,
+                          String producerName,
+                          Function<Void, Schema> getSchema) {
         this.producer = producer;
         this.numberOfMessagesToProduce = numberOfMessagesToProduce;
         this.producerName = producerName;
@@ -43,11 +48,10 @@ public class KafkaProducerAvro {
             var schemaAsString = schema.toString(true);
             logger.info("Generated schema: {}", schemaAsString);
             for (long index = 0; index < numberOfMessagesToProduce; index++) {
-                var dataRecord = new ExampleUserRecord("name", index, "100 100 101");
                 GenericRecord avroRecord = new GenericData.Record(schema);
-                avroRecord.put("name", dataRecord.getName());
-                avroRecord.put("age", dataRecord.getAge());
-                avroRecord.put("phoneNumber", dataRecord.getPhoneNumber());
+                avroRecord.put("name", "name");
+                avroRecord.put("age", index);
+                avroRecord.put("phoneNumber", "100 100 101");
 
                 ProducerRecord<Long, GenericRecord> producerRecord = new ProducerRecord<>(
                         KafkaProperties.TOPIC,
@@ -75,13 +79,13 @@ public class KafkaProducerAvro {
         }
     }
 
-    public static class KafkaProducerAvroBuilder {
+    public static class JavaKafkaAvroProducerBuilder {
 
         private long numberOfMessages;
         private Function<Void, Schema> getSchema;
         private String name;
 
-        public KafkaProducerAvro build() {
+        public JavaKafkaAvroProducer build() {
             var props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaProperties.BOOTSTRAP_SERVERS);
             props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
@@ -92,7 +96,7 @@ public class KafkaProducerAvro {
             // Avro serializer property - the address of Schema Registry
             props.put("schema.registry.url", KafkaProperties.AVRO_SCHEMA_REGISTRY);
 
-            return new KafkaProducerAvro(
+            return new JavaKafkaAvroProducer(
                     new org.apache.kafka.clients.producer.KafkaProducer<>(props),
                     numberOfMessages,
                     name,
@@ -100,7 +104,7 @@ public class KafkaProducerAvro {
             );
         }
 
-        public KafkaProducerAvro.KafkaProducerAvroBuilder withAvroClass() {
+        public JavaKafkaAvroProducerBuilder withAvroClass() {
             this.getSchema = new Function<Void, Schema>() {
                 @Override
                 public Schema apply(Void unused) {
@@ -110,7 +114,7 @@ public class KafkaProducerAvro {
             return this;
         }
 
-        public KafkaProducerAvro.KafkaProducerAvroBuilder withAvroClassFromFile() {
+        public JavaKafkaAvroProducerBuilder withAvroClassFromFile() {
             this.getSchema = new Function<Void, Schema>() {
                 @Override
                 public Schema apply(Void unused) {
@@ -120,12 +124,12 @@ public class KafkaProducerAvro {
             return this;
         }
 
-        public KafkaProducerAvro.KafkaProducerAvroBuilder withName(String name) {
+        public JavaKafkaAvroProducerBuilder withName(String name) {
             this.name = name;
             return this;
         }
 
-        public KafkaProducerAvro.KafkaProducerAvroBuilder withNumberOfMessage(long numberOfMessage) {
+        public JavaKafkaAvroProducerBuilder withNumberOfMessage(long numberOfMessage) {
             this.numberOfMessages = numberOfMessage;
             return this;
         }

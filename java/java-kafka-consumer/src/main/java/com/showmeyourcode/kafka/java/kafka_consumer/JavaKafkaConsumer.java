@@ -1,6 +1,8 @@
 package com.showmeyourcode.kafka.java.kafka_consumer;
 
 import com.showmeyourcode.kafka.java.common.KafkaProperties;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -13,13 +15,17 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-public class KafkaConsumer {
-    private static final Logger logger = LoggerFactory.getLogger(KafkaConsumer.class);
+@Getter
+// The class could be just KafkaConsumer, although to avoid class name clashes as Kafka has its own KafkaConsumer, "Java" prefix is used.
+public class JavaKafkaConsumer {
+    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaConsumer.class);
+
+    @Getter(AccessLevel.NONE)
     @SuppressWarnings("java:S1700")
     private final Consumer<String, String> consumer;
     private final Long numberOfMessagesToConsume;
 
-    KafkaConsumer(Consumer<String, String> consumer, Long numberOfMessagesToConsume) {
+    JavaKafkaConsumer(Consumer<String, String> consumer, Long numberOfMessagesToConsume) {
         this.consumer = consumer;
         this.numberOfMessagesToConsume = numberOfMessagesToConsume;
     }
@@ -31,11 +37,13 @@ public class KafkaConsumer {
 
         try (consumer) {
             long currentMessageNumber = 0L;
+
             consumer.subscribe(topics);
+
             while (currentMessageNumber++ < numberOfMessagesToConsume) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMinutes(10));
                 for (ConsumerRecord<String, String> consumerRecord : records) {
-                    logger.info("Java - Consuming record: {}", consumerRecord);
+                    logger.info("Java - Consuming record {}: {}", currentMessageNumber, consumerRecord);
                 }
             }
         } catch (Exception e) {
@@ -43,24 +51,24 @@ public class KafkaConsumer {
         }
     }
 
-    public static class KafkaConsumerBuilder {
+    public static class JavaKafkaConsumerBuilder {
 
         private long numberOfMessages;
 
-        public KafkaConsumer build() {
+        public JavaKafkaConsumer build() {
             final var props = new Properties();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaProperties.BOOTSTRAP_SERVERS);
             props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             props.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaProperties.CONSUMER_GROUP_ID);
 
-            return new KafkaConsumer(
+            return new JavaKafkaConsumer(
                     new org.apache.kafka.clients.consumer.KafkaConsumer<>(props),
                     numberOfMessages
             );
         }
 
-        public KafkaConsumerBuilder withNumberOfMessages(long numberOfMessages) {
+        public JavaKafkaConsumerBuilder withNumberOfMessages(long numberOfMessages) {
             this.numberOfMessages = numberOfMessages;
             return this;
         }

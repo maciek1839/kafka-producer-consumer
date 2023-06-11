@@ -1,5 +1,6 @@
 package com.showmeyourcode.kafka.java.kafka_producer;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.TopicPartition;
@@ -15,14 +16,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class KafkaProducerTest {
+class JavaKafkaProducerTest {
+
+    @Test
+    void shouldBuildValidAvroProducer(){
+        JavaKafkaProducer producer = new JavaKafkaProducer.JavaKafkaProducerBuilder()
+                .withNumberOfMessage(10L)
+                .build();
+
+        assertThat(producer.getNumberOfMessagesToProduce()).isEqualTo(10L);;
+    }
 
     @Test
     void shouldProduceKafkaMessagesWhenConfigurationIsValid() throws KafkaProducerException {
         var kafkaProducer = Mockito.mock(Producer.class);
         when(kafkaProducer.send(any())).thenReturn(CompletableFuture.completedFuture(new RecordMetadata(new TopicPartition("topic1", 0), 1, 1, 1, Long.MIN_VALUE, 1, 1)));
 
-        new KafkaProducer(kafkaProducer, 2L).produce();
+        new JavaKafkaProducer(kafkaProducer, 2L).produce();
 
         verify(kafkaProducer, times(2)).send(any());
     }
@@ -30,10 +40,10 @@ class KafkaProducerTest {
     @Test
     void shouldThrowExceptionWhenCannotPublishMessages() {
         KafkaProducerException throwable = catchThrowableOfType(() -> {
-            var producer = Mockito.mock(org.apache.kafka.clients.producer.KafkaProducer.class);
+            var producer = Mockito.mock(KafkaProducer.class);
             when(producer.send(any())).thenThrow(new RuntimeException("Buum!"));
 
-            new KafkaProducer(producer, 5L).produce();
+            new JavaKafkaProducer(producer, 5L).produce();
         }, KafkaProducerException.class);
 
         assertThat(throwable).hasMessage("Cannot produce a record!  Kafka error: Buum!");

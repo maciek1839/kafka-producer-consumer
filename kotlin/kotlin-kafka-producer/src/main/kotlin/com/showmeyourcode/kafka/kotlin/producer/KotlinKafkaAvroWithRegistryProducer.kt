@@ -12,39 +12,23 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class KotlinKafkaProducerAvro {
+class KotlinKafkaAvroWithRegistryProducer internal constructor(
+    private val producer:Producer<Long, GenericRecord>,
+    val numberOfMessages: Long
+) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaProducerAvro::class.java);
-
-        private fun getProperties(): Properties {
-            val props = Properties()
-            props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaProperties.BOOTSTRAP_SERVERS
-            props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java.name
-            props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java.name
-            // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
-            props[ProducerConfig.CLIENT_ID_CONFIG] = KafkaProperties.PRODUCER_AVRO_CLIENT_ID
-
-            // Avro serializer property - the address of Schema Registry
-            props["schema.registry.url"] = KafkaProperties.AVRO_SCHEMA_REGISTRY
-
-            return props
-        }
-
-        private fun createProducer(): Producer<Long, GenericRecord> {
-            logger.info("Creating an Avro Kotlin producer...")
-            return KafkaProducer(getProperties())
-        }
+        private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaAvroWithRegistryProducer::class.java);
+    }
 
         // Reference: https://docs.confluent.io/platform/6.0.0/schema-registry/serdes-develop/serdes-avro.html
-        fun runProducer(sendMessageCount: Int) {
+        fun produce() {
             logger.info("Starting an Avro Kotlin producer...")
-            val producer: Producer<Long, GenericRecord> = createProducer()
             val time = System.currentTimeMillis()
             try {
                 val schema: Schema = Avro.default.schema(ExampleUserRecord.serializer())
                 logger.info("Generated schema: ${schema.toString(true)}")
-                for (index in time until time + sendMessageCount) {
+                for (index in 1 until numberOfMessages + 1) {
                     val dataRecord = ExampleUserRecord("name", index)
                     val avroRecord: GenericRecord = GenericData.Record(schema)
                     avroRecord.put("name", dataRecord.name)
@@ -65,6 +49,26 @@ class KotlinKafkaProducerAvro {
                 producer.flush()
                 producer.close()
             }
+        }
+
+    class KotlinKafkaAvroWithRegistryProducerBuilder {
+
+        private var numberOfMessages: Long = 0
+
+        fun withNumberOfMessages(numberOfMessages: Long) = apply { this.numberOfMessages = numberOfMessages }
+
+        fun build(): KotlinKafkaAvroWithRegistryProducer {
+            val props = Properties()
+            props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaProperties.BOOTSTRAP_SERVERS
+            props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java.name
+            props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = KafkaAvroSerializer::class.java.name
+            // CLIENT_ID_CONFIG: ID of the producer so that the broker can determine the source of the request.
+            props[ProducerConfig.CLIENT_ID_CONFIG] = KafkaProperties.PRODUCER_AVRO_CLIENT_ID
+
+            // Avro serializer property - the address of Schema Registry
+            props["schema.registry.url"] = KafkaProperties.AVRO_SCHEMA_REGISTRY
+
+            return KotlinKafkaAvroWithRegistryProducer(KafkaProducer(props), numberOfMessages)
         }
     }
 }

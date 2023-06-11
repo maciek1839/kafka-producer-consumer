@@ -1,4 +1,4 @@
-package com.showmeyourcode.kafka.java_spring.messaging;
+package com.showmeyourcode.kafka.java_spring.service.messaging;
 
 import com.showmeyourcode.kafka.java_spring.service.IdentityService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 @Service
 @RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "app", name = "is-consumer-enabled", havingValue = "true")
-public class KafkaConsumer {
+public class KafkaConsumerService {
 
     private final IdentityService applicationService;
 
@@ -26,7 +26,7 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics = "spring.kafka.topic", groupId = "group_id")
-    public void scheduleKafkaConsumer(
+    public void consumeKafkaMessage(
             @Payload String message,
             @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition
     ) {

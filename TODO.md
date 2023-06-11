@@ -12,3 +12,12 @@
 - Improve tests
 - Use Spring Boot POM to manage dependencies
 - Send code coverage to SonarQube
+- SonarLint warnings
+
+```kotlin
+package com.showmeyourcode.kafka.kotlin.producer
+
+// todo: implement producer SSL
+class ExampleKafkaProducerSSL {
+}
+```

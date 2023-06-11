@@ -1,6 +1,8 @@
 package com.showmeyourcode.kafka.java.kafka_producer;
 
 import com.showmeyourcode.kafka.java.common.KafkaProperties;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -12,12 +14,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
-public final class KafkaProducer {
-    private static final Logger logger = LoggerFactory.getLogger(KafkaProducer.class);
+@Getter
+// The class could be just KafkaProducer, although to avoid class name clashes as Kafka has its own KafkaProducer, "Java" prefix is used.
+public final class JavaKafkaProducer {
+    private static final Logger logger = LoggerFactory.getLogger(JavaKafkaProducer.class);
+
+    @Getter(AccessLevel.NONE)
     private final Producer<Long, String> producer;
     private final Long numberOfMessagesToProduce;
 
-    KafkaProducer(Producer<Long, String> producer, Long numberOfMessagesToProduce) {
+    JavaKafkaProducer(Producer<Long, String> producer, Long numberOfMessagesToProduce) {
         this.producer = producer;
         this.numberOfMessagesToProduce = numberOfMessagesToProduce;
     }
@@ -52,11 +58,11 @@ public final class KafkaProducer {
         }
     }
 
-    public static class KafkaProducerBuilder {
+    public static class JavaKafkaProducerBuilder {
 
         private long numberOfMessages;
 
-        public KafkaProducer build() {
+        public JavaKafkaProducer build() {
             var props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaProperties.BOOTSTRAP_SERVERS);
             props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
@@ -64,13 +70,13 @@ public final class KafkaProducer {
             // CLIENT_ID_CONFIG: Id of the producer so that the broker can determine the source of the request.
             props.put(ProducerConfig.CLIENT_ID_CONFIG, KafkaProperties.PRODUCER_CLIENT_ID);
 
-            return new KafkaProducer(
+            return new JavaKafkaProducer(
                     new org.apache.kafka.clients.producer.KafkaProducer<>(props),
                     numberOfMessages
             );
         }
 
-        public KafkaProducerBuilder withNumberOfMessage(long numberOfMessage) {
+        public JavaKafkaProducerBuilder withNumberOfMessage(long numberOfMessage) {
             this.numberOfMessages = numberOfMessage;
             return this;
         }

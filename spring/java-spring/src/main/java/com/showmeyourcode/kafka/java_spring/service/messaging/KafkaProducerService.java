@@ -1,4 +1,4 @@
-package com.showmeyourcode.kafka.java_spring.messaging;
+package com.showmeyourcode.kafka.java_spring.service.messaging;
 
 import com.showmeyourcode.kafka.java_spring.configuration.AppProperties;
 import com.showmeyourcode.kafka.java_spring.model.KafkaMessage;
@@ -15,16 +15,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Service
 @ConditionalOnProperty(prefix = "app", name = "is-producer-enabled", havingValue = "true")
-public class KafkaProducer {
+public class KafkaProducerService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final IdentityService applicationService;
     private final AppProperties properties;
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate,
-                         IdentityService applicationService,
-                         AppProperties properties) {
+    public KafkaProducerService(KafkaTemplate<String, String> kafkaTemplate,
+                                IdentityService applicationService,
+                                AppProperties properties) {
         this.kafkaTemplate = kafkaTemplate;
         this.applicationService = applicationService;
         this.properties = properties;

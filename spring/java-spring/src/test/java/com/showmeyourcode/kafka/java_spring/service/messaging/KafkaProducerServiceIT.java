@@ -1,4 +1,4 @@
-package com.showmeyourcode.kafka.java_spring.messaging;
+package com.showmeyourcode.kafka.java_spring.service.messaging;
 
 import com.showmeyourcode.kafka.java_spring.configuration.AppProperties;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -9,19 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
-import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowableOfType;
@@ -30,7 +23,7 @@ import static org.assertj.core.api.ThrowableAssert.catchThrowableOfType;
 @ActiveProfiles("producer")
 @DirtiesContext
 @EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
-class KafkaProducerIT {
+class KafkaProducerServiceIT {
 
     @Autowired
     private ApplicationContext context;
@@ -41,11 +34,11 @@ class KafkaProducerIT {
 
     @Test
     void shouldProduceKafkaMessageWhenConfigurationIsValid() {
-        catchThrowableOfType(() -> context.getBean("kafkaConsumer"), NoSuchBeanDefinitionException.class);
+        catchThrowableOfType(() -> context.getBean("kafkaConsumerService"), NoSuchBeanDefinitionException.class);
 
         var consumerRecords = getKafkaMessage();
 
-        assertThat(consumerRecords.count()).isGreaterThanOrEqualTo(0);
+        assertThat(consumerRecords.count()).isNotNegative();
         assertThat(consumerRecords.records(new TopicPartition(properties.getKafka().getTopicName(),0))).hasSizeGreaterThanOrEqualTo(0);
     }
 

@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.InvalidGroupIdException;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -22,14 +23,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class KafkaConsumerTest {
+class JavaKafkaConsumerTest {
+
+    @Test
+    void shouldBuildValidConsumer(){
+        JavaKafkaConsumer kafkaConsumer = new JavaKafkaConsumer.JavaKafkaConsumerBuilder()
+                .withNumberOfMessages(10L)
+                .build();
+
+        assertThat(kafkaConsumer.getNumberOfMessagesToConsume()).isEqualTo(10L);
+    }
 
     @Test
     void shouldConsumeKafkaMessagesWhenConfigurationIsValid() throws KafkaConsumerException {
         var kafkaConsumer = Mockito.mock(Consumer.class);
         when(kafkaConsumer.poll(any())).thenReturn(new ConsumerRecords(Map.of(new TopicPartition("topic1", 0), List.of(new ConsumerRecord<>("topic", 0, 123L, "key", "value")))));
 
-        new KafkaConsumer(kafkaConsumer, 2L).consume();
+        new JavaKafkaConsumer(kafkaConsumer, 2L).consume();
 
         verify(kafkaConsumer, times(2)).poll(any());
     }
@@ -42,7 +52,7 @@ class KafkaConsumerTest {
             props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
-            new KafkaConsumer(new org.apache.kafka.clients.consumer.KafkaConsumer<>(props), 5L).consume();
+            new JavaKafkaConsumer(new KafkaConsumer<>(props), 5L).consume();
         }, KafkaConsumerException.class);
 
         assertThat(throwable)
