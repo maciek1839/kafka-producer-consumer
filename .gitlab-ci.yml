@@ -2,9 +2,12 @@ default:
   image: amazoncorretto:11.0.7
   before_script:
     - ': before_script'
-    - java --version
     - chmod +x mvnw
     - export MAVEN_OPTS="-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/"
+
+variables:
+  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
 
 cache:
   key: maven-cache
@@ -12,14 +15,10 @@ cache:
     - $CI_PROJECT_DIR/.m2/
 
 stages:
-  - build
   - test
+  - build
+  - analysis
   - deploy
-
-Build package:
-  stage: build
-  script:
-    - ./mvnw clean install -DskipTests $MAVEN_OPTS
 
 Run tests:
   stage: test
@@ -27,10 +26,29 @@ Run tests:
     - ./mvnw verify $MAVEN_OPTS
     - echo 'Printing code coverage for Gitlab statistics'
     - cat coverage-report/target/site/jacoco-aggregate/index.html | grep -o '<tfoot>.*</tfoot>'
+  coverage: '/Total.*?([0-9]{1,3})%/'
   artifacts:
     paths:
-      - coverage-report/target/site/jacoco-aggregate/*
+      - coverage-report/target/site/jacoco-aggregate
     expire_in: 1 hour
+
+Build package:
+  stage: build
+  script:
+    - ./mvnw clean install -DskipTests $MAVEN_OPTS
+
+sonarcloud_check:
+  stage: analysis
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - ./mvnw verify sonar:sonar -Dsonar.projectKey=ShowMeYourCodeYouTube_cqrs-and-event-sourcing-in-kotlin
+  only:
+    - merge_requests
+    - master
+    - develop
 
 pages:
   stage: deploy
@@ -38,7 +56,7 @@ pages:
     - echo 'Cleaning old pages'
     - rm -rf public
     - ls -la
-    - mkdir -p public && cp -r coverage-report/target/site/jacoco-aggregate/* public
+    - mkdir -p public/test-report && cp -r coverage-report/target/site/jacoco-aggregate/* public/test-report
     - echo 'Public directory content after copying files'
     - ls -la ./public
   artifacts:

@@ -1,6 +1,10 @@
 # CQRS and Event Sourcing
 
-- Coverage report: https://showmeyourcodeyoutube.gitlab.io/cqrs-and-event-sourcing/
+| Branch |                                                                                                         Pipeline                                                                                                         |                                                                                                      Code coverage                                                                                                       |                                               Test report                                                |
+|:------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
+| master | [![pipeline status](https://gitlab.com/ShowMeYourCodeYouTube/cqrs-and-event-sourcing-in-kotlin/badges/master/pipeline.svg)](https://gitlab.com/ShowMeYourCodeYouTube/cqrs-and-event-sourcing-in-kotlin/-/commits/master) | [![coverage report](https://gitlab.com/ShowMeYourCodeYouTube/cqrs-and-event-sourcing-in-kotlin/badges/master/coverage.svg)](https://gitlab.com/ShowMeYourCodeYouTube/cqrs-and-event-sourcing-in-kotlin/-/commits/master) | [link](https://showmeyourcodeyoutube.gitlab.io/cqrs-and-event-sourcing-in-kotlin/test-report/index.html) |
+
+---
 
 The example is based on stores and products.
 - A product can be added to a store.

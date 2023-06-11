@@ -27,8 +27,11 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <sonar.organization>showmeyourcodeyoutube</sonar.organization>
+
         <kotlin.version>1.5.31</kotlin.version>
         <spring-cloud.version>2020.0.4</spring-cloud.version>
+
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
     </properties>
 
