@@ -14,7 +14,6 @@ import java.time.Duration
 import java.util.*
 import java.util.function.Consumer
 
-
 class KotlinKafkaConsumerTest {
 
     @Test
@@ -33,8 +32,9 @@ class KotlinKafkaConsumerTest {
         Mockito.`when`(kafkaConsumer.poll(ArgumentMatchers.any<Duration>())).thenReturn(
             ConsumerRecords(
                 mapOf(
-                    Pair(TopicPartition("topic1", 0),
-                    listOf(ConsumerRecord("topic", 0, 123L, "key", "value"))
+                    Pair(
+                        TopicPartition("topic1", 0),
+                        listOf(ConsumerRecord("topic", 0, 123L, "key", "value"))
                     )
                 )
             )
@@ -58,17 +58,20 @@ class KotlinKafkaConsumerTest {
                     KotlinKafkaConsumer(
                         KafkaConsumer(
                             props
-                        ), 5L
+                        ),
+                        5L
                     ).consume()
                 },
                 KafkaConsumerException::class.java
             )
         Assertions.assertThat(throwable)
             .hasMessage("Cannot consume Kafka messages. Kotlin Kafka error: To use the group management or offset commit APIs, you must provide a valid group.id in the consumer configuration.")
-            .satisfies( Consumer {
-                Assertions.assertThat<Throwable>(it.cause).isInstanceOf(
-                    InvalidGroupIdException::class.java
-                )
-            })
+            .satisfies(
+                Consumer {
+                    Assertions.assertThat<Throwable>(it.cause).isInstanceOf(
+                        InvalidGroupIdException::class.java
+                    )
+                }
+            )
     }
 }

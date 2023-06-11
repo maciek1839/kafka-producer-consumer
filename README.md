@@ -322,7 +322,13 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
 
 - mvn clean install -DskipTests
 
-#### Release a new version
+### Format files using ktlint
+
+Use a command: ``mvn ktlint:format`` in `kotlin` module.  
+
+Ref: https://gantsign.com/ktlint-maven-plugin/usage.html
+
+### Release a new version
 
 Run a Maven command using Maven Release plugin:
 ```text
@@ -333,7 +339,6 @@ If you want to only update versions (not recommended), use below command:
 ```text
 mvn release:update-versions -DautoVersionSubmodules=true
 ```
-
 
 ## Useful links
 

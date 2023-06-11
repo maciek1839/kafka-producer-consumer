@@ -13,43 +13,43 @@ import org.slf4j.LoggerFactory
 import java.util.*
 
 class KotlinKafkaAvroWithRegistryProducer internal constructor(
-    private val producer:Producer<Long, GenericRecord>,
+    private val producer: Producer<Long, GenericRecord>,
     val numberOfMessages: Long
 ) {
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaAvroWithRegistryProducer::class.java);
+        private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaAvroWithRegistryProducer::class.java)
     }
 
-        // Reference: https://docs.confluent.io/platform/6.0.0/schema-registry/serdes-develop/serdes-avro.html
-        fun produce() {
-            logger.info("Starting an Avro Kotlin producer...")
-            val time = System.currentTimeMillis()
-            try {
-                val schema: Schema = Avro.default.schema(ExampleUserRecord.serializer())
-                logger.info("Generated schema: ${schema.toString(true)}")
-                for (index in 1 until numberOfMessages + 1) {
-                    val dataRecord = ExampleUserRecord("name", index)
-                    val avroRecord: GenericRecord = GenericData.Record(schema)
-                    avroRecord.put("name", dataRecord.name)
-                    avroRecord.put("age", dataRecord.age)
-                    avroRecord.put("phoneNumber", dataRecord.phoneNumber)
+    // Reference: https://docs.confluent.io/platform/6.0.0/schema-registry/serdes-develop/serdes-avro.html
+    fun produce() {
+        logger.info("Starting an Avro Kotlin producer...")
+        val time = System.currentTimeMillis()
+        try {
+            val schema: Schema = Avro.default.schema(ExampleUserRecord.serializer())
+            logger.info("Generated schema: ${schema.toString(true)}")
+            for (index in 1 until numberOfMessages + 1) {
+                val dataRecord = ExampleUserRecord("name", index)
+                val avroRecord: GenericRecord = GenericData.Record(schema)
+                avroRecord.put("name", dataRecord.name)
+                avroRecord.put("age", dataRecord.age)
+                avroRecord.put("phoneNumber", dataRecord.phoneNumber)
 
-                    val record: ProducerRecord<Long, GenericRecord> = ProducerRecord(
-                        KafkaProperties.TOPIC,
-                        index,
-                        avroRecord
-                    )
-                    val metadata: RecordMetadata = producer.send(record).get()
-                    val elapsedTime = System.currentTimeMillis() - time
-                    logger.info("Sending an Avro record: ${record.key()}(key=${record.value()} value=${metadata.partition()})")
-                    logger.info("The Avro record metadata: partition=${metadata.partition()}, offset=${metadata.offset()}) time=${elapsedTime}")
-                }
-            } finally {
-                producer.flush()
-                producer.close()
+                val record: ProducerRecord<Long, GenericRecord> = ProducerRecord(
+                    KafkaProperties.TOPIC,
+                    index,
+                    avroRecord
+                )
+                val metadata: RecordMetadata = producer.send(record).get()
+                val elapsedTime = System.currentTimeMillis() - time
+                logger.info("Sending an Avro record: ${record.key()}(key=${record.value()} value=${metadata.partition()})")
+                logger.info("The Avro record metadata: partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime")
             }
+        } finally {
+            producer.flush()
+            producer.close()
         }
+    }
 
     class KotlinKafkaAvroWithRegistryProducerBuilder {
 

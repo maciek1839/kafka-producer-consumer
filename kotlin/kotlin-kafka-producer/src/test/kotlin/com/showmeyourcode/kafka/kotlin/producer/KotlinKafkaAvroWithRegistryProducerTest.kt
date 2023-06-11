@@ -12,5 +12,4 @@ class KotlinKafkaAvroWithRegistryProducerTest {
             .build()
         Assertions.assertThat(producer.numberOfMessages).isEqualTo(10L)
     }
-
 }

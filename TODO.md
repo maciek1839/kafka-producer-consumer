@@ -13,6 +13,7 @@
 - Use Spring Boot POM to manage dependencies
 - Send code coverage to SonarQube
 - SonarLint warnings
+- Automate changelog generation
 
 ```kotlin
 package com.showmeyourcode.kafka.kotlin.producer

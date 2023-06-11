@@ -10,9 +10,9 @@ import java.util.*
 
 // The class could be just KafkaProducer, although to avoid class name clashes as Kafka has its own KafkaProducer, "Kotlin" prefix is used.
 class KotlinKafkaProducer internal constructor(
-    private val producer:Producer<Long, String>,
+    private val producer: Producer<Long, String>,
     val numberOfMessages: Long
-    ) {
+) {
 
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaProducer::class.java)
@@ -29,12 +29,12 @@ class KotlinKafkaProducer internal constructor(
                     index,
                     "Hello World $index Kotlin"
                 )
-                logger.info("Sending a record ${index}: ${record.key()}(key=${record.value()})")
+                logger.info("Sending a record $index: ${record.key()}(key=${record.value()})")
 
                 val metadata: RecordMetadata = producer.send(record).get()
 
                 val elapsedTime = System.currentTimeMillis() - time
-                logger.info("The record metadata: partition=${metadata.partition()}, offset=${metadata.offset()}) time=${elapsedTime}")
+                logger.info("The record metadata: partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime")
             }
         } catch (e: Exception) {
             throw KafkaProducerException("Cannot produce Kafka messages. Kotlin Kafka error: ${e.message}", e)
@@ -50,7 +50,7 @@ class KotlinKafkaProducer internal constructor(
         fun withNumberOfMessages(numberOfMessages: Long) = apply { this.numberOfMessages = numberOfMessages }
 
         fun build(): KotlinKafkaProducer {
-                        val props = Properties()
+            val props = Properties()
             props[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = KafkaProperties.BOOTSTRAP_SERVERS
             props[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = LongSerializer::class.java.name
             props[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java.name
