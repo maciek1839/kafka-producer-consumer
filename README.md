@@ -144,3 +144,15 @@ References:
 
 - Axon Framework
   - https://axoniq.io/
+
+## Release a new version
+
+Run a Maven command using Maven Release plugin:
+```text
+mvn release:prepare
+```
+
+If you want to only update versions (not recommended), use below command:
+```text
+mvn release:update-versions -DautoVersionSubmodules=true
+```
