@@ -4,7 +4,7 @@
     <parent>
         <artifactId>java-parent</artifactId>
         <groupId>com.showmeyourcode.kafka</groupId>
-        <version>0.1.0</version>
+        <version>0.1.1-SNAPSHOT</version>
     </parent>
     <artifactId>java-kafka-consumer</artifactId>
 
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>java-common</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
