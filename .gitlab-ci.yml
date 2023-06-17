@@ -24,10 +24,9 @@ cache:
 stages:
   - test
   - build
-  - analysis
   - deploy
 
-run_tests:
+test:
   stage: test
   script:
     - ./mvnw verify $MAVEN_OPTS
@@ -38,7 +37,20 @@ run_tests:
       - coverage-report/target/site/jacoco-aggregate
     expire_in: 1 hour
 
-build_package:
+sonarcloud-check:
+  needs:
+    - job: test
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - ./mvnw verify sonar:sonar -Dsonar.projectKey=ShowMeYourCodeYouTube_kafka-producer-consumer
+  only:
+    - merge_requests
+    - master
+
+build:
   stage: build
   script:
     # -U, --update-snapshots
@@ -56,19 +68,6 @@ build_package:
       - java/java-kafka-producer/target/*.jar
       - java/java-starter/target/*.jar
     expire_in: 1 hour
-
-sonarcloud_check:
-  stage: analysis
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-    - ./mvnw verify sonar:sonar -Dsonar.projectKey=ShowMeYourCodeYouTube_kafka-producer-consumer
-  only:
-    - merge_requests
-    - master
-    - develop
 
 pages:
   stage: deploy
