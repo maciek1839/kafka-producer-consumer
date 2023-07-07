@@ -32,32 +32,32 @@ Apache Kafka is a framework implementation of a software bus using stream-proces
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.  
 <https://kafka.apache.org/>
 
-<img src="docs/kafka-clusters-kafka-clusters-architecture-diagram.png"  width="700" height="500">
+<img src="docs/kafka-clusters-kafka-clusters-architecture-diagram.png"  width="1100" height="1000">
 
 [Reference link](https://hevodata.com/learn/kafka-clusters/)
 
-<img src="docs/kafka-partitions.png"  width="700" height="400">
+<img src="docs/kafka-partitions.png"  width="900" height="400">
 
 [Reference link](https://jack-vanlightly.com/blog/2018/9/2/rabbitmq-vs-kafka-part-6-fault-tolerance-and-high-availability-with-kafka)
 
-<img src="docs/kafka-replication-factor-2.png"  width="700" height="300">
+<img src="docs/kafka-replication-factor-2.png"  width="900" height="400">
 
 Kafka Replication Factor refers to the multiple copies of data stored across several Kafka brokers. In the above diagram consisting of three brokers, the replication factor is 2.  
 [Reference link](https://blog.clairvoyantsoft.com/steps-to-increase-the-replication-factor-of-a-kafka-topic-a516aefd7e7e)
 
-<img src="docs/multiple-consumer-groups.png"  width="800" height="400">
+<img src="docs/multiple-consumer-groups.png"  width="800" height="500">
 
 [Reference link](https://medium.com/@jhansireddy007/how-to-parallelise-kafka-consumers-59c8b0bbc37a)
 
-<img src="docs/producer.png"  width="800" height="600">
+<img src="docs/producer.png"  width="800" height="700">
 
 [Reference link](https://stackoverflow.com/questions/38024514/understanding-kafka-topics-and-partitions)
 
-<img src="docs/consumer-offset.png"  width="600" height="300">
+<img src="docs/consumer-offset.png"  width="700" height="300">
 
 [Reference link](https://kafka.apache.org/documentation/#intro_topics)
 
-<img src="docs/log_anatomy.png" width="600" height="300">
+<img src="docs/log_anatomy.png" width="700" height="300">
 
 [Reference link](https://kafka.apache.org/081/documentation.html)
 
@@ -65,7 +65,7 @@ Kafka Replication Factor refers to the multiple copies of data stored across sev
 
 [Reference link](https://www.cloudkarafka.com/blog/part1-kafka-for-beginners-what-is-apache-kafka.html)
 
-<img src="docs/partitions-kafka.png"  width="600" height="300">  
+<img src="docs/partitions-kafka.png"  width="800" height="400">  
 
 [Reference link](https://docs.datastax.com/en/kafka/doc/kafka/kafkaHowMessages.html)
 
@@ -130,7 +130,7 @@ Run Kafka and Zookeeper using Docker Compose.
 The Confluent setup provides web UI for the whole Kafka platform.  
 More information you can find in this guideline: <https://docs.confluent.io/platform/current/quickstart/ce-docker-quickstart.html>
 
-<img src="docs/confluent-platform.png"  width="700" height="500">
+<img src="docs/confluent-platform.png"  width="1100" height="900">
 
 [Reference link](https://docs.confluent.io/platform/current/platform.html)
 
@@ -196,6 +196,10 @@ Event-driven architecture is made up of event producers and event consumers.
 An event producer detects or senses an event and represents the event as a message. 
 It does not know the consumer of the event, or the outcome of an event.
 
+<img src="docs/event-driven-example.png" width="900" height="500">
+
+Ref: <https://stackoverflow.com/questions/72299824/event-driven-architecture-backend-services-with-two-interfaces-interface-type/>
+
 ### Event-driven architecture models
 
 An event driven architecture may be based on either a pub/sub model or an event stream model.
@@ -205,7 +209,18 @@ An event driven architecture may be based on either a pub/sub model or an event 
 - `Event streaming model`
   - With an event streaming model, events are written to a log. Event consumers don’t subscribe to an event stream. Instead, they can read from any part of the stream and can join the stream at any time.
 
+```text
+Message Queues: MQs are a point-to-point communication system where messages are sent to a single receiver, ensuring ordered and reliable delivery.
+Publish-Subscribe: In Pub/Sub systems, messages are sent to multiple subscribers simultaneously, promoting decoupling and scalability.
+```
+
+<img src="docs/pubsub-vs-streaming.png" width="800" height="400">
+
+Ref: <https://metamug.com/article/distributed-systems/event-streaming-pub-sub.html/>
+
 References:
+- https://cloud.google.com/solutions/event-driven-architecture-pubsub/
+- https://blog.iron.io/message-queue-vs-publish-subscribe/
 - https://blog.ippon.tech/event-driven-architecture-getting-started-with-kafka-part-1/
 - https://hevodata.com/learn/kafka-event-driven-architecture/
 - https://www.redhat.com/en/topics/integration/what-is-event-driven-architecture
