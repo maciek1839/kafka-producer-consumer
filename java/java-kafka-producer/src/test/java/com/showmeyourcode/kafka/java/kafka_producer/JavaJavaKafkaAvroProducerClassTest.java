@@ -1,13 +1,19 @@
 package com.showmeyourcode.kafka.java.kafka_producer;
 
+import com.showmeyourcode.kafka.java.common.KafkaProperties;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord2;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.reflect.ReflectData;
+import org.apache.avro.specific.SpecificData;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.util.concurrent.CompletableFuture;
@@ -48,9 +54,19 @@ class JavaJavaKafkaAvroProducerClassTest {
         var kafkaProducer = Mockito.mock(Producer.class);
         when(kafkaProducer.send(any())).thenReturn(CompletableFuture.completedFuture(new RecordMetadata(new TopicPartition("topic1", 0), 1, 1, 1, Long.MIN_VALUE, 1, 1)));
 
-        new JavaKafkaAvroProducer(kafkaProducer, 2L, "Avro Class", unused -> ReflectData.get().getSchema(ExampleUserRecord.class)).produce();
+        new JavaKafkaAvroProducer(
+                kafkaProducer,
+                2L,
+                "Avro Class",
+                unused -> ReflectData.get().getSchema(ExampleUserRecord.class)
+        ).produce();
 
-        verify(kafkaProducer, times(2)).send(any());
+        ArgumentCaptor<ProducerRecord> argument = ArgumentCaptor.forClass(ProducerRecord.class);
+        verify(kafkaProducer, times(2)).send(argument.capture());
+        argument.getAllValues().forEach( record ->{
+            assertThat(record.topic()).isEqualTo(KafkaProperties.TOPIC);
+            // TODO: deserialize to POJO
+        });
     }
 
     @Test

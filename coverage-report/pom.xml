@@ -32,11 +32,6 @@
         </dependency>
         <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
-            <artifactId>java-starter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>kotlin-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -48,11 +43,6 @@
         <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>kotlin-kafka-producer</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.showmeyourcode.kafka</groupId>
-            <artifactId>kotlin-starter</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

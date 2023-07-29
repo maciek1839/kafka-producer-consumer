@@ -62,7 +62,7 @@ public class JavaKafkaAvroProducer {
                         producerRecord.key(),
                         producerRecord.value()
                 );
-                // todo: make it non-blocking!
+
                 RecordMetadata metadata = producer.send(producerRecord).get();
                 long elapsedTime = System.currentTimeMillis() - time;
                 logger.info("An Avro record metadata: partition={}, offset={}) time={}",
@@ -105,22 +105,12 @@ public class JavaKafkaAvroProducer {
         }
 
         public JavaKafkaAvroProducerBuilder withAvroClass() {
-            this.getSchema = new Function<Void, Schema>() {
-                @Override
-                public Schema apply(Void unused) {
-                    return ReflectData.get().getSchema(ExampleUserRecord.class);
-                }
-            };
+            this.getSchema = unused -> ReflectData.get().getSchema(ExampleUserRecord.class);
             return this;
         }
 
         public JavaKafkaAvroProducerBuilder withAvroClassFromFile() {
-            this.getSchema = new Function<Void, Schema>() {
-                @Override
-                public Schema apply(Void unused) {
-                    return ReflectData.get().getSchema(ExampleUserRecord2.class);
-                }
-            };
+            this.getSchema = unused -> ReflectData.get().getSchema(ExampleUserRecord2.class);
             return this;
         }
 

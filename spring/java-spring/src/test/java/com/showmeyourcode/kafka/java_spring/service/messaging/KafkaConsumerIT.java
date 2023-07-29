@@ -47,7 +47,6 @@ class KafkaConsumerIT {
     void shouldConsumeKafkaMessageWhenConfigurationIsValid() throws ExecutionException, InterruptedException {
         catchThrowableOfType(() -> context.getBean("kafkaProducerService"), NoSuchBeanDefinitionException.class);
 
-        // todo: make an asynchronous test
         SendResult<String, String> sendResult = kafkaTemplate.send(properties.getKafka().getTopicName(), "").get();
         assertThat(sendResult.getProducerRecord().topic()).isEqualTo(properties.getKafka().getTopicName());
         assertThat(sendResult.getRecordMetadata().topic()).isEqualTo(properties.getKafka().getTopicName());
@@ -55,6 +54,6 @@ class KafkaConsumerIT {
         verify(myKafkaListener, timeout(5000)).consumeKafkaMessage(messageCaptor.capture(), partitionCaptor.capture());
 
         assertThat(messageCaptor.getValue()).startsWith("KafkaMessage(producerId=");
-        assertThat(partitionCaptor.getValue()).isEqualTo(0);
+        assertThat(partitionCaptor.getValue()).isZero();
     }
 }

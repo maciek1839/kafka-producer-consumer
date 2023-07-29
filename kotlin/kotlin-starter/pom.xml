@@ -6,8 +6,11 @@
         <groupId>com.showmeyourcode.kafka</groupId>
         <version>0.1.1-SNAPSHOT</version>
     </parent>
-
     <artifactId>kotlin-starter</artifactId>
+
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
 
     <dependencies>
         <dependency>
