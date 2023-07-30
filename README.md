@@ -91,7 +91,7 @@ If you are looking for a book about Kafka, let's have a look on ``Kafka: The Def
 - Kotlin
 - Java
 - AWS Corretto
-- Spring Boot 2.x (module `java-spring`) and standalone Kafka libraries (modules `kotlin` and `java`)
+- Spring Boot 3.x (module `java-spring`) and standalone Kafka libraries (modules `kotlin` and `java`)
 - Apache Avro
     - schema-based data serialization library
 - Avro Kotlin

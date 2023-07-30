@@ -18,8 +18,8 @@
     </description>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -34,28 +34,28 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.serialization.version>1.1.0</kotlin.serialization.version>
 
-        <slf4j-api.version>1.7.36</slf4j-api.version>
+        <slf4j-api.version>2.0.7</slf4j-api.version>
         <logback-classic.version>1.4.8</logback-classic.version>
         <logback-core.version>1.4.8</logback-core.version>
 
         <lombok.version>1.18.28</lombok.version>
 
-        <kafka_2.13.version>2.8.2</kafka_2.13.version>
-        <kafka-clients.version>2.8.2</kafka-clients.version>
+        <kafka_2.13.version>3.5.1</kafka_2.13.version>
+        <kafka-clients.version>3.5.1</kafka-clients.version>
 
         <avro-maven-plugin.version>1.11.2</avro-maven-plugin.version>
         <avro.version>1.11.2</avro.version>
 
-        <confluent.version>6.2.11</confluent.version>
+        <confluent.version>7.4.1</confluent.version>
 
-        <spring-boot.version>2.7.14</spring-boot.version>
+        <spring-boot.version>3.1.2</spring-boot.version>
 
-        <junit.version>5.10.0</junit.version>
-        <mockito.verion>4.11.0</mockito.verion>
+        <junit.version>5.9.1</junit.version>
+        <mockito.verion>5.4.0</mockito.verion>
         <assertj.version>3.24.2</assertj.version>
 
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <ktlint-plugin.version>1.16.0</ktlint-plugin.version>
     </properties>
