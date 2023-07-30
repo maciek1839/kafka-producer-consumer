@@ -51,7 +51,7 @@
         <spring-boot.version>2.7.14</spring-boot.version>
 
         <junit.version>5.8.2</junit.version>
-        <mockito.verion>4.0.0</mockito.verion>
+        <mockito.verion>4.11.0</mockito.verion>
         <assertj.version>3.24.2</assertj.version>
 
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
