@@ -14,7 +14,7 @@ import java.util.*
 
 class KotlinKafkaAvroWithRegistryProducer internal constructor(
     private val producer: Producer<Long, GenericRecord>,
-    val numberOfMessages: Long
+    val numberOfMessages: Long,
 ) {
 
     companion object {
@@ -38,12 +38,20 @@ class KotlinKafkaAvroWithRegistryProducer internal constructor(
                 val record: ProducerRecord<Long, GenericRecord> = ProducerRecord(
                     KafkaProperties.TOPIC,
                     index,
-                    avroRecord
+                    avroRecord,
                 )
                 val metadata: RecordMetadata = producer.send(record).get()
                 val elapsedTime = System.currentTimeMillis() - time
-                logger.info("Sending an Avro record: ${record.key()}(key=${record.value()} value=${metadata.partition()})")
-                logger.info("The Avro record metadata: partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime")
+                logger.info(
+                    """Sending an Avro record: 
+                        |${record.key()}key=${record.value()} value=${metadata.partition()}
+                    """.trimMargin(),
+                )
+                logger.info(
+                    """The Avro record metadata: 
+                        |partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime
+                    """.trimMargin(),
+                )
             }
         } finally {
             producer.flush()

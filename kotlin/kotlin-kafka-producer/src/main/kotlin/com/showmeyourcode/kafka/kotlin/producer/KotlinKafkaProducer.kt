@@ -11,7 +11,7 @@ import java.util.*
 // The class could be just KafkaProducer, although to avoid class name clashes as Kafka has its own KafkaProducer, "Kotlin" prefix is used.
 class KotlinKafkaProducer internal constructor(
     private val producer: Producer<Long, String>,
-    val numberOfMessages: Long
+    val numberOfMessages: Long,
 ) {
 
     companion object {
@@ -27,14 +27,18 @@ class KotlinKafkaProducer internal constructor(
                 val record: ProducerRecord<Long, String> = ProducerRecord(
                     KafkaProperties.TOPIC,
                     index,
-                    "Hello World $index Kotlin"
+                    "Hello World $index Kotlin",
                 )
                 logger.info("Sending a record $index: ${record.key()}(key=${record.value()})")
 
                 val metadata: RecordMetadata = producer.send(record).get()
 
                 val elapsedTime = System.currentTimeMillis() - time
-                logger.info("The record metadata: partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime")
+                logger.info(
+                    """The record metadata: 
+                        |partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime
+                    """.trimMargin(),
+                )
             }
         } catch (e: Exception) {
             throw KafkaProducerException("Cannot produce Kafka messages. Kotlin Kafka error: ${e.message}", e)

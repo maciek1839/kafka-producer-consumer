@@ -32,8 +32,8 @@ class KotlinKafkaProducerTest {
                     1,
                     Long.MIN_VALUE,
                     1,
-                    1
-                )
+                    1,
+                ),
             )
         }
 
@@ -51,7 +51,7 @@ class KotlinKafkaProducerTest {
         val throwable = assertFailsWith<KafkaProducerException>(
             block = {
                 KotlinKafkaProducer(producer, 2L).produce()
-            }
+            },
         )
 
         assertThat(throwable).hasMessage("Cannot produce Kafka messages. Kotlin Kafka error: Buum!")

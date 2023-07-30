@@ -13,7 +13,7 @@ import java.util.*
 // The class could be just KafkaConsumer, although to avoid class name clashes as Kafka has its own KafkaConsumer, "Kotlin" prefix is used.
 class KotlinKafkaConsumer internal constructor(
     private val kafkaConsumer: Consumer<String, String>,
-    val numberOfMessagesToConsume: Long
+    val numberOfMessagesToConsume: Long,
 ) {
     companion object {
         private var logger: Logger = LoggerFactory.getLogger(KotlinKafkaConsumer::class.java)
@@ -56,7 +56,7 @@ class KotlinKafkaConsumer internal constructor(
 
             return KotlinKafkaConsumer(
                 org.apache.kafka.clients.consumer.KafkaConsumer(properties),
-                numberOfMessages
+                numberOfMessages,
             )
         }
     }

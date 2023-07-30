@@ -27,17 +27,17 @@ class KotlinKafkaConsumerTest {
     @Test
     fun shouldConsumeKafkaMessagesWhenConfigurationIsValid() {
         val kafkaConsumer = Mockito.mock(
-            MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)::class.java
+            MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)::class.java,
         )
         Mockito.`when`(kafkaConsumer.poll(ArgumentMatchers.any<Duration>())).thenReturn(
             ConsumerRecords(
                 mapOf(
                     Pair(
                         TopicPartition("topic1", 0),
-                        listOf(ConsumerRecord("topic", 0, 123L, "key", "value"))
-                    )
-                )
-            )
+                        listOf(ConsumerRecord("topic", 0, 123L, "key", "value")),
+                    ),
+                ),
+            ),
         )
 
         KotlinKafkaConsumer(kafkaConsumer, 2L).consume()
@@ -57,21 +57,25 @@ class KotlinKafkaConsumerTest {
 
                     KotlinKafkaConsumer(
                         KafkaConsumer(
-                            props
+                            props,
                         ),
-                        5L
+                        5L,
                     ).consume()
                 },
-                KafkaConsumerException::class.java
+                KafkaConsumerException::class.java,
             )
         Assertions.assertThat(throwable)
-            .hasMessage("Cannot consume Kafka messages. Kotlin Kafka error: To use the group management or offset commit APIs, you must provide a valid group.id in the consumer configuration.")
+            .hasMessage(
+                "Cannot consume Kafka messages. Kotlin Kafka error: " +
+                    "To use the group management or offset commit APIs, " +
+                    "you must provide a valid group.id in the consumer configuration.",
+            )
             .satisfies(
                 Consumer {
                     Assertions.assertThat<Throwable>(it.cause).isInstanceOf(
-                        InvalidGroupIdException::class.java
+                        InvalidGroupIdException::class.java,
                     )
-                }
+                },
             )
     }
 }
