@@ -50,7 +50,7 @@
 
         <spring-boot.version>2.7.14</spring-boot.version>
 
-        <junit.version>5.8.2</junit.version>
+        <junit.version>5.10.0</junit.version>
         <mockito.verion>4.11.0</mockito.verion>
         <assertj.version>3.24.2</assertj.version>
 
