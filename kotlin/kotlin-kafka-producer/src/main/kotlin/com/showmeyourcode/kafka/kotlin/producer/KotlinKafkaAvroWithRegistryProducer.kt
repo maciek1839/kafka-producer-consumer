@@ -40,20 +40,35 @@ class KotlinKafkaAvroWithRegistryProducer internal constructor(
                     index,
                     avroRecord,
                 )
-                val metadata: RecordMetadata = producer.send(record).get()
-                val elapsedTime = System.currentTimeMillis() - time
                 logger.info(
                     """Sending an Avro record: 
-                        |${record.key()}key=${record.value()} value=${metadata.partition()}
+                        |key=${record.key()}, value=${record.value()}
                     """.trimMargin(),
                 )
-                logger.info(
-                    """The Avro record metadata: 
-                        |partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime
-                    """.trimMargin(),
+
+                producer.send(
+                    record,
+                    Callback { metadata, exception ->
+                        if (exception == null) {
+                            val elapsedTime = System.currentTimeMillis() - time
+                            logger.info(
+                                """The Avro record metadata: 
+                        |key=${record.key()} partition=${metadata.partition()} 
+                        |offset=${metadata.offset()} time=$elapsedTime
+                                """.trimMargin(),
+                            )
+                        } else {
+                            logger.error("Cannot produce a message! ", exception)
+                        }
+                    },
                 )
             }
         } finally {
+            // The data produced by a producer are asynchronous.
+            // Therefore, two additional functions, i.e., flush() and close() are required to ensure
+            // the producer is shut down after the message is sent to Kafka.
+            // The flush() will force all the data that was in . send() to be produced
+            // and close() stops the producer.
             producer.flush()
             producer.close()
         }

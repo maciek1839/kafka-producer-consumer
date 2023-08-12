@@ -1,13 +1,11 @@
 package com.showmeyourcode.kafka.java.starter;
 
 import com.showmeyourcode.kafka.java.kafka_consumer.JavaKafkaConsumer;
-import com.showmeyourcode.kafka.java.kafka_consumer.KafkaConsumerException;
 import com.showmeyourcode.kafka.java.kafka_producer.JavaKafkaProducer;
 import com.showmeyourcode.kafka.java.kafka_producer.JavaKafkaAvroProducer;
-import com.showmeyourcode.kafka.java.kafka_producer.KafkaProducerException;
 
 public class Starter {
-    public static void main(String... args) throws KafkaConsumerException, KafkaProducerException {
+    public static void main(String... args) {
         int numberOfMessages;
         if (args.length == 0) {
             numberOfMessages = 5;

@@ -29,20 +29,31 @@ class KotlinKafkaProducer internal constructor(
                     index,
                     "Hello World $index Kotlin",
                 )
-                logger.info("Sending a record $index: ${record.key()}(key=${record.value()})")
+                logger.info("Sending a record: (key=${record.key()} value=${record.value()})")
 
-                val metadata: RecordMetadata = producer.send(record).get()
-
-                val elapsedTime = System.currentTimeMillis() - time
-                logger.info(
-                    """The record metadata: 
-                        |partition=${metadata.partition()}, offset=${metadata.offset()}) time=$elapsedTime
-                    """.trimMargin(),
+                producer.send(
+                    record,
+                    Callback { metadata, exception ->
+                        if (exception == null) {
+                            val elapsedTime = System.currentTimeMillis() - time
+                            logger.info(
+                                """The record metadata: 
+                            |key=${record.key()} partition=${metadata.partition()}, 
+                            |offset=${metadata.offset()} time=$elapsedTime
+                                """.trimMargin(),
+                            )
+                        } else {
+                            logger.error("Cannot produce a message! ", exception)
+                        }
+                    },
                 )
             }
-        } catch (e: Exception) {
-            throw KafkaProducerException("Cannot produce Kafka messages. Kotlin Kafka error: ${e.message}", e)
         } finally {
+            // The data produced by a producer are asynchronous.
+            // Therefore, two additional functions, i.e., flush() and close() are required to ensure
+            // the producer is shut down after the message is sent to Kafka.
+            // The flush() will force all the data that was in . send() to be produced
+            // and close() stops the producer.
             producer.flush()
             producer.close()
         }

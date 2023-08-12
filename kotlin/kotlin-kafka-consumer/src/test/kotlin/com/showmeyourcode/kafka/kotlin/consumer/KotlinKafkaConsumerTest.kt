@@ -12,7 +12,6 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import java.time.Duration
 import java.util.*
-import java.util.function.Consumer
 
 class KotlinKafkaConsumerTest {
 
@@ -47,7 +46,7 @@ class KotlinKafkaConsumerTest {
 
     @Test
     fun shouldThrowExceptionWhenCannotFetchMessages() {
-        val throwable: KafkaConsumerException =
+        val throwable: InvalidGroupIdException =
             ThrowableAssert.catchThrowableOfType(
                 {
                     val props = Properties()
@@ -62,20 +61,12 @@ class KotlinKafkaConsumerTest {
                         5L,
                     ).consume()
                 },
-                KafkaConsumerException::class.java,
+                InvalidGroupIdException::class.java,
             )
         Assertions.assertThat(throwable)
             .hasMessage(
-                "Cannot consume Kafka messages. Kotlin Kafka error: " +
-                    "To use the group management or offset commit APIs, " +
+                "To use the group management or offset commit APIs, " +
                     "you must provide a valid group.id in the consumer configuration.",
-            )
-            .satisfies(
-                Consumer {
-                    Assertions.assertThat<Throwable>(it.cause).isInstanceOf(
-                        InvalidGroupIdException::class.java,
-                    )
-                },
             )
     }
 }

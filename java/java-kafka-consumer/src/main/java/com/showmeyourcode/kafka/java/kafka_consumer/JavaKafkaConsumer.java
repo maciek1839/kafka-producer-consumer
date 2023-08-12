@@ -30,7 +30,7 @@ public class JavaKafkaConsumer {
         this.numberOfMessagesToConsume = numberOfMessagesToConsume;
     }
 
-    public void consume() throws KafkaConsumerException {
+    public void consume() {
         logger.info("Starting a Java consumer...");
 
         var topics = List.of(KafkaProperties.TOPIC);
@@ -46,8 +46,9 @@ public class JavaKafkaConsumer {
                     logger.info("Java - Consuming record {}: {}", currentMessageNumber, consumerRecord);
                 }
             }
-        } catch (Exception e) {
-            throw new KafkaConsumerException(String.format("Cannot consume Kafka messages. Kafka error: %s", e.getMessage()), e);
+
+        } finally{
+            consumer.close();
         }
     }
 

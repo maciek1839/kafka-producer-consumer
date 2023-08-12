@@ -24,7 +24,7 @@ class KotlinKafkaProducerTest {
     @Test
     fun shouldProduceKafkaMessagesWhenConfigurationIsValid() {
         val kafkaProducer = mock<Producer<Long, String>> {
-            on { send(any()) } doReturn CompletableFuture.completedFuture(
+            on { send(any(), any()) } doReturn CompletableFuture.completedFuture(
                 RecordMetadata(
                     TopicPartition("topic1", 0),
                     1,
@@ -39,21 +39,19 @@ class KotlinKafkaProducerTest {
 
         KotlinKafkaProducer(kafkaProducer, 2L).produce()
 
-        verify(kafkaProducer, times(2)).send(any())
+        verify(kafkaProducer, times(2)).send(any(), any())
     }
 
     @Test
     fun shouldThrowExceptionWhenCannotPublishMessages() {
         val producer = mock<KafkaProducer<Long, String>>() {
-            on { send(any()) } doThrow RuntimeException("Buum!")
+            on { send(any(), any()) } doThrow RuntimeException("Buum!")
         }
 
-        val throwable = assertFailsWith<KafkaProducerException>(
+        assertFailsWith<RuntimeException>(
             block = {
                 KotlinKafkaProducer(producer, 2L).produce()
             },
         )
-
-        assertThat(throwable).hasMessage("Cannot produce Kafka messages. Kotlin Kafka error: Buum!")
     }
 }

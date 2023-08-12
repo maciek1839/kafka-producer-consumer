@@ -13,7 +13,6 @@ import org.apache.avro.reflect.ReflectData;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +39,7 @@ public class JavaKafkaAvroProducer {
         this.getSchema = getSchema;
     }
 
-    public void produce() throws KafkaProducerException {
+    public void produce()  {
         logger.info("Starting an Avro producer - {}", producerName);
         long time = System.currentTimeMillis();
         try {
@@ -63,17 +62,25 @@ public class JavaKafkaAvroProducer {
                         producerRecord.value()
                 );
 
-                RecordMetadata metadata = producer.send(producerRecord).get();
-                long elapsedTime = System.currentTimeMillis() - time;
-                logger.info("An Avro record metadata: partition={}, offset={}) time={}",
-                        metadata.partition(),
-                        metadata.offset(),
-                        elapsedTime
-                );
+                producer.send(producerRecord, (metadata, e)->{
+                    if (e == null) {
+                        long elapsedTime = System.currentTimeMillis() - time;
+                        logger.info("An Avro record metadata: partition={} offset={} time={}",
+                                metadata.partition(),
+                                metadata.offset(),
+                                elapsedTime
+                        );
+                    } else {
+                        logger.error("Cannot produce a message! ", e);
+                    }
+                });
             }
-        } catch (Exception err) {
-            throw new KafkaProducerException(String.format("Cannot produce an Avro message! Error: %s", err.getMessage()), err);
         } finally {
+            // The data produced by a producer are asynchronous.
+            // Therefore, two additional functions, i.e., flush() and close() are required to ensure
+            // the producer is shut down after the message is sent to Kafka.
+            // The flush() will force all the data that was in . send() to be produced
+            // and close() stops the producer.
             producer.flush();
             producer.close();
         }

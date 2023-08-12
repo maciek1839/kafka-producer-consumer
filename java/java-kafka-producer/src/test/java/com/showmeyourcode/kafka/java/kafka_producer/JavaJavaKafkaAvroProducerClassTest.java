@@ -3,10 +3,7 @@ package com.showmeyourcode.kafka.java.kafka_producer;
 import com.showmeyourcode.kafka.java.common.KafkaProperties;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord2;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.reflect.ReflectData;
-import org.apache.avro.specific.SpecificData;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -50,9 +47,9 @@ class JavaJavaKafkaAvroProducerClassTest {
     }
 
     @Test
-    void shouldProduceKafkaMessagesWhenAvroClassConfigurationIsValid() throws KafkaProducerException {
+    void shouldProduceKafkaMessagesWhenAvroClassConfigurationIsValid()  {
         var kafkaProducer = Mockito.mock(Producer.class);
-        when(kafkaProducer.send(any())).thenReturn(CompletableFuture.completedFuture(new RecordMetadata(new TopicPartition("topic1", 0), 1, 1, 1, Long.MIN_VALUE, 1, 1)));
+        when(kafkaProducer.send(any(), any())).thenReturn(CompletableFuture.completedFuture(new RecordMetadata(new TopicPartition("topic1", 0), 1, 1, 1, Long.MIN_VALUE, 1, 1)));
 
         new JavaKafkaAvroProducer(
                 kafkaProducer,
@@ -62,7 +59,7 @@ class JavaJavaKafkaAvroProducerClassTest {
         ).produce();
 
         ArgumentCaptor<ProducerRecord> argument = ArgumentCaptor.forClass(ProducerRecord.class);
-        verify(kafkaProducer, times(2)).send(argument.capture());
+        verify(kafkaProducer, times(2)).send(argument.capture(), any());
         argument.getAllValues().forEach( record ->{
             assertThat(record.topic()).isEqualTo(KafkaProperties.TOPIC);
             // TODO: deserialize to POJO
@@ -70,24 +67,22 @@ class JavaJavaKafkaAvroProducerClassTest {
     }
 
     @Test
-    void shouldProduceKafkaMessagesWhenAvroFileConfigurationIsValid() throws KafkaProducerException {
+    void shouldProduceKafkaMessagesWhenAvroFileConfigurationIsValid() {
         var kafkaProducer = Mockito.mock(Producer.class);
-        when(kafkaProducer.send(any())).thenReturn(CompletableFuture.completedFuture(new RecordMetadata(new TopicPartition("topic1", 0), 1, 1, 1, Long.MIN_VALUE, 1, 1)));
+        when(kafkaProducer.send(any(), any())).thenReturn(CompletableFuture.completedFuture(new RecordMetadata(new TopicPartition("topic1", 0), 1, 1, 1, Long.MIN_VALUE, 1, 1)));
 
         new JavaKafkaAvroProducer(kafkaProducer, 2L, "Avro File", unused -> ReflectData.get().getSchema(ExampleUserRecord2.class)).produce();
 
-        verify(kafkaProducer, times(2)).send(any());
+        verify(kafkaProducer, times(2)).send(any(), any());
     }
 
     @Test
     void shouldThrowExceptionWhenCannotPublishMessages() {
-        KafkaProducerException throwable = catchThrowableOfType(() -> {
+        catchThrowableOfType(() -> {
             var producer = Mockito.mock(KafkaProducer.class);
-            when(producer.send(any())).thenThrow(new RuntimeException("Buum!"));
+            when(producer.send(any(), any())).thenThrow(new RuntimeException("Buum!"));
 
             new JavaKafkaAvroProducer(producer, 5L, "test producer", unused -> ReflectData.get().getSchema(ExampleUserRecord.class)).produce();
-        }, KafkaProducerException.class);
-
-        assertThat(throwable).hasMessage("Cannot produce an Avro message! Error: Buum!");
+        }, RuntimeException.class);
     }
 }

@@ -28,7 +28,7 @@ public final class JavaKafkaProducer {
         this.numberOfMessagesToProduce = numberOfMessagesToProduce;
     }
 
-    public void produce() throws KafkaProducerException {
+    public void produce() {
         logger.info("Starting a Java producer...");
         long time = System.currentTimeMillis();
         try {
@@ -42,17 +42,26 @@ public final class JavaKafkaProducer {
                         producerRecord.key(),
                         producerRecord.value()
                 );
-                RecordMetadata metadata = producer.send(producerRecord).get();
-                long elapsedTime = System.currentTimeMillis() - time;
-                logger.info("The record metadata: partition={}, offset={}) time={}",
-                        metadata.partition(),
-                        metadata.offset(),
-                        elapsedTime
-                );
+                producer.send(producerRecord, (metadata, e)->{
+                    if(e==null){
+                        long elapsedTime = System.currentTimeMillis() - time;
+                        logger.info("The record metadata: key={} partition={} offset={} time={}",
+                                producerRecord.key(),
+                                metadata.partition(),
+                                metadata.offset(),
+                                elapsedTime
+                        );
+                    } else {
+                            logger.error("Cannot produce a message! ", e);
+                    }
+                });
             }
-        } catch (Exception e) {
-            throw new KafkaProducerException(String.format("Cannot produce a record!  Kafka error: %s", e.getMessage()), e);
-        } finally {
+        }  finally {
+            // The data produced by a producer are asynchronous.
+            // Therefore, two additional functions, i.e., flush() and close() are required to ensure
+            // the producer is shut down after the message is sent to Kafka.
+            // The flush() will force all the data that was in . send() to be produced
+            // and close() stops the producer.
             producer.flush();
             producer.close();
         }

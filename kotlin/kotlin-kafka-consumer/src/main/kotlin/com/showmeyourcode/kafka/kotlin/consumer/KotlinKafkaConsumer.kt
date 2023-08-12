@@ -34,8 +34,6 @@ class KotlinKafkaConsumer internal constructor(
                     logger.info("Kotlin - Consuming record {}: {}", currentMessageNumber, record)
                 }
             }
-        } catch (e: Exception) {
-            throw KafkaConsumerException("Cannot consume Kafka messages. Kotlin Kafka error: ${e.message}", e)
         } finally {
             kafkaConsumer.close()
         }

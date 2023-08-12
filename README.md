@@ -339,7 +339,9 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
 
 ### Format files using ktlint
 
-Use a command: ``mvn ktlint:format`` in `kotlin` module.  
+Use a command: ``mvn ktlint:format`` in `kotlin` module.
+
+*Add a JVM option `--add-opens=java.base/java.lang=ALL-UNNAMED` if you encounter any access errors running the command.*
 
 Ref: https://gantsign.com/ktlint-maven-plugin/usage.html
 

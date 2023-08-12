@@ -35,7 +35,7 @@ class JavaKafkaConsumerTest {
     }
 
     @Test
-    void shouldConsumeKafkaMessagesWhenConfigurationIsValid() throws KafkaConsumerException {
+    void shouldConsumeKafkaMessagesWhenConfigurationIsValid()  {
         var kafkaConsumer = Mockito.mock(Consumer.class);
         when(kafkaConsumer.poll(any())).thenReturn(new ConsumerRecords(Map.of(new TopicPartition("topic1", 0), List.of(new ConsumerRecord<>("topic", 0, 123L, "key", "value")))));
 
@@ -46,17 +46,16 @@ class JavaKafkaConsumerTest {
 
     @Test
     void shouldThrowExceptionWhenCannotFetchMessages() {
-        KafkaConsumerException throwable = catchThrowableOfType(() -> {
+        InvalidGroupIdException throwable = catchThrowableOfType(() -> {
             final var props = new Properties();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaProperties.BOOTSTRAP_SERVERS);
             props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
             props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
             new JavaKafkaConsumer(new KafkaConsumer<>(props), 5L).consume();
-        }, KafkaConsumerException.class);
+        }, InvalidGroupIdException.class);
 
         assertThat(throwable)
-                .hasMessage("Cannot consume Kafka messages. Kafka error: To use the group management or offset commit APIs, you must provide a valid group.id in the consumer configuration.")
-                .satisfies(e -> assertThat(e.getCause()).isInstanceOf(InvalidGroupIdException.class));
+                .hasMessage("To use the group management or offset commit APIs, you must provide a valid group.id in the consumer configuration.");
     }
 }
