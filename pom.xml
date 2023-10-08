@@ -34,19 +34,19 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.serialization.version>1.1.0</kotlin.serialization.version>
 
-        <slf4j-api.version>2.0.7</slf4j-api.version>
-        <logback-classic.version>1.4.8</logback-classic.version>
-        <logback-core.version>1.4.8</logback-core.version>
+        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <logback-classic.version>1.4.11</logback-classic.version>
+        <logback-core.version>1.4.11</logback-core.version>
 
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
 
-        <kafka_2.13.version>3.5.1</kafka_2.13.version>
-        <kafka-clients.version>3.5.1</kafka-clients.version>
+        <kafka_2.13.version>3.6.0</kafka_2.13.version>
+        <kafka-clients.version>3.6.0</kafka-clients.version>
 
-        <avro-maven-plugin.version>1.11.2</avro-maven-plugin.version>
-        <avro.version>1.11.2</avro.version>
+        <avro-maven-plugin.version>1.11.3</avro-maven-plugin.version>
+        <avro.version>1.11.3</avro.version>
 
-        <confluent.version>7.4.1</confluent.version>
+        <confluent.version>7.5.1</confluent.version>
 
         <spring-boot.version>3.1.2</spring-boot.version>
 
