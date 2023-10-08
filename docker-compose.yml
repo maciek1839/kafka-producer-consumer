@@ -59,7 +59,7 @@ services:
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
 
   connect:
-    image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0
+    image: cnfldemos/cp-server-connect-datagen:0.5.3-7.1.0@sha256:ed1778223761bc51fbcc8df2f77412e565b537587a8f376ca5f6f676fe50c619
     hostname: connect
     container_name: connect
     depends_on:
