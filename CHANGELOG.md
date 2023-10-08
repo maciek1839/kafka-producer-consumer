@@ -1,7 +1,15 @@
 # Changelog
 
-## 0.1.0 (2023-06-11)
+## 0.2.0 (2023-XX-XX)
 
+### Other changes
+
+* update dependencies
+* migrate JDK 11 to JDK 17
+* todo!!!!!!!!!!!!!
+* produce messages asynchronously
+
+## 0.1.0 (2023-06-11)
 
 ### Documentation
 
