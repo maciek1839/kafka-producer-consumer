@@ -13,7 +13,6 @@ class KotlinKafkaProducer internal constructor(
     private val producer: Producer<Long, String>,
     val numberOfMessages: Long,
 ) {
-
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaProducer::class.java)
     }
@@ -24,11 +23,12 @@ class KotlinKafkaProducer internal constructor(
 
         try {
             for (index in 1 until numberOfMessages + 1) {
-                val record: ProducerRecord<Long, String> = ProducerRecord(
-                    KafkaProperties.TOPIC,
-                    index,
-                    "Hello World $index Kotlin",
-                )
+                val record: ProducerRecord<Long, String> =
+                    ProducerRecord(
+                        KafkaProperties.TOPIC,
+                        index,
+                        "Hello World $index Kotlin",
+                    )
                 logger.info("Sending a record: (key=${record.key()} value=${record.value()})")
 
                 producer.send(

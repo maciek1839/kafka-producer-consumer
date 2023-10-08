@@ -12,30 +12,32 @@ import java.util.concurrent.CompletableFuture
 import kotlin.test.assertFailsWith
 
 class KotlinKafkaProducerTest {
-
     @Test
     fun shouldBuildValidAvroProducer() {
-        val producer: KotlinKafkaProducer = KotlinKafkaProducer.KotlinKafkaProducerBuilder()
-            .withNumberOfMessages(10L)
-            .build()
+        val producer: KotlinKafkaProducer =
+            KotlinKafkaProducer.KotlinKafkaProducerBuilder()
+                .withNumberOfMessages(10L)
+                .build()
         Assertions.assertThat(producer.numberOfMessages).isEqualTo(10L)
     }
 
     @Test
     fun shouldProduceKafkaMessagesWhenConfigurationIsValid() {
-        val kafkaProducer = mock<Producer<Long, String>> {
-            on { send(any(), any()) } doReturn CompletableFuture.completedFuture(
-                RecordMetadata(
-                    TopicPartition("topic1", 0),
-                    1,
-                    1,
-                    1,
-                    Long.MIN_VALUE,
-                    1,
-                    1,
-                ),
-            )
-        }
+        val kafkaProducer =
+            mock<Producer<Long, String>> {
+                on { send(any(), any()) } doReturn
+                    CompletableFuture.completedFuture(
+                        RecordMetadata(
+                            TopicPartition("topic1", 0),
+                            1,
+                            1,
+                            1,
+                            Long.MIN_VALUE,
+                            1,
+                            1,
+                        ),
+                    )
+            }
 
         KotlinKafkaProducer(kafkaProducer, 2L).produce()
 
@@ -44,9 +46,10 @@ class KotlinKafkaProducerTest {
 
     @Test
     fun shouldThrowExceptionWhenCannotPublishMessages() {
-        val producer = mock<KafkaProducer<Long, String>>() {
-            on { send(any(), any()) } doThrow RuntimeException("Buum!")
-        }
+        val producer =
+            mock<KafkaProducer<Long, String>> {
+                on { send(any(), any()) } doThrow RuntimeException("Buum!")
+            }
 
         assertFailsWith<RuntimeException>(
             block = {

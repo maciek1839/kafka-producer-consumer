@@ -14,20 +14,21 @@ import java.time.Duration
 import java.util.*
 
 class KotlinKafkaConsumerTest {
-
     @Test
     fun shouldBuildValidConsumer() {
-        val kotlinKafkaConsumer = KotlinKafkaConsumer.KotlinKafkaConsumerBuilder()
-            .withNumberOfMessages(10L)
-            .build()
+        val kotlinKafkaConsumer =
+            KotlinKafkaConsumer.KotlinKafkaConsumerBuilder()
+                .withNumberOfMessages(10L)
+                .build()
         Assertions.assertThat(kotlinKafkaConsumer.numberOfMessagesToConsume).isEqualTo(10L)
     }
 
     @Test
     fun shouldConsumeKafkaMessagesWhenConfigurationIsValid() {
-        val kafkaConsumer = Mockito.mock(
-            MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)::class.java,
-        )
+        val kafkaConsumer =
+            Mockito.mock(
+                MockConsumer<String, String>(OffsetResetStrategy.EARLIEST)::class.java,
+            )
         Mockito.`when`(kafkaConsumer.poll(ArgumentMatchers.any<Duration>())).thenReturn(
             ConsumerRecords(
                 mapOf(

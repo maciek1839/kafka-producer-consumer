@@ -5,7 +5,12 @@ import com.showmeyourcode.kafka.kotlin.producer.KotlinKafkaAvroWithRegistryProdu
 import com.showmeyourcode.kafka.kotlin.producer.KotlinKafkaProducer
 
 fun main(args: Array<String>) {
-    val numberOfMessages = if (args.isEmpty()) { 10L } else { args[0].toLong() }
+    val numberOfMessages =
+        if (args.isEmpty()) {
+            10L
+        } else {
+            args[0].toLong()
+        }
 
     KotlinKafkaProducer.KotlinKafkaProducerBuilder().withNumberOfMessages(numberOfMessages).build().produce()
     KotlinKafkaAvroWithRegistryProducer.KotlinKafkaAvroWithRegistryProducerBuilder().withNumberOfMessages(
