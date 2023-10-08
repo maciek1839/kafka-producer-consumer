@@ -16,7 +16,6 @@ class KotlinKafkaAvroWithRegistryProducer internal constructor(
     private val producer: Producer<Long, GenericRecord>,
     val numberOfMessages: Long,
 ) {
-
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(KotlinKafkaAvroWithRegistryProducer::class.java)
     }
@@ -35,11 +34,12 @@ class KotlinKafkaAvroWithRegistryProducer internal constructor(
                 avroRecord.put("age", dataRecord.age)
                 avroRecord.put("phoneNumber", dataRecord.phoneNumber)
 
-                val record: ProducerRecord<Long, GenericRecord> = ProducerRecord(
-                    KafkaProperties.TOPIC,
-                    index,
-                    avroRecord,
-                )
+                val record: ProducerRecord<Long, GenericRecord> =
+                    ProducerRecord(
+                        KafkaProperties.TOPIC,
+                        index,
+                        avroRecord,
+                    )
                 logger.info(
                     """Sending an Avro record: 
                         |key=${record.key()}, value=${record.value()}
@@ -75,7 +75,6 @@ class KotlinKafkaAvroWithRegistryProducer internal constructor(
     }
 
     class KotlinKafkaAvroWithRegistryProducerBuilder {
-
         private var numberOfMessages: Long = 0
 
         fun withNumberOfMessages(numberOfMessages: Long) = apply { this.numberOfMessages = numberOfMessages }

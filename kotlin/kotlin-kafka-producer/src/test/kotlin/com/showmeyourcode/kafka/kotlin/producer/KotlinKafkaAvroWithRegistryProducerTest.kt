@@ -12,7 +12,6 @@ import java.util.concurrent.CompletableFuture
 import kotlin.test.assertFailsWith
 
 class KotlinKafkaAvroWithRegistryProducerTest {
-
     @Test
     fun shouldBuildValidAvroProducer() {
         val producer: KotlinKafkaAvroWithRegistryProducer =
@@ -24,19 +23,21 @@ class KotlinKafkaAvroWithRegistryProducerTest {
 
     @Test
     fun shouldProduceKafkaMessagesWhenAvroFileConfigurationIsValid() {
-        val kafkaProducer = mock<Producer<Long, GenericRecord>> {
-            on { send(any(), any()) } doReturn CompletableFuture.completedFuture(
-                RecordMetadata(
-                    TopicPartition("topic1", 0),
-                    1,
-                    1,
-                    1,
-                    Long.MIN_VALUE,
-                    1,
-                    1,
-                ),
-            )
-        }
+        val kafkaProducer =
+            mock<Producer<Long, GenericRecord>> {
+                on { send(any(), any()) } doReturn
+                    CompletableFuture.completedFuture(
+                        RecordMetadata(
+                            TopicPartition("topic1", 0),
+                            1,
+                            1,
+                            1,
+                            Long.MIN_VALUE,
+                            1,
+                            1,
+                        ),
+                    )
+            }
         KotlinKafkaAvroWithRegistryProducer(kafkaProducer, 2L).produce()
 
         verify(kafkaProducer, times(2)).send(any(), any())
@@ -44,9 +45,10 @@ class KotlinKafkaAvroWithRegistryProducerTest {
 
     @Test
     fun shouldThrowExceptionWhenCannotPublishMessages() {
-        val producer = mock<KafkaProducer<Long, GenericRecord>> {
-            on { send(any(), any()) } doThrow RuntimeException("Buum!")
-        }
+        val producer =
+            mock<KafkaProducer<Long, GenericRecord>> {
+                on { send(any(), any()) } doThrow RuntimeException("Buum!")
+            }
 
         assertFailsWith<RuntimeException>(
             block = {
