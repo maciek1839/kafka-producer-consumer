@@ -192,7 +192,7 @@ With an event-driven system, the capture, communication, processing, and persist
 This differs from a traditional request-driven model.
 ```
 
-Event-driven architecture is made up of event producers and event consumers. 
+Event-driven architecture (EDA) is made up of event producers and event consumers. 
 An event producer detects or senses an event and represents the event as a message. 
 It does not know the consumer of the event, or the outcome of an event.
 
@@ -224,6 +224,7 @@ References:
 - https://blog.ippon.tech/event-driven-architecture-getting-started-with-kafka-part-1/
 - https://hevodata.com/learn/kafka-event-driven-architecture/
 - https://www.redhat.com/en/topics/integration/what-is-event-driven-architecture
+- https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/event-driven
 - (recommended) **https://microservices.io/patterns/data/event-driven-architecture.html**
 
 ## Fault tolerance and Resiliency

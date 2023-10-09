@@ -1,6 +1,8 @@
 # TODOs
 
+- Add from https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/event-driven
 - Offset examples
+  - Add business context to consumer and producer (warehouse?)
 - Add Kafka Streams (kafka-streams) + consider new features from the latest release
 - Use Spring Boot POM to manage dependencies
 - SonarLint warnings
