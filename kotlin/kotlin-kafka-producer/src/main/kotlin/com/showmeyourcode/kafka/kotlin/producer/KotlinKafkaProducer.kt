@@ -51,23 +51,20 @@ class KotlinKafkaProducer internal constructor(
     ) {
         logger.info("Sending a record: (key=${record.key()} value=${record.value()} partition=${record.partition()})")
 
-        producer.send(
-            record,
-            Callback { metadata, exception ->
-                if (exception == null) {
-                    val elapsedTime = System.currentTimeMillis() - time
-                    logger.info(
-                        """The record metadata: 
+        producer.send(record) { metadata, exception ->
+            if (exception == null) {
+                val elapsedTime = System.currentTimeMillis() - time
+                logger.info(
+                    """The record metadata: 
                                     |key=${record.key()} partition=${metadata.partition()}, 
                                     |offset=${metadata.offset()} time=$elapsedTime
                                     |topic=${record.topic()} value=${record.value()}
-                        """.trimMargin(),
-                    )
-                } else {
-                    logger.error("Cannot produce a message! ", exception)
-                }
-            },
-        )
+                    """.trimMargin(),
+                )
+            } else {
+                logger.error("Cannot produce a message! ", exception)
+            }
+        }
     }
 
     class KotlinKafkaProducerBuilder {
