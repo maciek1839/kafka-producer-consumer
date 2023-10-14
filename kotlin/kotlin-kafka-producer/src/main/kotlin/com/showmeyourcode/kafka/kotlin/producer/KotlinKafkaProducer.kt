@@ -47,7 +47,7 @@ class KotlinKafkaProducer internal constructor(
 
     private fun produceMessage(
         record: ProducerRecord<Long, String>,
-        time: Long
+        time: Long,
     ) {
         logger.info("Sending a record: (key=${record.key()} value=${record.value()} partition=${record.partition()})")
 
@@ -61,7 +61,7 @@ class KotlinKafkaProducer internal constructor(
                                     |key=${record.key()} partition=${metadata.partition()}, 
                                     |offset=${metadata.offset()} time=$elapsedTime
                                     |topic=${record.topic()} value=${record.value()}
-                                    """.trimMargin(),
+                        """.trimMargin(),
                     )
                 } else {
                     logger.error("Cannot produce a message! ", exception)
