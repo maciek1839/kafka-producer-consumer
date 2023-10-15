@@ -17,7 +17,9 @@ public class AppProperties {
 
     private boolean isProducerEnabled;
     private boolean isConsumerEnabled;
+    private boolean isStreamingEnabled;
     private AppKafkaProperties kafka;
+    private AppKafkaStreamingProperties kafkaStreaming;
 
     @PostConstruct
     private void setup(){
@@ -28,5 +30,11 @@ public class AppProperties {
     public static class AppKafkaProperties {
         private String topicName;
         private String schedulerFixedRate;
+    }
+
+    @Data
+    public static class AppKafkaStreamingProperties {
+        private String inputTopic;
+        private String outputTopic;
     }
 }

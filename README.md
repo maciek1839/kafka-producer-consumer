@@ -26,7 +26,7 @@
 
 ## Technology
 
-- Kafka
+- Kafka / Kafka Streams
 - Confluent Platform for Apache Kafka
 - Maven
 - Kotlin
