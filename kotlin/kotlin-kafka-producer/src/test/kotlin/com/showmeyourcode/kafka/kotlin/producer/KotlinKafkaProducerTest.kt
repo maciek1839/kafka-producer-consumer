@@ -23,7 +23,6 @@ class KotlinKafkaProducerTest {
 
     @Test
     fun shouldProduceKafkaMessagesWhenConfigurationIsValid() {
-        val captor = argumentCaptor<Callback>()
         val resultRecord =
             RecordMetadata(
                 TopicPartition("topic1", 0),
@@ -45,19 +44,6 @@ class KotlinKafkaProducerTest {
             }
 
         KotlinKafkaProducer(kafkaProducer, 2L).produce()
-
-        captor.capture().onCompletion(
-            RecordMetadata(
-                TopicPartition("topic1", 0),
-                1,
-                1,
-                1,
-                Long.MIN_VALUE,
-                1,
-                1,
-            ),
-            null,
-        )
 
         verify(kafkaProducer, times(2)).send(any(), any())
     }
