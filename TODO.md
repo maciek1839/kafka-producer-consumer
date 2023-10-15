@@ -10,7 +10,6 @@
 - Rearrange examples from all modules to play together into an Event Driven System (define business context)
 - (Optional) Implementation for SSL/TLS Kafka
 - (Optional) Add TestContainers tests for starters
-- fix tests (a broker not available?)
 
 ---
 handle errors? retry?

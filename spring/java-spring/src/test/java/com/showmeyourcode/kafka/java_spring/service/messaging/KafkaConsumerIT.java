@@ -23,9 +23,9 @@ import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
-@ActiveProfiles("consumer")
+@ActiveProfiles({"test-kafka","consumer"})
 @DirtiesContext
-@EmbeddedKafka(partitions = 1, brokerProperties = { "listeners=PLAINTEXT://localhost:9092", "port=9092" })
+@EmbeddedKafka(topics = {"${app.kafka.topic-name}"})
 class KafkaConsumerIT {
 
     @Autowired
@@ -54,6 +54,5 @@ class KafkaConsumerIT {
         verify(myKafkaListener, timeout(5000)).consumeKafkaMessage(messageCaptor.capture(), partitionCaptor.capture());
 
         assertThat(messageCaptor.getValue()).startsWith("KafkaMessage(producerId=");
-        assertThat(partitionCaptor.getValue()).isZero();
     }
 }

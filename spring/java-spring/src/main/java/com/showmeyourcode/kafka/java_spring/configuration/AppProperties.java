@@ -36,5 +36,6 @@ public class AppProperties {
     public static class AppKafkaStreamingProperties {
         private String inputTopic;
         private String outputTopic;
+        private String appId;
     }
 }

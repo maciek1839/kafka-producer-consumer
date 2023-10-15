@@ -18,6 +18,7 @@ app:
     input-topic: spring.kafka.streaming.input-topic
     output-topic: spring.kafka.streaming.output-topic
     scheduler-fixed-rate: 10000
+    app-id: spring-streaming-app
   is-consumer-enabled: true
   is-producer-enabled: true
   is-streaming-enabled: true
