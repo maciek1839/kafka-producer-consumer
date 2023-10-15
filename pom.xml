@@ -42,6 +42,7 @@
 
         <kafka_2.13.version>3.6.0</kafka_2.13.version>
         <kafka-clients.version>3.6.0</kafka-clients.version>
+        <kafka-streams.version>3.4.1</kafka-streams.version>
 
         <avro-maven-plugin.version>1.11.3</avro-maven-plugin.version>
         <avro.version>1.11.3</avro.version>

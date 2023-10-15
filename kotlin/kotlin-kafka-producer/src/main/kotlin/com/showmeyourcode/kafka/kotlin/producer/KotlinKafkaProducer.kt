@@ -23,30 +23,16 @@ class KotlinKafkaProducer internal constructor(
 
         try {
             for (index in 1 until numberOfMessages + 1) {
+                // You can specify a partition or not.
+                // If no partition is specified, Kafka will use a round-robin partition assignment.
+                // If the ordering of the messages matters for you, you should specify a key.
                 val record: ProducerRecord<Long, String> =
                     ProducerRecord(
                         KafkaProperties.TOPIC,
                         index,
                         "Hello World $index Kotlin",
                     )
-                logger.info("Sending a record: (key=${record.key()} value=${record.value()})")
-
-                producer.send(
-                    record,
-                    Callback { metadata, exception ->
-                        if (exception == null) {
-                            val elapsedTime = System.currentTimeMillis() - time
-                            logger.info(
-                                """The record metadata: 
-                            |key=${record.key()} partition=${metadata.partition()}, 
-                            |offset=${metadata.offset()} time=$elapsedTime
-                                """.trimMargin(),
-                            )
-                        } else {
-                            logger.error("Cannot produce a message! ", exception)
-                        }
-                    },
-                )
+                produceMessage(record, time)
             }
         } finally {
             // The data produced by a producer are asynchronous.
@@ -56,6 +42,28 @@ class KotlinKafkaProducer internal constructor(
             // and close() stops the producer.
             producer.flush()
             producer.close()
+        }
+    }
+
+    private fun produceMessage(
+        record: ProducerRecord<Long, String>,
+        time: Long,
+    ) {
+        logger.info("Sending a record: (key=${record.key()} value=${record.value()} partition=${record.partition()})")
+
+        producer.send(record) { metadata, exception ->
+            if (exception == null) {
+                val elapsedTime = System.currentTimeMillis() - time
+                logger.info(
+                    """The record metadata: 
+                                    |key=${record.key()} partition=${metadata.partition()}, 
+                                    |offset=${metadata.offset()} time=$elapsedTime
+                                    |topic=${record.topic()} value=${record.value()}
+                    """.trimMargin(),
+                )
+            } else {
+                logger.error("Cannot produce a message! ", exception)
+            }
         }
     }
 

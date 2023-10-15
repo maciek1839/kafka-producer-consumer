@@ -1,17 +1,27 @@
 package com.showmeyourcode.kafka.kotlin.producer
 
-import org.apache.kafka.clients.producer.KafkaProducer
+import org.apache.kafka.clients.producer.Callback
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.RecordMetadata
 import org.apache.kafka.common.TopicPartition
 import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.kotlin.*
 import java.util.concurrent.CompletableFuture
-import kotlin.test.assertFailsWith
 
 class KotlinKafkaProducerTest {
+    private val resultRecord =
+        RecordMetadata(
+            TopicPartition("topic1", 0),
+            1,
+            1,
+            1,
+            Long.MIN_VALUE,
+            1,
+            1,
+        )
+
     @Test
     fun shouldBuildValidAvroProducer() {
         val producer: KotlinKafkaProducer =
@@ -25,18 +35,12 @@ class KotlinKafkaProducerTest {
     fun shouldProduceKafkaMessagesWhenConfigurationIsValid() {
         val kafkaProducer =
             mock<Producer<Long, String>> {
-                on { send(any(), any()) } doReturn
-                    CompletableFuture.completedFuture(
-                        RecordMetadata(
-                            TopicPartition("topic1", 0),
-                            1,
-                            1,
-                            1,
-                            Long.MIN_VALUE,
-                            1,
-                            1,
-                        ),
-                    )
+                on { send(any(), any()) } doAnswer {
+                    it.arguments
+                    val callback = it.getArgument(1) as Callback
+                    callback.onCompletion(resultRecord, null)
+                    CompletableFuture.completedFuture(resultRecord)
+                }
             }
 
         KotlinKafkaProducer(kafkaProducer, 2L).produce()
@@ -45,16 +49,19 @@ class KotlinKafkaProducerTest {
     }
 
     @Test
-    fun shouldThrowExceptionWhenCannotPublishMessages() {
-        val producer =
-            mock<KafkaProducer<Long, String>> {
-                on { send(any(), any()) } doThrow RuntimeException("Buum!")
+    fun shouldHandleExceptionsGracefullyWhenCannotPublishMessages() {
+        val kafkaProducer =
+            mock<Producer<Long, String>> {
+                on { send(any(), any()) } doAnswer {
+                    it.arguments
+                    val callback = it.getArgument(1) as Callback
+                    callback.onCompletion(resultRecord, RuntimeException("Buum!"))
+                    CompletableFuture.completedFuture(resultRecord)
+                }
             }
 
-        assertFailsWith<RuntimeException>(
-            block = {
-                KotlinKafkaProducer(producer, 2L).produce()
-            },
-        )
+        assertDoesNotThrow {
+            KotlinKafkaProducer(kafkaProducer, 2L).produce()
+        }
     }
 }

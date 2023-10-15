@@ -1,3 +1,4 @@
 app:
   kafka:
     scheduler-fixed-rate: 500
+  is-streaming-enabled: false

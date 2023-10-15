@@ -1,10 +1,11 @@
 spring:
   task.scheduling.pool.size: 2
   kafka:
+    bootstrap-servers: 127.0.0.1:9092
     producer:
-      bootstrap-servers: 127.0.0.1:9092
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      group-id: group_id
+      group-id: spring-app-group-id
 
 server:
   port: 8080
@@ -13,5 +14,11 @@ app:
   kafka:
     topic-name: spring.kafka.topic
     scheduler-fixed-rate: 10000
+  kafka-streaming:
+    input-topic: spring.kafka.streaming.input-topic
+    output-topic: spring.kafka.streaming.output-topic
+    scheduler-fixed-rate: 10000
+    app-id: spring-streaming-app
   is-consumer-enabled: true
   is-producer-enabled: true
+  is-streaming-enabled: true
