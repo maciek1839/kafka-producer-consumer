@@ -24,7 +24,7 @@ public class KafkaConsumerService {
         log.info("Kafka consumer initialized.");
     }
 
-    @KafkaListener(topics = "spring.kafka.topic", groupId = "group_id")
+    @KafkaListener(topics = "${app.kafka.topic-name}", groupId = "${spring.kafka.producer.group-id}")
     public void consumeKafkaMessage(
             @Payload String message,
             @Header("kafka_receivedPartitionId") int partition
