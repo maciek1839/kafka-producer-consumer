@@ -7,7 +7,7 @@
 version: '2'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.1@sha256:0bec03c1f3ce77eff90e58d35cf4aae0fc7776afb26c8e020bb521668291fddb
+    image: confluentinc/cp-zookeeper:7.5.2@sha256:9afea745c406a7c572b1b12de6656f73ec14d53060e7a9e223b1ad161f42bd52
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -17,7 +17,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   broker:
-    image: confluentinc/cp-server:7.5.1@sha256:c3fcb1c193381fdb5f8185cc3304a20a2172f270eeb0a397be934ca86f881817
+    image: confluentinc/cp-server:7.5.2@sha256:fc56807ea42feab69b2bb01d92017607b74b8575c804213db36d913cc5df58a7
     hostname: broker
     container_name: broker
     depends_on:
@@ -46,7 +46,7 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
 
   schema-registry:
-    image: confluentinc/cp-schema-registry:7.5.1@sha256:5a2b1c624b03817ab0a4e156eac410b830862c70386e3af2fd5397a208d37824
+    image: confluentinc/cp-schema-registry:7.5.2@sha256:2f5bece1af61e2567dbb2721250291d30ee6517ce714c3a8f4e086c38df4f6fa
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -89,7 +89,7 @@ services:
       CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
 
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.5.1@sha256:7e767a1fb649a58fcc77c41a7050c268fffb0dfe04b25cf6799be9126ed24d60
+    image: confluentinc/cp-enterprise-control-center:7.5.2@sha256:c0e790ae93f5bf307ae78560a0a474de0fb27a2a18d107c7c8a2499289d66a81
     hostname: control-center
     container_name: control-center
     depends_on:
@@ -112,7 +112,7 @@ services:
       PORT: 9021
 
   ksqldb-server:
-    image: confluentinc/cp-ksqldb-server:7.5.1@sha256:f32ebb8e3793fb59afa89ce67367125816b90ce63bfb033e3177c1f40642a2f3
+    image: confluentinc/cp-ksqldb-server:7.5.2@sha256:7a2c1521f18ce39efb82e9775378b9d869156ac22a79a65cd7a441399d8f4f71
     hostname: ksqldb-server
     container_name: ksqldb-server
     depends_on:
@@ -135,7 +135,7 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: 'true'
 
   ksqldb-cli:
-    image: confluentinc/cp-ksqldb-cli:7.5.1@sha256:2d7f8f8f4f4ffca4e3d54867d48353a23fdb80e7fb1fb8e3b69bb7814ac761d8
+    image: confluentinc/cp-ksqldb-cli:7.5.2@sha256:66a006fecbf08efc7138c880fdd22a65112dd43e3580754a2b10b0bc246d452a
     container_name: ksqldb-cli
     depends_on:
       - broker
@@ -145,7 +145,7 @@ services:
     tty: true
 
   ksql-datagen:
-    image: confluentinc/ksqldb-examples:7.5.1@sha256:bb12995ea422fbfa5fbfaafac07979227c09d7e9dcaee7a3a87427b30c80746c
+    image: confluentinc/ksqldb-examples:7.5.2@sha256:6cea09fc0984bcce7473d8ffdb9e83e97d82d8b71fd5b3436683c058bb68a232
     hostname: ksql-datagen
     container_name: ksql-datagen
     depends_on:
@@ -167,7 +167,7 @@ services:
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
 
   rest-proxy:
-    image: confluentinc/cp-kafka-rest:7.5.1@sha256:dab20ae6fb83b8ce5f2f46c549b3810c60019c2083facf66dd418c351fdc351b
+    image: confluentinc/cp-kafka-rest:7.5.2@sha256:e455a821372eaf001e429c9ec39d1eb8ce450c9c17ad40221d17bd96003d9227
     depends_on:
       - broker
       - schema-registry
