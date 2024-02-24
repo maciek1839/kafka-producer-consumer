@@ -82,5 +82,3 @@ pages:
     expire_in: 1 hour
   only:
     - master
-    - develop
-    - development

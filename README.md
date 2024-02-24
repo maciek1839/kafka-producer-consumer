@@ -502,30 +502,6 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
 
 Reference: https://www.confluent.io/blog/5-common-pitfalls-when-using-apache-kafka/
 
-## Maven commands
-
-- mvn clean install -DskipTests
-
-### Format files using ktlint
-
-Use a command: ``mvn ktlint:format`` in `kotlin` module.
-
-*Add a JVM option `--add-opens=java.base/java.lang=ALL-UNNAMED` if you encounter any access errors running the command.*
-
-Ref: https://gantsign.com/ktlint-maven-plugin/usage.html
-
-### Release a new version
-
-Run a Maven command using Maven Release plugin:
-```text
-mvn release:prepare
-```
-
-If you want to only update versions (not recommended), use below command:
-```text
-mvn release:update-versions -DautoVersionSubmodules=true
-```
-
 ## Useful links
 
 - https://kotlinlang.org/docs/maven.html
