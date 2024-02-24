@@ -19,9 +19,9 @@
 
 ---
 
-| Branch |                                                                                               Pipeline                                                                                               |                                                                                            Code coverage                                                                                             |                                          Test report                                           |                                 SonarCloud                                 |
-|:------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------:|
-| master | [![pipeline status](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/badges/master/pipeline.svg)](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/-/commits/master) | [![coverage report](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/badges/master/coverage.svg)](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/-/commits/master) | [link](https://showmeyourcodeyoutube.gitlab.io/kafka-producer-consumer/test-report/index.html) | [link](https://sonarcloud.io/organizations/showmeyourcodeyoutube/projects) |
+| Branch |                                                                                               Pipeline                                                                                               |                                                                                            Code coverage                                                                                             |                                          Test report                                           |                                          Dependency report                                           |                                 SonarCloud                                 |
+|:------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------:|
+| master | [![pipeline status](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/badges/master/pipeline.svg)](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/-/commits/master) | [![coverage report](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/badges/master/coverage.svg)](https://gitlab.com/ShowMeYourCodeYouTube/kafka-producer-consumer/-/commits/master) | [link](https://showmeyourcodeyoutube.gitlab.io/kafka-producer-consumer/test-report/index.html) | [link](https://showmeyourcodeyoutube.gitlab.io/kafka-producer-consumer/dependency-check-report.html) | [link](https://sonarcloud.io/organizations/showmeyourcodeyoutube/projects) |
 
 
 ## Technology
@@ -39,6 +39,9 @@
     - https://github.com/avro-kotlin/avro4k
     - Limitations: cannot generate a class from .avsc file (it allows on generating a schema based on a Kotlin class).
 - Junit/Mockito/AssertJ + EmbeddedKafka
+---
+Maven plugins:
+- [OWASP / Dependency-Check](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/configuration.html)
 
 ## Getting started
 
