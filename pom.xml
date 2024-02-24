@@ -35,29 +35,29 @@
         <kotlin.serialization.version>1.1.0</kotlin.serialization.version>
 
         <slf4j-api.version>2.0.9</slf4j-api.version>
-        <logback-classic.version>1.4.11</logback-classic.version>
-        <logback-core.version>1.4.11</logback-core.version>
+        <logback-classic.version>1.5.0</logback-classic.version>
+        <logback-core.version>1.5.0</logback-core.version>
 
         <lombok.version>1.18.30</lombok.version>
 
-        <kafka_2.13.version>3.6.0</kafka_2.13.version>
-        <kafka-clients.version>3.6.0</kafka-clients.version>
-        <kafka-streams.version>3.4.1</kafka-streams.version>
+        <kafka_2.13.version>3.6.1</kafka_2.13.version>
+        <kafka-clients.version>3.6.1</kafka-clients.version>
+        <kafka-streams.version>3.6.1</kafka-streams.version>
 
         <avro-maven-plugin.version>1.11.3</avro-maven-plugin.version>
         <avro.version>1.11.3</avro.version>
 
-        <confluent.version>7.5.1</confluent.version>
+        <confluent.version>7.6.0</confluent.version>
 
         <spring-boot.version>3.1.4</spring-boot.version>
 
         <junit.version>5.9.1</junit.version>
         <mockito.verion>5.6.0</mockito.verion>
-        <assertj.version>3.24.2</assertj.version>
+        <assertj.version>3.25.3</assertj.version>
 
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>3.1.2</maven-failsafe-plugin.version>
-        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+        <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.2.5</maven-failsafe-plugin.version>
+        <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
         <ktlint-plugin.version>3.0.0</ktlint-plugin.version>
     </properties>
 
