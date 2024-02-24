@@ -69,7 +69,7 @@ build:
       - java/java-starter/target/*.jar
     expire_in: 1 hour
 
-Check dependencies:
+check-dependencies:
   stage: build
   allow_failure: true
   script:
