@@ -6,7 +6,7 @@
 version: '2'
 services:
   zookeeper1:
-    image: confluentinc/cp-zookeeper:7.5.1@sha256:0bec03c1f3ce77eff90e58d35cf4aae0fc7776afb26c8e020bb521668291fddb
+    image: confluentinc/cp-zookeeper:7.6.0@sha256:9babd1c0beaf93189982bdbb9fe4bf194a2730298b640c057817746c19838866
     hostname: zookeeper1
     container_name: zookeeper-ssl
     ports:
@@ -25,7 +25,7 @@ services:
       - ./secrets:/etc/kafka/secrets
 
   kafka1-ssl:
-    image: confluentinc/cp-kafka:7.5.1@sha256:dc9b972db0029bca9c9fa33fb7d271bbd6de35bfe56bed42d78dcb4b0b63f6b2
+    image: confluentinc/cp-kafka:7.6.0@sha256:24cdd3a7fa89d2bed150560ebea81ff1943badfa61e51d66bb541a6b0d7fb047
     hostname: kafka1-ssl
     container_name: kafka1-ssl
     ports:
