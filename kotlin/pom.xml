@@ -10,7 +10,7 @@
     <artifactId>kotlin-parent</artifactId>
 
     <properties>
-        <mockito-kotlin.version>5.2.1</mockito-kotlin.version>
+        <mockito-kotlin.version>5.3.1</mockito-kotlin.version>
     </properties>
 
     <modules>
@@ -79,7 +79,7 @@
             <dependency>
                 <groupId>com.github.avro-kotlin.avro4k</groupId>
                 <artifactId>avro4k-core</artifactId>
-                <version>1.10.0</version>
+                <version>1.10.1</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
