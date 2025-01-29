@@ -4,6 +4,9 @@ default:
     - ': before_script'
     - chmod +x mvnw
     - export MAVEN_OPTS="-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/"
+    # required by Maven Wrapper
+    # ./mvnw: line 253: tar: command not found
+    - yum install -y tar gzip
 
 # Static Application Security Testing (SAST) is a frequently used Application Security (AppSec) tool,
 # which scans an application’s source, binary, or byte code.
