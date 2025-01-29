@@ -15,7 +15,8 @@ class KotlinKafkaAvroWithRegistryProducerTest {
     @Test
     fun shouldBuildValidAvroProducer() {
         val producer: KotlinKafkaAvroWithRegistryProducer =
-            KotlinKafkaAvroWithRegistryProducer.KotlinKafkaAvroWithRegistryProducerBuilder()
+            KotlinKafkaAvroWithRegistryProducer
+                .KotlinKafkaAvroWithRegistryProducerBuilder()
                 .withNumberOfMessages(10L)
                 .build()
         Assertions.assertThat(producer.numberOfMessages).isEqualTo(10L)

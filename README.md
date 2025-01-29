@@ -9,7 +9,7 @@
 - [Confluent Platform](#confluent-platform)
 - [Message Queue vs Streaming (Kafka)](#message-queue-vs-streaming-kafka)
 - [Event-driven architecture](#event-driven-architecture)
-- [FFault tolerance, high availability and Resiliency](#fault-tolerance-high-availability-and-resiliency)
+- [Fault tolerance, high availability and Resiliency](#fault-tolerance-high-availability-and-resiliency)
 - [What happens when a new consumer joins the group in Kafka? (rebalancing)](#what-happens-when-a-new-consumer-joins-the-group-in-kafka-rebalancing)
 - [To consideration](#to-consideration)
 - [Kafka best practises](#kafka-best-practises)

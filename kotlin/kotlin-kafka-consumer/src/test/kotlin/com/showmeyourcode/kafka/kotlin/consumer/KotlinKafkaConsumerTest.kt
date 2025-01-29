@@ -17,7 +17,8 @@ class KotlinKafkaConsumerTest {
     @Test
     fun shouldBuildValidConsumer() {
         val kotlinKafkaConsumer =
-            KotlinKafkaConsumer.KotlinKafkaConsumerBuilder()
+            KotlinKafkaConsumer
+                .KotlinKafkaConsumerBuilder()
                 .withNumberOfMessages(10L)
                 .build()
         Assertions.assertThat(kotlinKafkaConsumer.numberOfMessagesToConsume).isEqualTo(10L)
@@ -64,7 +65,8 @@ class KotlinKafkaConsumerTest {
                 },
                 InvalidGroupIdException::class.java,
             )
-        Assertions.assertThat(throwable)
+        Assertions
+            .assertThat(throwable)
             .hasMessage(
                 "To use the group management or offset commit APIs, " +
                     "you must provide a valid group.id in the consumer configuration.",

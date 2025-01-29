@@ -53,7 +53,8 @@ class KotlinKafkaConsumer internal constructor(
             properties[ConsumerConfig.GROUP_ID_CONFIG] = KafkaProperties.CONSUMER_GROUP_ID
 
             return KotlinKafkaConsumer(
-                org.apache.kafka.clients.consumer.KafkaConsumer(properties),
+                org.apache.kafka.clients.consumer
+                    .KafkaConsumer(properties),
                 numberOfMessages,
             )
         }
