@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.showmeyourcode.kafka</groupId>
         <artifactId>kotlin-parent</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
+        <version>0.2.0</version>
     </parent>
 
     <artifactId>kotlin-kafka-producer</artifactId>
@@ -13,7 +13,7 @@
         <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>kotlin-common</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>0.2.0</version>
         </dependency>
 
         <dependency>
