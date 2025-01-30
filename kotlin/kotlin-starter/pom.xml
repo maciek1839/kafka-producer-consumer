@@ -4,7 +4,7 @@
     <parent>
         <artifactId>kotlin-parent</artifactId>
         <groupId>com.showmeyourcode.kafka</groupId>
-        <version>0.2.0</version>
+        <version>0.2.1-SNAPSHOT</version>
     </parent>
     <artifactId>kotlin-starter</artifactId>
 
@@ -16,12 +16,12 @@
         <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>kotlin-kafka-producer</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.showmeyourcode.kafka</groupId>
             <artifactId>kotlin-kafka-consumer</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
