@@ -25,7 +25,7 @@ class KotlinKafkaAvroWithRegistryProducer internal constructor(
         logger.info("Starting an Avro Kotlin producer...")
         val time = System.currentTimeMillis()
         try {
-            val schema: Schema = Avro.default.schema(ExampleUserRecord.serializer())
+            val schema: Schema = Avro.schema(ExampleUserRecord.serializer().descriptor)
             logger.info("Generated schema: ${schema.toString(true)}")
             for (index in 1 until numberOfMessages + 1) {
                 val dataRecord = ExampleUserRecord("name", index)

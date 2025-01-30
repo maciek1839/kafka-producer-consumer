@@ -1,5 +1,5 @@
 default:
-  image: amazoncorretto:17.0.14@sha256:8e659909b2e35c5d12a2595c3a90f722c9f8eeab1b7826d31fd73a57b52b9093
+  image: amazoncorretto:21.0.6@sha256:c85c7135dc4129c10319b6aacb01e1f896ae0e3fccaa3823daae74643cac6126
   before_script:
     - chmod +x mvnw
     - export MAVEN_OPTS="-Dmaven.repo.local=${CI_PROJECT_DIR}/.m2/"
