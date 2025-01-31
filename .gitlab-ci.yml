@@ -44,7 +44,7 @@ integration-tests:
     expire_in: 1 hour
 
 confluent-integration-tests:
-  image: docker:20.10.24@sha256:2967f0819c84dd589ed0a023b9d25dcfe7a3c123d5bf784ffbb77edf55335f0c
+  image: docker:27.5.1@sha256:3ab005a2e4872f0b10fb9c00d4230334043f1281f29299bd3de94a8f14a05e69
   stage: test
   before_script:
     - echo 'No need to do extra steps'
