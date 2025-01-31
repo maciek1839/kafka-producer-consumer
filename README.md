@@ -8,13 +8,14 @@
 - [Kafka introduction](#kafka-introduction)
 - [Confluent Platform](#confluent-platform)
 - [Message Queue vs Streaming (Kafka)](#message-queue-vs-streaming-kafka)
+- [Reprocess failed messages](#reprocess-failed-messages)
 - [Event-driven architecture](#event-driven-architecture)
 - [Fault tolerance, high availability and Resiliency](#fault-tolerance-high-availability-and-resiliency)
 - [What happens when a new consumer joins the group in Kafka? (rebalancing)](#what-happens-when-a-new-consumer-joins-the-group-in-kafka-rebalancing)
 - [To consideration](#to-consideration)
 - [Kafka best practises](#kafka-best-practises)
 - [5 Common Pitfalls When Using Apache Kafka](#5-common-pitfalls-when-using-apache-kafka)
-- [Maven commands](#maven-commands)
+- [Production failure scenarios](#production-failure-scenarios)
 - [Useful links](#useful-links)
 
 ---
@@ -99,9 +100,79 @@ Apache Kafka is a distributed event store and stream-processing platform. It is 
 <https://en.wikipedia.org/wiki/Apache_Kafka>  
 <https://kafka.apache.org/>
 
+**How does Kafka work?**
+
+- Kafka records are stored sequentially in the logs. A Kafka record contains:
+  - Key (Optional)
+    - Used for partitioning & message ordering
+  - Value
+    - The actual message content (JSON, Avro, etc.)
+  - Timestamp
+    - The time Kafka received the message
+  - Offset
+    - A unique ID for ordering in the partition
+  - Headers (Optional)
+- Kafka combines two messaging models, queuing and publish-subscribe, to provide the key benefits of each to consumers. 
+  - Queuing allows for data processing to be distributed across many consumer instances, making it highly scalable. However, traditional queues aren't multi-subscriber.
+  - The publish-subscribe approach is multi-subscriber, but because every message goes to every subscriber it cannot be used to distribute work across multiple worker processes.
+  - Kafka uses a partitioned log model to stitch together these two solutions. A log is an ordered sequence of records, and these logs are broken up into segments, or partitions, that correspond to different subscribers. This means that there can be multiple subscribers to the same topic and each is assigned a partition to allow for higher scalability.
+  - Finally, Kafka’s model provides replayability, which allows multiple independent applications reading from data streams to work independently at their own rate. This is possible because Kafka retains messages for a configurable amount of time (or indefinitely) instead of deleting them immediately after consumption.
+- Kafka’s topics are divided into several partitions. While the topic is a logical concept in Kafka, a partition is the smallest storage unit that holds a subset of records owned by a topic. Each partition is a single log file where records are written to it in an append-only fashion.
+- References
+  - <https://kafka.apache.org/documentation/#log>
+  - <https://stackoverflow.com/questions/54124844/how-the-kafka-topic-offsets-works>
+  - <https://aws.amazon.com/msk/what-is-kafka/>
+
+Example:
+
+Kafka Producer-Consumer with Consumer Groups (Queue Model)
+1. Producer (Message Sender)
+   - Publishes messages to a Kafka topic (e.g., orders).
+   - Messages are distributed across partitions based on the key (if provided).
+   - Uses acks=all to ensure durability. 
+     - acks=0:
+       - No acknowledgment is required from the broker. 
+       - The producer does not wait for any confirmation. 
+       - Risk: There’s a chance of data loss if the message is lost before being written to the broker. 
+     - acks=1:
+       - At least one broker (the leader of the partition) must acknowledge the message. 
+       - The producer waits for the leader's acknowledgment but does not wait for followers. 
+       - Risk: If the leader crashes immediately after acknowledging but before the message is replicated to followers, data loss can occur. 
+     - acks=all (or acks=-1):
+       - All in-sync replicas (ISR) must acknowledge the message before the producer receives an acknowledgment. 
+       - The producer waits for confirmation from all replicas that the message has been successfully written. 
+       - Guarantees: This is the most reliable setting because it ensures the message is written to all replicas. If any replica is out of sync or unavailable, the producer will not get an acknowledgment, reducing the chances of data loss.
+2. Topic Configuration (Queue Model)
+   - The topic orders has multiple partitions (e.g., 3).
+   - Messages are not broadcast to all consumers; instead, they are load-balanced across consumers in the same group.
+   - Messages remain in Kafka until log retention expires or storage limits are hit.
+3. Consumer Group (Message Receivers)
+   - Multiple consumers subscribe to the same topic under the same group ID (e.g., "order-processing").
+   - Kafka automatically assigns partitions to consumers.
+   - If one consumer goes down, its partition is reassigned to another consumer in the group.
+   - Consumers in different groups can read the same messages independently.
+4. Consumer Behavior
+   - Each consumer in a group processes a subset of partitions.
+   - No two consumers in the same group receive the same message.
+   - If a new consumer joins, Kafka rebalances partitions across the group.
+5. Example Scenario
+   - A producer sends 10 messages to orders (3 partitions).
+   - A consumer group with 3 consumers (C1, C2, C3) consumes messages.
+   - Kafka distributes messages:
+     - Partition 0 → C1
+     - Partition 1 → C2
+     - Partition 2 → C3
+     - If C2 stops, its partition is reassigned to C1 or C3.
+
+
+If a consumer is not part of a consumer group in Kafka, it behaves like an independent standalone consumer and does not participate in load balancing. Here's how this affects the message consumption:
+- Messages are not shared: If the consumer is not part of a consumer group, it will get all messages from the topic, even if multiple consumers are consuming from the same topic. This is different from the behavior in a consumer group, where each message is consumed by only one consumer in the group.
+- Independent consumption: This means that a non-grouped consumer will read the same message multiple times, as Kafka does not coordinate message distribution between independent consumers.
+- Subscription: The consumer will subscribe to a topic or partition, and Kafka will send all messages in that topic (or partition) to the consumer, regardless of whether other consumers are also reading from the same topic.
+
 ---
 
-Below there are many design/conceptual diagrams showing how Kafka works. In order to understand them, let's explain basic terminology.
+In order to understand Kafka, let's explain **basic terminology**:
 
 - Record: Producer sends messages to Kafka in the form of records. A record is a key-value pair. It contains the topic name to be sent and other attributes which are optional e.g. partition number or key. Kafka broker keeps records inside topic partitions. Records sequence is maintained at the partition level. You can define the logic on which basis partition will be determined.
   - Kafka records are in a key/value format, where the keys can be null.
@@ -129,6 +200,10 @@ Below there are many design/conceptual diagrams showing how Kafka works. In orde
     - Save position (ack processed) - Commit
 
 If you are looking for a book about Kafka, let's have a look on ``Kafka: The Definitive Guide`` which you can get here: <https://www.confluent.io/resources/kafka-the-definitive-guide/>
+
+---
+
+Below there are many design/conceptual diagrams showing how Kafka works.
 
 <img src="docs/kafka-clusters-kafka-clusters-architecture-diagram.png"  width="1100" height="1000">
 
@@ -195,24 +270,40 @@ While many consumers may be active, queues only deliver messages to a single con
 
 In a queue, once a message is delivered, it's gone forever. To reprocess a message, you have to have a backup, like a batch layer, so that you can put it back into the queue. In comparison, a streaming broker uses a distributed log file, so consumers can move backward and forward within that file to re-process messages they've already received on command.
 
+---
+
+Kafka Streams is a client library for building real-time stream processing applications on top of Kafka topics. It allows for complex event processing, stateful transformations, and aggregations of data in motion. Kafka Streams operates on Kafka topics and provides a rich API for stream processing.
+
+Key Features:
+- Real-Time Stream Processing: Kafka Streams is designed to process data in real time. It allows you to consume, transform, and produce streams of data with low latency.
+- Stateful Processing: Kafka Streams supports stateful operations like windowing, aggregations, joins, and keeping track of state between messages (using local state stores).
+- Fault Tolerance: Kafka Streams provides fault tolerance by replicating the state to Kafka topics, ensuring that the state can be recovered if a stream processing instance fails.
+- Exactly Once Semantics (EOS): Kafka Streams ensures that messages are processed exactly once across failures, which guarantees no duplication or message loss during processing.
+- Distributed and Scalable: Kafka Streams applications are inherently distributed and scalable. You can add more processing nodes to handle higher loads.
+- Stream-Processing APIs: Kafka Streams provides APIs for common stream-processing tasks like:
+filter(), map(), flatMap(), groupBy(), reduce(), join(), and windowing.
+
+Kafka Streams Use Cases:
+- Real-time analytics: Aggregating logs, metrics, or data streams in real-time.
+- Event-driven applications: Processing events from Kafka topics in real-time (e.g., order processing, fraud detection).
+- ETL pipelines: Kafka Streams can perform transformations (ETL-like operations) on the data as it moves through Kafka topics.
+- Stateful operations: Applications that require maintaining state over time (e.g., counting occurrences of events, aggregating user data).
+
+
 <img src="docs/kafka-streams-api.png" width="900" height="200">
 
 - https://blog.iron.io/message-queue-vs-streaming/
 - https://www.baeldung.com/java-kafka-streams-vs-kafka-consumer
 
 
-### Reprocess failed messages
+## Reprocess failed messages
 
 ```
 We are implementing a Kafka Consumer using Spring Kafka. 
-As I understand correctly if processing of a single message fails, there is the option to :
+As I understand correctly if processing of a single message fails, there is an option to :
 - Don't care and just ACK
-- Do some retry handling using a RetryTemplate
-- If even this doesn't work do some custom failure handling using a RecoveryCallback
-
-I am wondering what your best practices are for that. 
-I think of simple application exceptions, such as DeserializationException (for JSON formatted messages) 
-or longer local storage downtime, etc.
+- Do some retry handling using different business logic
+- If even this doesn't work do some custom failure handling to send a message t DLQ
 ```
 Reference: https://stackoverflow.com/questions/45883794/kafka-consumes-unprocessable-messages-how-to-reprocess-broken-messages-later
 
@@ -222,6 +313,13 @@ Reference: https://stackoverflow.com/questions/45883794/kafka-consumes-unprocess
   - using Spring RetryTemplate to invoke external microservice (but keep in mind that you will have delays of consuming messages from a specific partition),
   - push failed message into another topic for later reprocessing (as you suggested)
 - You can implement some kind of kafkaProducer that will be a messageFailureHandler and with it you can send all the failed messages to a dedicated kafka topic. If you are familiar with the concept of dead-letter-queue in kafka-connect, it kind of the same (besides in kafka-connect it's only a matter of configuration). [Reference](https://stackoverflow.com/questions/62586094/handling-failed-messages-using-kafka-streams-processor-api)
+
+---
+
+In short:
+- Set the maximum retries: Implement a retry mechanism where failed messages are retried X number of times.
+- Backoff strategy: Introduce a backoff period between retries to avoid overwhelming the consumer with retries.
+- Move to DLQ after max retries: After X number of retries, move the message to the DLQ if it still can't be processed.
 
 ## Event-driven architecture
 
@@ -247,14 +345,27 @@ It does not know the consumer of the event, or the outcome of an event.
 
 <img src="docs/event-driven-example.png" width="900" height="500">
 
+What is a message broker? What is the purpose? What are message broker models?
+- A message broker is software that facilitates the exchange of messages between applications, systems, and services. It allows linked systems to communicate directly, even if they’re built using different technologies, deployed on separate platforms, or use distinct messaging protocols.
+- For example, a web application might send messages to a mobile application, or a mobile application to a web application. In these cases, a message broker serves as a pipeline for different platforms to communicate. In short, message brokers help integrate applications and automate message transmission.
+- Message brokers are included in messaging middleware or message-oriented middleware (MOM) systems. This form of middleware gives developers a consistent approach to handling data flow among an application's components and focus on its core functionality. Message brokering is commonly performed using middleware technologies such as Apache Kafka, RabbitMQ, Apache ActiveMQ, SimpleQueueService (SQS/AWS), and ZeroMQ.
+- Message models
+  - Point-to-Point messaging model
+    - The Point-to-Point (P2P) pattern helps message queues where producers and consumers have a one-to-one relationship. Each message in the queue is forwarded to and consumed by a single consumer. P2P messaging is useful when a message needs to be acted upon only once.
+    - Examples: AWS Simple Queue Service (SQS)
+  - Publish/Subscribe messaging model
+    - Publish/Subscribe messaging, also known as the pub/sub model, allows a producer to send messages to a topic. In this approach, the producer is known as a publisher, while the consumer is referred to as a subscriber. Different publishers can write on the same topic, and different subscribers can receive messages from one or more publishers.
+  - Examples: AWS Simple Notification Service (SNS), Apache Kafka
+
 References:
 - https://stackoverflow.com/questions/72299824/event-driven-architecture-backend-services-with-two-interfaces-interface-type/
 - https://developer.ibm.com/articles/eda-and-microservices-architecture-best-practices/
 - https://databand.ai/blog/7-data-pipeline-examples-etl-data-science-ecommerce-and-more/
+- https://www.g2.com/articles/message-broker
 
 ### Event-driven architecture models
 
-An event driven architecture may be based on either a pub/sub model or an event stream model.
+An event driven architecture may be based on either a pub/sub model or an event stream model. 
 
 - `Pub/sub model`
   - This is a messaging infrastructure based on subscriptions to an event stream. With this model, after an event occurs, or is published, it is sent to subscribers that need to be informed.
@@ -265,6 +376,13 @@ An event driven architecture may be based on either a pub/sub model or an event 
 Message Queues: MQs are a point-to-point communication system where messages are sent to a single receiver, ensuring ordered and reliable delivery.
 Publish-Subscribe: In Pub/Sub systems, messages are sent to multiple subscribers simultaneously, promoting decoupling and scalability.
 ```
+```text
+What's the difference between a message broker an API communication?
+Message broker provides asynchronous communication.
+API is synchronous.
+```
+
+Reference: <https://www.g2.com/articles/message-broker>
 
 <img src="docs/pubsub-vs-streaming.png" width="800" height="400">
 
@@ -476,6 +594,7 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
 ## 5 Common Pitfalls When Using Apache Kafka
 
 - Setting request.timeout.ms too low
+  - The request.timeout.ms configuration setting in Kafka determines the maximum amount of time that the client (either a producer or consumer) will wait for a response from the Kafka broker before considering the request to have failed.
   - It might be tempting to set the request.timeout.ms to a lower value. After all, with a shorter timeout period, clients can react more quickly, whether that means reconnecting or even failing. However, whilst this might sound intuitive, it’s not always a good thing. If you’re not careful, you might exacerbate any problems on the broker side and result in worse performance for your application. 
   - For example, if a broker is taking a long time to handle and process its incoming requests, a lower request.timeout.ms across client applications could lead to increased request pressure as the additional retry attempts are added to the broker’s request queue. This then exacerbates the ongoing performance impact on the brokers, adding to the pressure on it.
 - Misunderstanding producer retries and retriable exceptions
@@ -502,8 +621,51 @@ Reference: https://chrzaszcz.dev/2019/06/kafka-rebalancing/
 
 Reference: https://www.confluent.io/blog/5-common-pitfalls-when-using-apache-kafka/
 
+## Production failure scenarios
+
+In any system utilizing Kafka for real-time data streaming, there are various production failure scenarios that could arise.
+Below are some common use cases, followed by a real-life example of a failure in a Kafka-based system:
+
+1. Message Duplication
+   - Scenario: Kafka guarantees at-least-once delivery, which means a message can be sent multiple times in the event of a failure or a consumer reprocessing the same message. In some cases, this can lead to duplicate processing or actions.
+   - Example: A payment system that processes transactions could accidentally charge customers multiple times due to message duplication.
+2. Message Loss
+   - Scenario: Kafka has a built-in durability mechanism with message replication. However, in rare cases (such as improper configuration of acks, log retention, or insufficient replication factor), messages can still be lost. This could be catastrophic for systems that require high reliability.
+   - Example: An e-commerce platform might lose critical order data if messages are not replicated or retained long enough.
+3. Backpressure and Delays
+   - Scenario: When consumers are slower than producers (due to processing bottlenecks or resource constraints), Kafka can experience backpressure, where the consumer cannot keep up with the rate of message production. This can lead to delays in message consumption or even timeouts.
+   - Example: A real-time analytics dashboard might show outdated data if Kafka consumers cannot process incoming messages quickly enough.
+4. Partition Imbalance
+   - Scenario: Kafka partitions allow parallel processing of messages. However, when partitions are unevenly distributed across consumers, one consumer might be overwhelmed with a large amount of data while others sit idle.
+   - Example: If a specific partition of a product catalog topic grows significantly larger than others, some consumers may become overburdened, leading to slower processing or timeouts.
+5. Broker Failures
+   - Scenario: If a Kafka broker goes down, clients may experience increased latencies or failures in fetching data, especially if replication is not set up correctly or if the replication factor is too low.
+   - Example: A retail site may face delays in processing user actions like adding items to the cart or checking out if one of the Kafka brokers fails.
+
+### Real-Life failure examples
+
+Uber - Kafka Consumer Lag
+
+- Issue: Uber relies on Kafka for real-time analytics and decision-making processes. At one point, the company ran into consumer lag issues due to inefficient processing logic in their consumer applications.
+- Cause: The root cause was a combination of high-volume data processing and under-provisioned Kafka consumers. Uber’s Kafka consumers were not able to keep up with the sheer volume of messages in the system, leading to lag accumulation and delayed data processing. This happened in a critical system used for real-time ride pricing and matching, which relied heavily on timely updates.
+- Impact: The failure resulted in delayed pricing updates for drivers and riders. In real-time ride-sharing systems, such lag can lead to inaccurate pricing or driver availability, causing a poor user experience and financial losses.
+- Solution: Uber implemented dynamic scaling for Kafka consumers, making the system more responsive to load fluctuations, and optimized message processing by reducing the complexity of operations within the consumers.
+
+Netflix - Kafka Message Loss Due to Broker Failures
+
+- Issue: Netflix uses Kafka extensively for event-driven architecture in its microservices. They experienced a message loss incident when one of their Kafka brokers failed unexpectedly.
+- Cause: The failure occurred because the replication factor was misconfigured for the affected Kafka topic. The broker failure led to data loss since some messages were not properly replicated across other brokers in the cluster.
+- Impact: The loss of messages led to critical inconsistencies in user data, such as lost user activities and playback state. As a result, users might have experienced broken sessions or incomplete recommendations.
+- Solution: Netflix revised their replication settings and made improvements to the monitoring and alerting systems for Kafka clusters. They also enhanced their disaster recovery mechanisms to ensure better resilience in case of broker failures.
+
+Twitter - Kafka Overload Leading to Data Outages
+
+- Issue: Twitter uses Kafka for managing real-time data streams related to user activity, timelines, and notifications. At one point, they faced a Kafka overload issue when the consumer groups weren't scaled properly for a specific event.
+- Cause: Due to a peak traffic event, a massive influx of data was being generated, which caused their Kafka consumers to become overwhelmed and lag behind. The system started falling behind on processing timelines and notifications, leading to delayed or missing tweets in user feeds.
+- Impact: This resulted in a poor user experience, as people were missing important updates and notifications. The real-time nature of Twitter’s platform was disrupted, causing frustration among users.
+- Solution: Twitter responded by improving the scalability of their Kafka cluster and increasing consumer parallelism. They also tweaked the backpressure handling mechanisms to better cope with sudden traffic spikes.
+
 ## Useful links
 
-- https://kotlinlang.org/docs/maven.html
 - https://github.com/only2dhir/kafkaexample
 - https://dzone.com/articles/kafka-producer-and-consumer-example
