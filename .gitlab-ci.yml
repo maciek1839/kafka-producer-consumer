@@ -49,7 +49,7 @@ confluent-integration-tests:
   before_script:
     - echo 'No need to do extra steps'
   services:
-    - docker:dind
+    - docker:dind@sha256:3ab005a2e4872f0b10fb9c00d4230334043f1281f29299bd3de94a8f14a05e69
   variables:
     # Instruct Testcontainers to use the daemon of DinD, use port 2375 for non-tls connections.
     DOCKER_HOST: "tcp://docker:2375"
