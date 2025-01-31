@@ -3,6 +3,7 @@ package com.showmeyourcode.kafka.java.kafka_producer;
 import com.showmeyourcode.kafka.java.common.KafkaProperties;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord;
 import com.showmeyourcode.kafka.java.kafka_producer.avro.ExampleUserRecord2;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.reflect.ReflectData;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -62,7 +63,18 @@ class JavaJavaKafkaAvroProducerClassTest {
         verify(kafkaProducer, times(2)).send(argument.capture(), any());
         argument.getAllValues().forEach( record ->{
             assertThat(record.topic()).isEqualTo(KafkaProperties.TOPIC);
-            // TODO: deserialize to POJO
+
+            var genericRecord = ((GenericData.Record) record.value());
+
+            // in production tests there is no need to check this (probably)
+            // but for knowledge sharing purposes it's good to be aware of the Avro structure
+            assertThat(genericRecord.getSchema().getName()).isEqualTo(ExampleUserRecord.class.getSimpleName());
+            assertThat(genericRecord.getSchema().getFields().get(0)).hasToString("age type:LONG pos:0");
+            assertThat(genericRecord.getSchema().getFields().get(1)).hasToString("name type:STRING pos:1");
+            assertThat(genericRecord.getSchema().getFields().get(2)).hasToString("phoneNumber type:STRING pos:2");
+
+            assertThat(genericRecord.get(1)).isEqualTo("name");
+            assertThat(genericRecord.get(2)).isEqualTo("100 100 101");
         });
     }
 
