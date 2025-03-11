@@ -30,7 +30,7 @@
             ${project.basedir}/../../coverage-report/target/site/jacoco-aggregate/jacoco.xml,
         </sonar.coverage.jacoco.xmlReportPaths>
 
-        <kotlin.version>1.9.25</kotlin.version>
+        <kotlin.version>2.1.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <kotlin.serialization.version>1.1.0</kotlin.serialization.version>
 
@@ -51,7 +51,7 @@
 
         <spring-boot.version>3.3.0</spring-boot.version>
 
-        <junit.version>5.9.1</junit.version>
+        <junit.version>5.11.4</junit.version>
         <mockito.verion>5.15.2</mockito.verion>
         <assertj.version>3.27.3</assertj.version>
 
@@ -76,7 +76,7 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
