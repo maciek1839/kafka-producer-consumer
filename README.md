@@ -3,7 +3,6 @@
 - [Technology](#technology)
 - [Getting started](#getting-started)
   - [Run Kafka locally](#run-kafka-locally)
-  - [SSL/TLS Kafka configuration](#ssltls-kafka-configuration)
   - [Docker and Docker Compose commands](#docker-and-docker-compose-commands)
 - [Kafka introduction](#kafka-introduction)
 - [Confluent Platform](#confluent-platform)
@@ -86,12 +85,6 @@ If you don't use IDE plugins, here you can find useful Docker commands:
   - `docker rm $(docker ps -a -q)`
 
 Reference: <https://www.codenotary.com/blog/extremely-useful-docker-commands/>
-
-### SSL/TLS Kafka configuration
-
-Generate certificates using Confluent script -  [instruction](ssl-tls-example/README-SSL-TLS.md).
-
-Complete TLS/SSL Kafka configuration - [instruction](./secrets/README-SECRETS.md)
 
 ## Kafka introduction
 
